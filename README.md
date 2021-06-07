@@ -29,7 +29,7 @@ Need to be able to add in data for a specified week, and be able to create new w
 
 VIEW TEAM STATS -> CHOOSE WEEK \ ALL WEEKS  
 VIEW PLAYER STATS -> CHOOSE PLAYER -> CHOOSE WEEK \ ALL WEEKS  
-ADD STATS -> CHOOSE PLAYER -> CHOOSE WEEK  
-                    -> ADD NEW PLAYER  
+ADD STATS -> CHOOSE PLAYER -> CHOOSE WEEK      
+          -> ADD NEW PLAYER  
 
 MAYBE: Separate Week by Seasons? Remove Player?  
