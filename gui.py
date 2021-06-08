@@ -95,7 +95,7 @@ def nextWeek(weekNumber):
         
     if(weekNumber >= len(weekList)):
         nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(1), padx=10, pady=10, anchor=W)
-        prevWeekButton = Button(root, text= "<<", command=lambda: prevWeek(len(weekList)), padx=10, pady=10, anchor=W)
+        prevWeekButton = Button(root, text= "<<", command=lambda: prevWeek(len(weekList)-1), padx=10, pady=10, anchor=W)
     else:
         nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(weekList[weekNumber]), padx=10, pady=10, anchor=W)
     
