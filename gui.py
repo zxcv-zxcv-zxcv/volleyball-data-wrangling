@@ -229,8 +229,6 @@ def buttonReset():
 
 
 def buttonChange(playerName):
-    
-    
     return
 
 
