@@ -11,9 +11,9 @@ Serve % = Serve Success / SE + SS Float
 Receive Errors (No consecutive Touch): Int  
 Receive Passes (Consecutive Touch must’ve been made): Int  
 Receive % = Receive Passes / RE + RP Float  
-Hit Errors (No consecutive Touch): Int  
-Hit Success (Goes over the court and is not out): Int  
-Hit % = Hit Success / HE + HS  
+Spike Errors (No consecutive Touch): Int  
+Spike Success (Goes over the court and is not out): Int  
+Spike % = Spike Success / HE + HS  
 Block Errors (Play ends after block with point loss, must’ve contacted ball): Int  
 Block Successes (No point loss, play resumes or ends): Int  
 Block % = Block % / BE + BS Float  
