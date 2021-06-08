@@ -1,5 +1,3 @@
-
-
 from tkinter import *
 
 root = Tk()
@@ -232,7 +230,7 @@ def buttonChange(playerName):
     return
 
 
-exitButton = Button(root, text= "Exit", command=root.quit, padx=20, pady=10)
+exitButton = Button(root, text= "Exit", command=root.destroy, padx=20, pady=10)
 
 
 titleLabel.grid(row=0, column=0, padx=(20,0), pady=(0, 20))
