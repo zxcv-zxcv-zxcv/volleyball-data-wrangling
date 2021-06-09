@@ -1,311 +1,278 @@
 from tkinter import *
 
-root = Tk()
-root.title('Volleyball Statistics Input')
 
-weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-
-titleLabel = Label(root, text="Volleyball Statistics Input", padx=10, pady=10)
-weekLabel = Label(root, text="Week: 1 of "+ str(len(weekList)), padx=20, pady=10)
-
-
-prevWeekButton = Button(root, text= "<<", command=lambda: prevWeek(0), padx=10, pady=10, anchor=W)
-nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(2), padx=10, pady=10, anchor=W)
-
-#Initializing Player Selection Buttons
-playerSelection = LabelFrame(root, text="Player Selection", padx=10, pady=10)
-brandonChan = Button(playerSelection, text="Chan", command=lambda:playerSelect("brandonChan"), height=4, width=15)
-callumAshton = Button(playerSelection, text="Callum", command=lambda:playerSelect("callumAshton"), height=4, width=15)
-danielPark = Button(playerSelection, text="Daniel", command=lambda:playerSelect("danielPark"), height=4, width=15)
-deirdreTruong = Button(playerSelection, text="Deirdre", command=lambda:playerSelect("deirdreTruong"), height=4, width=15)
-edwardKang = Button(playerSelection, text="Edward", command=lambda:playerSelect("edwardKang"), height=4, width=15)
-kevinMa = Button(playerSelection, text="Kema", command=lambda:playerSelect("kevinMa"), height=4, width=15)
-kevinTang = Button(playerSelection, text="Ktang", command=lambda:playerSelect("kevinTang"), height=4, width=15)
-lachlanDenham = Button(playerSelection, text="Lachlan", command=lambda:playerSelect("lachlanDenham"), height=4, width=15)
-mimiChen = Button(playerSelection, text="Mimi", command=lambda:playerSelect("mimiChen"), height=4, width=15)
-willOuyang = Button(playerSelection, text="Will", command=lambda:playerSelect("willOuyang"), height=4, width=15)
-
-buttonColor = brandonChan.cget("background")
-
-#Initializing Statisitic Add and Subtract Buttons
-serveErrors = LabelFrame(root, text="Serve Errors: ", padx=10, pady=10)
-serveErrorsAdd = Button(serveErrors, text="+", padx=20, pady=15)
-serveErrorsRemove = Button(serveErrors, text="-", padx=20, pady=15)
-
-serveSuccess = LabelFrame(root, text="Serve Successes: ", padx=10, pady=10)
-serveSuccessAdd = Button(serveSuccess, text="+", padx=20, pady=15)
-serveSuccessRemove = Button(serveSuccess, text="-", padx=20, pady=15)
-
-receiveErrors = LabelFrame(root, text="Receive Errors: ", padx=10, pady=10)
-receiveErrorsAdd = Button(receiveErrors, text="+", padx=20, pady=15)
-receiveErrorsRemove = Button(receiveErrors, text="-", padx=20, pady=15)
-
-receiveSuccess = LabelFrame(root, text="Receive Successes: ", padx=10, pady=10)
-receiveSuccessAdd = Button(receiveSuccess, text="+", padx=20, pady=15)
-receiveSuccessRemove = Button(receiveSuccess, text="-", padx=20, pady=15)
-
-spikeErrors = LabelFrame(root, text="Spike Errors: ", padx=10, pady=10)
-spikeErrorsAdd = Button(spikeErrors, text="+", padx=20, pady=15)
-spikeErrorsRemove = Button(spikeErrors, text="-", padx=20, pady=15)
-
-spikeSuccess = LabelFrame(root, text="Spike Successes: ", padx=10, pady=10)
-spikeSuccessAdd = Button(spikeSuccess, text="+", padx=20, pady=15)
-spikeSuccessRemove = Button(spikeSuccess, text="-", padx=20, pady=15)
-
-blockErrors = LabelFrame(root, text="Block Errors: ", padx=10, pady=10)
-blockErrorsAdd = Button(blockErrors, text="+", padx=20, pady=15)
-blockErrorsRemove = Button(blockErrors, text="-", padx=20, pady=15)
-
-blockSuccess = LabelFrame(root, text="Block Successes: ", padx=10, pady=10)
-blockSuccessAdd = Button(blockSuccess, text="+", padx=20, pady=15)
-blockSuccessRemove = Button(blockSuccess, text="-", padx=20, pady=15)
-
-Faults = LabelFrame(root, text="Faults: ", padx=10, pady=10)
-FaultsAdd = Button(Faults, text="+", padx=20, pady=15)
-FaultsRemove = Button(Faults, text="-", padx=20, pady=15)
-
-
-statisticsFrame = LabelFrame(root, text="Player Statistics", padx=10, pady=10)
-serveErrorsLabel = Label(statisticsFrame, text="Serve Errors: ", padx=10, pady=10)
-serveSuccessLabel = Label(statisticsFrame, text="Serve Successes: ", padx=10, pady=10)
-serveRateLabel = Label(statisticsFrame, text="Serve Rate: " + "TO FILL" + "%", padx=10, pady=10)
-receiveErrorsLabel = Label(statisticsFrame, text="Receive Errors: ", padx=10, pady=10)
-receiveSuccessLabel = Label(statisticsFrame, text="Receive Successes: ", padx=10, pady=10)
-receiveRateLabel = Label(statisticsFrame, text="Receive Rate: " + "TO FILL" + "%", padx=10, pady=10)
-spikeErrorsLabel = Label(statisticsFrame, text="Spike Errors: ", padx=10, pady=10)
-spikeSuccessLabel = Label(statisticsFrame, text="Spike Successes: ", padx=10, pady=10)
-spikeRateLabel = Label(statisticsFrame, text="Spike Rate: " + "TO FILL" + "%", padx=10, pady=10)
-blockErrorsLabel = Label(statisticsFrame, text="Block Errors: ", padx=10, pady=10)
-blockSuccessLabel = Label(statisticsFrame, text="Block Successes: ", padx=10, pady=10)
-blockRateLabel = Label(statisticsFrame, text="Block Rate: " + "TO FILL" + "%", padx=10, pady=10)
-FaultsLabel = Label(statisticsFrame, text="Faults: ", padx=10, pady=10)
-
-
-def nextWeek(weekNumber):
-    global weekLabel
-    global nextWeekButton
-    global prevWeekButton
+class statsEditor():
+     
     
-    
-    weekLabel.grid_forget()
-    weekLabel = Label(root, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-    prevWeekButton = Button(root, text= "<<", command=lambda: prevWeek(weekList[weekNumber-2]), padx=10, pady=10, anchor=W)
+    def __init__(self, master):
         
-    if(weekNumber >= len(weekList)):
-        nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(1), padx=10, pady=10, anchor=W)
-        prevWeekButton = Button(root, text= "<<", command=lambda: prevWeek(len(weekList)-1), padx=10, pady=10, anchor=W)
-    else:
-        nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(weekList[weekNumber]), padx=10, pady=10, anchor=W)
-    
-    weekLabel.grid(row=0, column=3)
-    prevWeekButton.grid(row=0, column=2)
-    nextWeekButton.grid(row=0, column=4)
-    
-    
-
-
-def prevWeek(weekNumber):
-    global weekLabel
-    global nextWeekButton
-    global prevWeekButton
-    
-    weekLabel.grid_forget()
-    weekLabel = Label(root, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-    prevWeekButton = Button(root, text= "<<", command=lambda: prevWeek(weekList[weekNumber-2]), padx=10, pady=10, anchor=W)
-    
-    if(weekNumber >= len(weekList)):
-        nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(1), padx=10, pady=10, anchor=W)
-    else:
-        nextWeekButton = Button(root, text= ">>", command=lambda: nextWeek(weekList[weekNumber]), padx=10, pady=10, anchor=W)
-    
-    weekLabel.grid(row=0, column=3)
-    prevWeekButton.grid(row=0, column=2)
-    nextWeekButton.grid(row=0, column=4)
         
-
-def playerSelect(selectedPlayer):
-    global brandonChan
-    global callumAshton
-    global danielPark
-    global deirdreTruong
-    global edwardKang
-    global kevinMa
-    global kevinTang
-    global lachlanDenham
-    global mimiChen
-    global willOuyang
+        weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        
+        master.title('Volleyball Statistics Input')
+        self.titleLabel = Label(master, text="Volleyball Statistics Input", padx=10, pady=10)
+        self.weekLabel = Label(master, text="Week: 1 of "+ str(len(weekList)), padx=20, pady=10)
+        
+        self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(0, master, weekList), padx=10, pady=10, anchor=W) #
+        self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(2, master, weekList), padx=10, pady=10, anchor=W) 
+    
+        #Initializing Player Selection Buttons
+        self.playerSelection = LabelFrame(master, text="Player Selection", padx=10, pady=10)
+        self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda: self.playerSelect("brandonChan"), height=4, width=15)
+        self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda: self.playerSelect("callumAshton"), height=4, width=15)
+        self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda: self.playerSelect("danielPark"), height=4, width=15)
+        self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda: self.playerSelect("deirdreTruong"), height=4, width=15)
+        self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda: self.playerSelect("edwardKang"), height=4, width=15)
+        self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda: self.playerSelect("kevinMa"), height=4, width=15)
+        self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda: self.playerSelect("kevinTang"), height=4, width=15)
+        self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda: self.playerSelect("lachlanDenham"), height=4, width=15)
+        self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda: self.playerSelect("mimiChen"), height=4, width=15)
+        self.willOuyang = Button(self.playerSelection, text="Will", command=lambda: self.playerSelect("willOuyang"), height=4, width=15)
+        
+        #buttonColor = brandonChan.cget("background")
+       
+        #Initializing Statisitic Add and Subtract Buttons
+        self.serveErrors = LabelFrame(master, text="Serve Errors: ", padx=10, pady=10)
+        self.serveErrorsAdd = Button(self.serveErrors, text="+", padx=20, pady=15)
+        self.serveErrorsRemove = Button(self.serveErrors, text="-", padx=20, pady=15)
+  
+        self.serveSuccess = LabelFrame(master, text="Serve Successes: ", padx=10, pady=10)
+        self.serveSuccessAdd = Button(self.serveSuccess, text="+", padx=20, pady=15)
+        self.serveSuccessRemove = Button(self.serveSuccess, text="-", padx=20, pady=15)
+  
+        self.receiveErrors = LabelFrame(master, text="Receive Errors: ", padx=10, pady=10)
+        self.receiveErrorsAdd = Button(self.receiveErrors, text="+", padx=20, pady=15)
+        self.receiveErrorsRemove = Button(self.receiveErrors, text="-", padx=20, pady=15)
+     
+        self.receiveSuccess = LabelFrame(master, text="Receive Successes: ", padx=10, pady=10)
+        self.receiveSuccessAdd = Button(self.receiveSuccess, text="+", padx=20, pady=15)
+        self.receiveSuccessRemove = Button(self.receiveSuccess, text="-", padx=20, pady=15)
+      
+        self.spikeErrors = LabelFrame(master, text="Spike Errors: ", padx=10, pady=10)
+        self.spikeErrorsAdd = Button(self.spikeErrors, text="+", padx=20, pady=15)
+        self.spikeErrorsRemove = Button(self.spikeErrors, text="-", padx=20, pady=15)
+     
+        self.spikeSuccess = LabelFrame(master, text="Spike Successes: ", padx=10, pady=10)
+        self.spikeSuccessAdd = Button(self.spikeSuccess, text="+", padx=20, pady=15)
+        self.spikeSuccessRemove = Button(self.spikeSuccess, text="-", padx=20, pady=15)
+     
+        self.blockErrors = LabelFrame(master, text="Block Errors: ", padx=10, pady=10)
+        self.blockErrorsAdd = Button(self.blockErrors, text="+", padx=20, pady=15)
+        self.blockErrorsRemove = Button(self.blockErrors, text="-", padx=20, pady=15)
+    
+        self.blockSuccess = LabelFrame(master, text="Block Successes: ", padx=10, pady=10)
+        self.blockSuccessAdd = Button(self.blockSuccess, text="+", padx=20, pady=15)
+        self.blockSuccessRemove = Button(self.blockSuccess, text="-", padx=20, pady=15)
+     
+        self.Faults = LabelFrame(master, text="self.Faults: ", padx=10, pady=10)
+        self.FaultsAdd = Button(self.Faults, text="+", padx=20, pady=15)
+        self.FaultsRemove = Button(self.Faults, text="-", padx=20, pady=15)
+      
+      
+        self.statisticsmaster = LabelFrame(master, text="Player Statistics", padx=10, pady=10)
+        self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: ", padx=10, pady=10)
+        self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: ", padx=10, pady=10)
+        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: ", padx=10, pady=10)
+        self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: ", padx=10, pady=10)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.spikeErrorsLabel = Label(self.statisticsmaster, text="Spike Errors: ", padx=10, pady=10)
+        self.spikeSuccessLabel = Label(self.statisticsmaster, text="Spike Successes: ", padx=10, pady=10)
+        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: ", padx=10, pady=10)
+        self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: ", padx=10, pady=10)
+        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.FaultsLabel = Label(self.statisticsmaster, text="self.Faults: ", padx=10, pady=10)
+        
+        self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
+        
+        
+        self.titleLabel.grid(row=0, column=0, padx=(20,0), pady=(0, 20))
+        self.prevWeekButton.grid(row=0, column=2)
+        self.weekLabel.grid(row=0, column=3)
+        self.nextWeekButton.grid(row=0, column=4)
+     
+        #Player Selection buttons
+        self.playerSelection.grid(row=1, column=0, columnspan=5, padx=10, pady=5)
+        self.brandonChan.grid(row=0, column=0)
+        self.callumAshton.grid(row=0, column=1)
+        self.danielPark.grid(row=0, column=2)
+        self.deirdreTruong.grid(row=0, column=3)
+        self.edwardKang.grid(row=0, column=4)
+        self.kevinMa.grid(row=1, column=0)
+        self.kevinTang.grid(row=1, column=1)
+        self.lachlanDenham.grid(row=1, column=2)
+        self.mimiChen.grid(row=1, column=3)
+        self.willOuyang.grid(row=1, column=4)
+      
+        #buttons and masters for changing data
+        self.serveErrors.grid(row=2, column=0, padx=10, pady=5)
+        self.serveErrorsAdd.grid(row=0, column=0)
+        self.serveErrorsRemove.grid(row=0, column=1)
+      
+        self.serveSuccess.grid(row=2, column=1, padx=10, pady=5)
+        self.serveSuccessAdd.grid(row=0, column=0)
+        self.serveSuccessRemove.grid(row=0, column=1)
+      
+        self.receiveErrors.grid(row=2, column=2, padx=10, pady=5)
+        self.receiveErrorsAdd.grid(row=0, column=0)
+        self.receiveErrorsRemove.grid(row=0, column=1)
+      
+        self.receiveSuccess.grid(row=2, column=3, padx=10, pady=5)
+        self.receiveSuccessAdd.grid(row=0, column=0)
+        self.receiveSuccessRemove.grid(row=0, column=1)
    
-    if(selectedPlayer == "brandonChan"):
-        buttonReset()
-        brandonChan = Button(playerSelection, text="Chan", command=lambda:[self.color_change, buttonChange("brandonChan")], bg="blue", height=4, width=15)
-        brandonChan.grid(row=0, column=0)
-    
-    if(selectedPlayer == "callumAshton"):
-        buttonReset()
-        callumAshton = Button(playerSelection, text="Callum", command=lambda:[self.color_change, buttonChange("callumAshton")], bg="blue", height=4, width=15)
-        callumAshton.grid(row=0, column=1)
+        self.spikeErrors.grid(row=3, column=0, padx=10, pady=5)
+        self.spikeErrorsAdd.grid(row=0, column=0)
+        self.spikeErrorsRemove.grid(row=0, column=1)
+       
+        self.spikeSuccess.grid(row=3, column=1, padx=10, pady=5)
+        self.spikeSuccessAdd.grid(row=0, column=0)
+        self.spikeSuccessRemove.grid(row=0, column=1)
+      
+        self.blockErrors.grid(row=3, column=2, padx=10, pady=5)
+        self.blockErrorsAdd.grid(row=0, column=0)
+        self.blockErrorsRemove.grid(row=0, column=1)
+       
+        self.blockSuccess.grid(row=3, column=3, padx=10, pady=5)
+        self.blockSuccessAdd.grid(row=0, column=0)
+        self.blockSuccessRemove.grid(row=0, column=1)
+      
+        self.Faults.grid(row=4, column=0, padx=10, pady=5)
+        self.FaultsAdd.grid(row=0, column=0)
+        self.FaultsRemove.grid(row=0, column=1)
+      
+        #Statistics master and labels
+        self.statisticsmaster.grid(row=4, column=1, columnspan=3, padx=5)
+        self.serveErrorsLabel.grid(row=0, column=0, padx=10,)
+        self.serveSuccessLabel.grid(row=0, column=1, padx=10)
+        self.serveRateLabel.grid(row=0, column=2, padx=10)
+        self.receiveErrorsLabel.grid(row=1, column=0, padx=10)
+        self.receiveSuccessLabel.grid(row=1, column=1, padx=10)
+        self.receiveRateLabel.grid(row=1, column=2, padx=10)
+        self.spikeErrorsLabel.grid(row=2, column=0, padx=10)
+        self.spikeSuccessLabel.grid(row=2, column=1, padx=10)
+        self.spikeRateLabel.grid(row=2, column=2, padx=10)
+        self.blockErrorsLabel.grid(row=3, column=0, padx=10)
+        self.blockSuccessLabel.grid(row=3, column=1, padx=10)
+        self.blockRateLabel.grid(row=3, column=2, padx=10)
+        self.FaultsLabel.grid(row=4, column=0, padx=10)
+        self.exitButton.grid(row=99, column=4)
+     
+    def nextWeek(self, weekNumber, master, weekList): 
+      
+        self.weekLabel.grid_forget()
+        self.weekLabel = Label(master, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
+        self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
+            
+        if(weekNumber >= len(weekList)):
+            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
+            self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(len(weekList)-1, master, weekList), padx=10, pady=10, anchor=W)
+        else:
+            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
         
-    
-    if(selectedPlayer == "danielPark"):
-        buttonReset()
-        danielPark = Button(playerSelection, text="Daniel", command=lambda:[self.color_change, buttonChange("danielPark")], bg="blue", height=4, width=15)   
-        danielPark.grid(row=0, column=2)
-    
-    
-    if(selectedPlayer == "deirdreTruong"):
-        buttonReset()
-        deirdreTruong = Button(playerSelection, text="Deirdre", command=lambda:[self.color_change, buttonChange("deirdreTruong")], bg="blue", height=4, width=15)
-        deirdreTruong.grid(row=0, column=3)
-    
-    if(selectedPlayer == "edwardKang"):
-        buttonReset()
-        edwardKang = Button(playerSelection, text="Edward", command=lambda:[self.color_change, buttonChange("edwardKang")], bg="blue", height=4, width=15)
-        edwardKang.grid(row=0, column=4)
-    
-    if(selectedPlayer == "kevinMa"):
-        buttonReset()
-        kevinMa = Button(playerSelection, text="Kema", command=lambda:[self.color_change, buttonChange("kevinMa")], bg="blue", height=4, width=15)
-        kevinMa.grid(row=1, column=0)
-    
-    
-    if(selectedPlayer == "kevinTang"):
-        buttonReset()
-        kevinTang = Button(playerSelection, text="Ktang", command=lambda:[self.color_change, buttonChange("kevinTang")], bg="blue", height=4, width=15)
-        kevinTang.grid(row=1, column=1)
-    
-    if(selectedPlayer == "lachlanDenham"):
-        buttonReset()
-        lachlanDenham = Button(playerSelection, text="Lachlan", command=lambda:[self.color_change, buttonChange("lachlanDenham")], bg="blue", height=4, width=15)
-        lachlanDenham.grid(row=1, column=2)
-
-    
-    if(selectedPlayer == "mimiChen"):
-        buttonReset()
-        mimiChen = Button(playerSelection, text="Mimi", command=lambda:[self.color_change, buttonChange("mimiChen")], bg="blue", height=4, width=15)
-        mimiChen.grid(row=1, column=3)
+        self.weekLabel.grid(row=0, column=3)
+        self.prevWeekButton.grid(row=0, column=2)
+        self.nextWeekButton.grid(row=0, column=4)
         
+    def prevWeek(self, weekNumber, master, weekList):
+      
+        self.weekLabel.grid_forget()
+        self.weekLabel = Label(master, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
+        self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
+        
+        if(weekNumber >= len(weekList)):
+            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
+        else:
+            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
+        
+        self.weekLabel.grid(row=0, column=3)
+        self.prevWeekButton.grid(row=0, column=2)
+        self.nextWeekButton.grid(row=0, column=4)
+        return
     
-    if(selectedPlayer == "willOuyang"):
-        buttonReset()
-        willOuyang = Button(playerSelection, text="Will", command=lambda:[self.color_change, buttonChange("willOuyang")], bg="blue", height=4, width=15)
-        willOuyang.grid(row=1, column=4)
+    def playerSelect(self, selectedPlayer):
+               
+        if(selectedPlayer == "brandonChan"):
+            self.buttonReset()
+            self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda:[self.color_change, buttonChange("brandonChan")], bg="blue", height=4, width=15)
+            self.brandonChan.grid(row=0, column=0)
+        
+        if(selectedPlayer == "callumAshton"):
+            self.buttonReset()
+            self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda:[self.color_change, buttonChange("callumAshton")], bg="blue", height=4, width=15)
+            self.callumAshton.grid(row=0, column=1)
+            
+        
+        if(selectedPlayer == "danielPark"):
+            self.buttonReset()
+            self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda:[self.color_change, buttonChange("danielPark")], bg="blue", height=4, width=15)   
+            self.danielPark.grid(row=0, column=2)
+        
+        
+        if(selectedPlayer == "deirdreTruong"):
+            self.buttonReset()
+            self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda:[self.color_change, buttonChange("deirdreTruong")], bg="blue", height=4, width=15)
+            self.deirdreTruong.grid(row=0, column=3)
+        
+        if(selectedPlayer == "edwardKang"):
+            self.buttonReset()
+            self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda:[self.color_change, buttonChange("edwardKang")], bg="blue", height=4, width=15)
+            self.edwardKang.grid(row=0, column=4)
+        
+        if(selectedPlayer == "kevinMa"):
+            self.buttonReset()
+            self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda:[self.color_change, buttonChange("kevinMa")], bg="blue", height=4, width=15)
+            self.kevinMa.grid(row=1, column=0)
+        
+        
+        if(selectedPlayer == "kevinTang"):
+            self.buttonReset()
+            self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda:[self.color_change, buttonChange("kevinTang")], bg="blue", height=4, width=15)
+            self.kevinTang.grid(row=1, column=1)
+        
+        if(selectedPlayer == "lachlanDenham"):
+            self.buttonReset()
+            self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda:[self.color_change, buttonChange("lachlanDenham")], bg="blue", height=4, width=15)
+            self.lachlanDenham.grid(row=1, column=2)
     
+        
+        if(selectedPlayer == "mimiChen"):
+            self.buttonReset()
+            self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda:[self.color_change, buttonChange("mimiChen")], bg="blue", height=4, width=15)
+            self.mimiChen.grid(row=1, column=3)
+            
+        
+        if(selectedPlayer == "willOuyang"):
+            self.buttonReset()
+            self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:[self.color_change, buttonChange("willOuyang")], bg="blue", height=4, width=15)
+            self.willOuyang.grid(row=1, column=4)
+        
 
-def buttonReset():
-    global brandonChan
-    global callumAshton
-    global danielPark
-    global deirdreTruong
-    global edwardKang
-    global kevinMa
-    global kevinTang
-    global lachlanDenham
-    global mimiChen
-    global willOuyang
+    def buttonReset(self):
+        
+        self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda: self.playerSelect("brandonChan"), height=4, width=15)
+        self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda: self.playerSelect("callumAshton"), height=4, width=15)
+        self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda: self.playerSelect("danielPark"), height=4, width=15)
+        self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda: self.playerSelect("deirdreTruong"), height=4, width=15)
+        self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda: self.playerSelect("edwardKang"), height=4, width=15)
+        self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda: self.playerSelect("kevinMa"), height=4, width=15)
+        self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda: self.playerSelect("kevinTang"), height=4, width=15)
+        self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda: self.playerSelect("lachlanDenham"), height=4, width=15)
+        self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda: self.playerSelect("mimiChen"), height=4, width=15)
+        self.willOuyang = Button(self.playerSelection, text="Will", command=lambda: self.playerSelect("willOuyang"), height=4, width=15)
+        
+        self.brandonChan.grid(row=0, column=0)
+        self.callumAshton.grid(row=0, column=1)
+        self.danielPark.grid(row=0, column=2)
+        self.deirdreTruong.grid(row=0, column=3)
+        self.edwardKang.grid(row=0, column=4)
+        self.kevinMa.grid(row=1, column=0)
+        self.kevinTang.grid(row=1, column=1)
+        self.lachlanDenham.grid(row=1, column=2)
+        self.mimiChen.grid(row=1, column=3)
+        self.willOuyang.grid(row=1, column=4)
     
-    brandonChan = Button(playerSelection, text="Chan", command=lambda:playerSelect("brandonChan"), height=4, width=15)
-    callumAshton = Button(playerSelection, text="Callum", command=lambda:playerSelect("callumAshton"), height=4, width=15)
-    danielPark = Button(playerSelection, text="Daniel", command=lambda:playerSelect("danielPark"), height=4, width=15)
-    deirdreTruong = Button(playerSelection, text="Deirdre", command=lambda:playerSelect("deirdreTruong"), height=4, width=15)
-    edwardKang = Button(playerSelection, text="Edward", command=lambda:playerSelect("edwardKang"), height=4, width=15)
-    kevinMa = Button(playerSelection, text="Kema", command=lambda:playerSelect("kevinMa"), height=4, width=15)
-    kevinTang = Button(playerSelection, text="Ktang", command=lambda:playerSelect("kevinTang"), height=4, width=15)
-    lachlanDenham = Button(playerSelection, text="Lachlan", command=lambda:playerSelect("lachlanDenham"), height=4, width=15)
-    mimiChen = Button(playerSelection, text="Mimi", command=lambda:playerSelect("mimiChen"), height=4, width=15)
-    willOuyang = Button(playerSelection, text="Will", command=lambda:playerSelect("willOuyang"), height=4, width=15)
     
-    brandonChan.grid(row=0, column=0)
-    callumAshton.grid(row=0, column=1)
-    danielPark.grid(row=0, column=2)
-    deirdreTruong.grid(row=0, column=3)
-    edwardKang.grid(row=0, column=4)
-    kevinMa.grid(row=1, column=0)
-    kevinTang.grid(row=1, column=1)
-    lachlanDenham.grid(row=1, column=2)
-    mimiChen.grid(row=1, column=3)
-    willOuyang.grid(row=1, column=4)
-
-
-def buttonChange(playerName):
-    return
-
-
-exitButton = Button(root, text= "Exit", command=root.destroy, padx=20, pady=10)
-
-
-titleLabel.grid(row=0, column=0, padx=(20,0), pady=(0, 20))
-prevWeekButton.grid(row=0, column=2)
-weekLabel.grid(row=0, column=3)
-nextWeekButton.grid(row=0, column=4)
-
-#Player Selection buttons
-playerSelection.grid(row=1, column=0, columnspan=5, padx=10, pady=5)
-brandonChan.grid(row=0, column=0)
-callumAshton.grid(row=0, column=1)
-danielPark.grid(row=0, column=2)
-deirdreTruong.grid(row=0, column=3)
-edwardKang.grid(row=0, column=4)
-kevinMa.grid(row=1, column=0)
-kevinTang.grid(row=1, column=1)
-lachlanDenham.grid(row=1, column=2)
-mimiChen.grid(row=1, column=3)
-willOuyang.grid(row=1, column=4)
-
-
-#buttons and frames for changing data
-serveErrors.grid(row=2, column=0, padx=10, pady=5)
-serveErrorsAdd.grid(row=0, column=0)
-serveErrorsRemove.grid(row=0, column=1)
-
-serveSuccess.grid(row=2, column=1, padx=10, pady=5)
-serveSuccessAdd.grid(row=0, column=0)
-serveSuccessRemove.grid(row=0, column=1)
-
-receiveErrors.grid(row=2, column=2, padx=10, pady=5)
-receiveErrorsAdd.grid(row=0, column=0)
-receiveErrorsRemove.grid(row=0, column=1)
-
-receiveSuccess.grid(row=2, column=3, padx=10, pady=5)
-receiveSuccessAdd.grid(row=0, column=0)
-receiveSuccessRemove.grid(row=0, column=1)
-
-spikeErrors.grid(row=3, column=0, padx=10, pady=5)
-spikeErrorsAdd.grid(row=0, column=0)
-spikeErrorsRemove.grid(row=0, column=1)
-
-spikeSuccess.grid(row=3, column=1, padx=10, pady=5)
-spikeSuccessAdd.grid(row=0, column=0)
-spikeSuccessRemove.grid(row=0, column=1)
-
-blockErrors.grid(row=3, column=2, padx=10, pady=5)
-blockErrorsAdd.grid(row=0, column=0)
-blockErrorsRemove.grid(row=0, column=1)
-
-blockSuccess.grid(row=3, column=3, padx=10, pady=5)
-blockSuccessAdd.grid(row=0, column=0)
-blockSuccessRemove.grid(row=0, column=1)
-
-Faults.grid(row=4, column=0, padx=10, pady=5)
-FaultsAdd.grid(row=0, column=0)
-FaultsRemove.grid(row=0, column=1)
-
-#Statistics frame and labels
-statisticsFrame.grid(row=4, column=1, columnspan=3, padx=5)
-serveErrorsLabel.grid(row=0, column=0, padx=10,)
-serveSuccessLabel.grid(row=0, column=1, padx=10)
-serveRateLabel.grid(row=0, column=2, padx=10)
-receiveErrorsLabel.grid(row=1, column=0, padx=10)
-receiveSuccessLabel.grid(row=1, column=1, padx=10)
-receiveRateLabel.grid(row=1, column=2, padx=10)
-spikeErrorsLabel.grid(row=2, column=0, padx=10)
-spikeSuccessLabel.grid(row=2, column=1, padx=10)
-spikeRateLabel.grid(row=2, column=2, padx=10)
-blockErrorsLabel.grid(row=3, column=0, padx=10)
-blockSuccessLabel.grid(row=3, column=1, padx=10)
-blockRateLabel.grid(row=3, column=2, padx=10)
-FaultsLabel.grid(row=4, column=0, padx=10)
-exitButton.grid(row=99, column=4)
-
-
-root.mainloop()
-
+    def buttonChange(self, playerName):
+        return
