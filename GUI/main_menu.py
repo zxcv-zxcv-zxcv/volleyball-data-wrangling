@@ -1,12 +1,14 @@
 from tkinter import *
-import stats_editor
+from stats_editor import statsEditor
 
 
 root = Tk()
 root.title('Volleyball Statistics Viewer')
 
 def openEditor():
-    stats_editor()
+    top = Toplevel()
+    b = statsEditor(top)
+    top.mainloop()
     return
 
 def openPlayerStats():
@@ -17,8 +19,8 @@ def openTeamStats():
 
 titleLabel = Label(root, text="Main Menu", padx=5, pady=10, anchor=W)
 
-statsEditor = LabelFrame(root, text="Statistics Editor", padx=10, pady=10)
-statsEditorButton = Button(statsEditor, command=openEditor, height=4, width=15)
+statsEditorFrame = LabelFrame(root, text="Statistics Editor", padx=10, pady=10)
+statsEditorButton = Button(statsEditorFrame, command=openEditor, height=4, width=15)
 
 playerStatisticsViewer = LabelFrame(root, text="View Player Statistics", padx=10, pady=10)
 playerStatisticsButton = Button(playerStatisticsViewer, command=openPlayerStats, height=4, width=15)
@@ -29,7 +31,7 @@ teamStatisticsButton = Button(teamStatisticsViewer, command=openTeamStats, heigh
 
 titleLabel.grid(row=0, column=0, pady=(10, 20), columnspan=5)
 
-statsEditor.grid(row=2, column=0, padx=10, pady=5)
+statsEditorFrame.grid(row=2, column=0, padx=10, pady=5)
 statsEditorButton.grid(row=0, column=0)
 
 playerStatisticsViewer.grid(row=2, column=1, padx=10, pady=5)
