@@ -11,10 +11,11 @@ class statsEditor():
         
         master.title('Volleyball Statistics Input')
         self.titleLabel = Label(master, text="Volleyball Statistics Input", padx=10, pady=10)
-        self.weekLabel = Label(master, text="Week: 1 of "+ str(len(weekList)), padx=20, pady=10)
         
-        self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(0, master, weekList), padx=10, pady=10, anchor=W) #
-        self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(2, master, weekList), padx=10, pady=10, anchor=W) 
+        self.weekFrame = LabelFrame(master, text="Week Selection:", padx=10, pady=10)
+        self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(weekList)), padx=20, pady=10)
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(0, master, weekList), padx=10, pady=10, anchor=W) #
+        self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(2, master, weekList), padx=10, pady=10, anchor=W) 
     
         #Initializing Player Selection Buttons
         self.playerSelection = LabelFrame(master, text="Player Selection", padx=10, pady=10)
@@ -88,9 +89,11 @@ class statsEditor():
         
         
         self.titleLabel.grid(row=0, column=0, padx=(20,0), pady=(0, 20))
-        self.prevWeekButton.grid(row=0, column=2)
-        self.weekLabel.grid(row=0, column=3)
-        self.nextWeekButton.grid(row=0, column=4)
+        
+        self.weekFrame.grid(row=0, column=2, columnspan=3)
+        self.prevWeekButton.grid(row=0, column=0)
+        self.weekLabel.grid(row=0, column=1)
+        self.nextWeekButton.grid(row=0, column=2)
      
         #Player Selection buttons
         self.playerSelection.grid(row=1, column=0, columnspan=5, padx=10, pady=5)
@@ -162,33 +165,33 @@ class statsEditor():
     def nextWeek(self, weekNumber, master, weekList): 
       
         self.weekLabel.grid_forget()
-        self.weekLabel = Label(master, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-        self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
+        self.weekLabel = Label(self.weekFrame, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
             
         if(weekNumber >= len(weekList)):
-            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
-            self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(len(weekList)-1, master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
+            self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(len(weekList)-1, master, weekList), padx=10, pady=10, anchor=W)
         else:
-            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
         
-        self.weekLabel.grid(row=0, column=3)
-        self.prevWeekButton.grid(row=0, column=2)
-        self.nextWeekButton.grid(row=0, column=4)
+        self.weekLabel.grid(row=0, column=1)
+        self.prevWeekButton.grid(row=0, column=0)
+        self.nextWeekButton.grid(row=0, column=2)
         
     def prevWeek(self, weekNumber, master, weekList):
       
         self.weekLabel.grid_forget()
-        self.weekLabel = Label(master, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-        self.prevWeekButton = Button(master, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
+        self.weekLabel = Label(self.weekFrame, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
         
         if(weekNumber >= len(weekList)):
-            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
         else:
-            self.nextWeekButton = Button(master, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
         
-        self.weekLabel.grid(row=0, column=3)
-        self.prevWeekButton.grid(row=0, column=2)
-        self.nextWeekButton.grid(row=0, column=4)
+        self.weekLabel.grid(row=0, column=1)
+        self.prevWeekButton.grid(row=0, column=0)
+        self.nextWeekButton.grid(row=0, column=2)
         return
     
     def playerSelect(self, selectedPlayer):
