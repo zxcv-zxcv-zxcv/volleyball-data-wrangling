@@ -10,14 +10,15 @@ class statsEditor():
         
         
         self.wb = Workbook()
-
-        self.wb = load_workbook('volley_stats.xlsx')
+        self.wb = load_workbook('data/volley_stats.xlsx')
 
         self.ws = self.wb.active
         
         self.weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         self.weekNumber = 0
         
+        self.selectedPlayer = "None"
+
         master.title('Volleyball Statistics Input')
         self.titleLabel = Label(master, text="Volleyball Statistics Input", padx=10, pady=10)
         
@@ -212,57 +213,57 @@ class statsEditor():
                
         if(selectedPlayer == "brandonChan"):
             self.buttonReset()
-            self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda:[self.color_change, buttonChange("brandonChan")], bg="blue", height=4, width=15)
+            self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda:self.buttonChange("brandonChan"), bg="blue", height=4, width=15)
             self.brandonChan.grid(row=0, column=0)
         
         if(selectedPlayer == "callumAshton"):
             self.buttonReset()
-            self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda:[self.color_change, buttonChange("callumAshton")], bg="blue", height=4, width=15)
+            self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda:self.buttonChange("callumAshton"), bg="blue", height=4, width=15)
             self.callumAshton.grid(row=0, column=1)
             
         
         if(selectedPlayer == "danielPark"):
             self.buttonReset()
-            self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda:[self.color_change, buttonChange("danielPark")], bg="blue", height=4, width=15)   
+            self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda:self.buttonChange("danielPark"), bg="blue", height=4, width=15)   
             self.danielPark.grid(row=0, column=2)
         
         
         if(selectedPlayer == "deirdreTruong"):
             self.buttonReset()
-            self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda:[self.color_change, buttonChange("deirdreTruong")], bg="blue", height=4, width=15)
+            self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda:self.buttonChange("deirdreTruong"), bg="blue", height=4, width=15)
             self.deirdreTruong.grid(row=0, column=3)
         
         if(selectedPlayer == "edwardKang"):
             self.buttonReset()
-            self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda:[self.color_change, buttonChange("edwardKang")], bg="blue", height=4, width=15)
+            self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda:self.buttonChange("edwardKang"), bg="blue", height=4, width=15)
             self.edwardKang.grid(row=0, column=4)
         
         if(selectedPlayer == "kevinMa"):
             self.buttonReset()
-            self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda:[self.color_change, buttonChange("kevinMa")], bg="blue", height=4, width=15)
+            self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda:self.buttonChange("kevinMa"), bg="blue", height=4, width=15)
             self.kevinMa.grid(row=1, column=0)
         
         
         if(selectedPlayer == "kevinTang"):
             self.buttonReset()
-            self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda:[self.color_change, buttonChange("kevinTang")], bg="blue", height=4, width=15)
+            self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda:self.buttonChange("kevinTang"), bg="blue", height=4, width=15)
             self.kevinTang.grid(row=1, column=1)
         
         if(selectedPlayer == "lachlanDenham"):
             self.buttonReset()
-            self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda:[self.color_change, buttonChange("lachlanDenham")], bg="blue", height=4, width=15)
+            self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda:self.buttonChange("lachlanDenham"), bg="blue", height=4, width=15)
             self.lachlanDenham.grid(row=1, column=2)
     
         
         if(selectedPlayer == "mimiChen"):
             self.buttonReset()
-            self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda:[self.color_change, buttonChange("mimiChen")], bg="blue", height=4, width=15)
+            self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda:self.buttonChange("mimiChen"), bg="blue", height=4, width=15)
             self.mimiChen.grid(row=1, column=3)
             
         
         if(selectedPlayer == "willOuyang"):
             self.buttonReset()
-            self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:[self.color_change, buttonChange("willOuyang")], bg="blue", height=4, width=15)
+            self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:self.buttonChange("willOuyang"), bg="blue", height=4, width=15)
             self.willOuyang.grid(row=1, column=4)
         
     #Function for reseting existing player selection upon new selection
@@ -292,7 +293,30 @@ class statsEditor():
     
     
     def buttonChange(self, playerName):
+        self.selectedPlayer = playerName
         return
     
-    def statChange(self, playerName, getStatType):
+    def statIncrease(self, getStatType):
+        playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
+        statTypeList = ["Serve Error", "Serve Success", "Receive Errors", "Receive Passes", "Spike Errors", "Spike Success", "Block Errors", "Block Successes", "Faults"]
+        columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N']
+        columnChar = columnList[statTypeList.index(getStatType)]
+        playerRow = playerList.index(self.selectedPlayer) + 1
+        weekRowSelect = (self.weekNumber-1 * 13)
+        rowNumber = playerRow + weekRowSelect + 2
+        self.ws[(columnChar + str(playerRow))] = self.ws[(columnChar + str(playerRow))].value + 1
+        return
+
+    def statDecrease(self, getStatType):
+        playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
+        statTypeList = ["Serve Error", "Serve Success", "Receive Errors", "Receive Passes", "Spike Errors", "Spike Success", "Block Errors", "Block Successes", "Faults"]
+        columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N']
+        columnChar = columnList[statTypeList.index(getStatType)]
+        playerRow = playerList.index(self.selectedPlayer) + 1
+        weekRowSelect = (self.weekNumber-1 * 13)
+        rowNumber = playerRow + weekRowSelect + 2
+        if(self.ws[(columnChar + str(playerRow))].value >= 1):
+            self.ws[(columnChar + str(playerRow))] = self.ws[(columnChar + str(playerRow))].value - 1
+        else:
+            messagebox.showinfo("Error", "You Cannot Decrease This Value Below 0")
         return
