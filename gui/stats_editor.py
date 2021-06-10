@@ -24,8 +24,8 @@ class statsEditor():
         
         self.weekFrame = LabelFrame(master, text="Week Selection", padx=10, pady=10)
         self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(self.weekList)), padx=20, pady=10)
-        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(0, self.weekList), padx=10, pady=10, anchor=W) #
-        self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(2, self.weekList), padx=10, pady=10, anchor=W) 
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(), padx=10, pady=10, anchor=W) #
+        self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(), padx=10, pady=10, anchor=W) 
     
         #Initializing Player Selection Buttons
         self.playerSelection = LabelFrame(master, text="Player Selection", padx=10, pady=10)
@@ -176,37 +176,36 @@ class statsEditor():
         self.exitButton.grid(row=99, column=4)
     
     #Function for iterating week forwards once
-    def nextWeek(self, weekNumber, weekList): 
-      
+    def nextWeek(self): 
         self.weekLabel.grid_forget()
-        self.weekLabel = Label(self.weekFrame, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], weekList), padx=10, pady=10, anchor=W)
-            
-        if(weekNumber >= len(weekList)):
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, weekList), padx=10, pady=10, anchor=W)
-            self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(len(weekList)-1, weekList), padx=10, pady=10, anchor=W)
-        else:
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], weekList), padx=10, pady=10, anchor=W)
         
+        if(self.weekNumber >= len(self.weekList)):
+            self.weekNumber = 1
+        else:
+            self.weekNumber += 1
+        self.weekLabel = Label(self.weekFrame, text="Week: " + str(self.weekList[self.weekNumber-1]) + " of " + str(len(self.weekList)), padx=20, pady=10, anchor=W)
         self.weekLabel.grid(row=0, column=1)
         self.prevWeekButton.grid(row=0, column=0)
         self.nextWeekButton.grid(row=0, column=2)
+        if(self.selectedPlayer != "None"):
+            self.updateStatsLabels()
+        return
     
     #Function for iterating week backwards once
-    def prevWeek(self, weekNumber, weekList):
+    def prevWeek(self):
       
         self.weekLabel.grid_forget()
-        self.weekLabel = Label(self.weekFrame, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], weekList), padx=10, pady=10, anchor=W)
         
-        if(weekNumber >= len(weekList)):
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, weekList), padx=10, pady=10, anchor=W)
+        if(self.weekNumber-1 == 0):
+            self.weekNumber = 11   
         else:
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], weekList), padx=10, pady=10, anchor=W)
-        
+            self.weekNumber -= 1 
+        self.weekLabel = Label(self.weekFrame, text="Week: " + str(self.weekList[self.weekNumber-1]) + " of " + str(len(self.weekList)), padx=20, pady=10, anchor=W)
         self.weekLabel.grid(row=0, column=1)
         self.prevWeekButton.grid(row=0, column=0)
         self.nextWeekButton.grid(row=0, column=2)
+        if(self.selectedPlayer != "None"):
+            self.updateStatsLabels()
         return
     
     #Function for selecting an individual player's data
@@ -310,7 +309,7 @@ class statsEditor():
     def getRowNumber(self):
         playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
         playerRow = playerList.index(self.selectedPlayer) + 1
-        weekRowSelect = (self.weekNumber * 13)
+        weekRowSelect = ((self.weekNumber-1) * 13)
         rowNumber = playerRow + weekRowSelect + 2
         return rowNumber
 
@@ -332,6 +331,8 @@ class statsEditor():
         self.blockSuccessLabel.grid_forget()
         self.blockRateLabel.grid_forget()
         self.FaultsLabel.grid_forget()
+
+
 
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws[('B' + str(rowNumber))].value), padx=10, pady=10)
         self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: " + str(self.ws[('C' + str(rowNumber))].value), padx=10, pady=10)
