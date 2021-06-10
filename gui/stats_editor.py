@@ -15,7 +15,7 @@ class statsEditor():
         self.ws = self.wb.active
         
         self.weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        self.weekNumber = 0
+        self.weekNumber = 1
         
         self.selectedPlayer = "None"
 
@@ -172,6 +172,7 @@ class statsEditor():
         self.blockSuccessLabel.grid(row=3, column=1, padx=10)
         self.blockRateLabel.grid(row=3, column=2, padx=10)
         self.FaultsLabel.grid(row=4, column=0, padx=10)
+        
         self.exitButton.grid(row=99, column=4)
     
     #Function for iterating week forwards once
@@ -209,61 +210,54 @@ class statsEditor():
         return
     
     #Function for selecting an individual player's data
-    def playerSelect(self, selectedPlayer):
-               
-        if(selectedPlayer == "brandonChan"):
-            self.buttonReset()
-            self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda:self.buttonChange("brandonChan"), bg="blue", height=4, width=15)
+    def playerSelect(self, playerName):
+        self.selectedPlayer = playerName
+        self.buttonReset()
+        self.updateStatsLabels()   
+
+        if(self.selectedPlayer == "brandonChan"):
+            self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda:self.playerSelect("brandonChan"), bg="blue", height=4, width=15)
             self.brandonChan.grid(row=0, column=0)
         
-        if(selectedPlayer == "callumAshton"):
-            self.buttonReset()
-            self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda:self.buttonChange("callumAshton"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "callumAshton"):
+            self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda:self.playerSelect("callumAshton"), bg="blue", height=4, width=15)
             self.callumAshton.grid(row=0, column=1)
             
         
-        if(selectedPlayer == "danielPark"):
-            self.buttonReset()
-            self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda:self.buttonChange("danielPark"), bg="blue", height=4, width=15)   
+        if(self.selectedPlayer == "danielPark"):
+            self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda:self.playerSelect("danielPark"), bg="blue", height=4, width=15)   
             self.danielPark.grid(row=0, column=2)
         
         
-        if(selectedPlayer == "deirdreTruong"):
-            self.buttonReset()
-            self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda:self.buttonChange("deirdreTruong"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "deirdreTruong"):
+            self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda:self.playerSelect("deirdreTruong"), bg="blue", height=4, width=15)
             self.deirdreTruong.grid(row=0, column=3)
         
-        if(selectedPlayer == "edwardKang"):
-            self.buttonReset()
-            self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda:self.buttonChange("edwardKang"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "edwardKang"):
+            self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda:self.playerSelect("edwardKang"), bg="blue", height=4, width=15)
             self.edwardKang.grid(row=0, column=4)
         
-        if(selectedPlayer == "kevinMa"):
-            self.buttonReset()
-            self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda:self.buttonChange("kevinMa"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "kevinMa"):
+            self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda:self.playerSelect("kevinMa"), bg="blue", height=4, width=15)
             self.kevinMa.grid(row=1, column=0)
         
         
-        if(selectedPlayer == "kevinTang"):
-            self.buttonReset()
-            self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda:self.buttonChange("kevinTang"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "kevinTang"):
+            self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda:self.playerSelect("kevinTang"), bg="blue", height=4, width=15)
             self.kevinTang.grid(row=1, column=1)
         
-        if(selectedPlayer == "lachlanDenham"):
-            self.buttonReset()
-            self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda:self.buttonChange("lachlanDenham"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "lachlanDenham"):
+            self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda:self.playerSelect("lachlanDenham"), bg="blue", height=4, width=15)
             self.lachlanDenham.grid(row=1, column=2)
     
         
-        if(selectedPlayer == "mimiChen"):
-            self.buttonReset()
-            self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda:self.buttonChange("mimiChen"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "mimiChen"):
+            self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda:self.playerSelect("mimiChen"), bg="blue", height=4, width=15)
             self.mimiChen.grid(row=1, column=3)
             
         
-        if(selectedPlayer == "willOuyang"):
-            self.buttonReset()
-            self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:self.buttonChange("willOuyang"), bg="blue", height=4, width=15)
+        if(self.selectedPlayer == "willOuyang"):
+            self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:self.playerSelect("willOuyang"), bg="blue", height=4, width=15)
             self.willOuyang.grid(row=1, column=4)
         
     #Function for reseting existing player selection upon new selection
@@ -291,32 +285,79 @@ class statsEditor():
         self.mimiChen.grid(row=1, column=3)
         self.willOuyang.grid(row=1, column=4)
     
-    
-    def buttonChange(self, playerName):
-        self.selectedPlayer = playerName
-        return
-    
     def statIncrease(self, getStatType):
-        playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
-        statTypeList = ["Serve Error", "Serve Success", "Receive Errors", "Receive Passes", "Spike Errors", "Spike Success", "Block Errors", "Block Successes", "Faults"]
+        statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "spikeErrors", "spikeSuccess", "blockErrors", "blockSuccess", "Faults"]
         columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N']
         columnChar = columnList[statTypeList.index(getStatType)]
-        playerRow = playerList.index(self.selectedPlayer) + 1
-        weekRowSelect = (self.weekNumber-1 * 13)
-        rowNumber = playerRow + weekRowSelect + 2
-        self.ws[(columnChar + str(playerRow))] = self.ws[(columnChar + str(playerRow))].value + 1
+        rowNumber = self.getRowNumber()
+        self.ws[(columnChar + str(rowNumber))] = self.ws[(columnChar + str(rowNumber))].value + 1
+
         return
 
     def statDecrease(self, getStatType):
-        playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
-        statTypeList = ["Serve Error", "Serve Success", "Receive Errors", "Receive Passes", "Spike Errors", "Spike Success", "Block Errors", "Block Successes", "Faults"]
+        statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "spikeErrors", "spikeSuccess", "blockErrors", "blockSuccess", "Faults"]
         columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N']
         columnChar = columnList[statTypeList.index(getStatType)]
-        playerRow = playerList.index(self.selectedPlayer) + 1
-        weekRowSelect = (self.weekNumber-1 * 13)
-        rowNumber = playerRow + weekRowSelect + 2
-        if(self.ws[(columnChar + str(playerRow))].value >= 1):
-            self.ws[(columnChar + str(playerRow))] = self.ws[(columnChar + str(playerRow))].value - 1
+        rowNumber = self.getRowNumber()
+        if(self.ws[(columnChar + str(rowNumber))].value >= 1):
+            self.ws[(columnChar + str(rowNumber))] = self.ws[(columnChar + str(rowNumber))].value - 1
+            self.updateStatsLabels()
         else:
             messagebox.showinfo("Error", "You Cannot Decrease This Value Below 0")
+
+        return
+
+    def getRowNumber(self):
+        playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
+        playerRow = playerList.index(self.selectedPlayer) + 1
+        weekRowSelect = (self.weekNumber * 13)
+        rowNumber = playerRow + weekRowSelect + 2
+        return rowNumber
+
+
+    def updateStatsLabels(self):
+        
+        rowNumber = self.getRowNumber()
+        
+        self.serveErrorsLabel.grid_forget()
+        self.serveSuccessLabel.grid_forget()
+        self.serveRateLabel.grid_forget()
+        self.receiveErrorsLabel.grid_forget()
+        self.receiveSuccessLabel.grid_forget()
+        self.receiveRateLabel.grid_forget()
+        self.spikeErrorsLabel.grid_forget()
+        self.spikeSuccessLabel.grid_forget()
+        self.spikeRateLabel.grid_forget()
+        self.blockErrorsLabel.grid_forget()
+        self.blockSuccessLabel.grid_forget()
+        self.blockRateLabel.grid_forget()
+        self.FaultsLabel.grid_forget()
+
+        self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws[('B' + str(rowNumber))].value), padx=10, pady=10)
+        self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: " + str(self.ws[('C' + str(rowNumber))].value), padx=10, pady=10)
+        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(round(self.ws[('D' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: " + str(self.ws[('E' + str(rowNumber))].value), padx=10, pady=10)
+        self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: " + str(self.ws[('F' + str(rowNumber))].value), padx=10, pady=10)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(round(self.ws[('G' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.spikeErrorsLabel = Label(self.statisticsmaster, text="Spike Errors: " + str(self.ws[('H' + str(rowNumber))].value), padx=10, pady=10)
+        self.spikeSuccessLabel = Label(self.statisticsmaster, text="Spike Successes: " + str(self.ws[('I' + str(rowNumber))].value), padx=10, pady=10)
+        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + str(round(self.ws[('J' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: " + str(self.ws[('K' + str(rowNumber))].value), padx=10, pady=10)
+        self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: " + str(self.ws[('L' + str(rowNumber))].value), padx=10, pady=10)
+        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + str(round(self.ws[('M' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.FaultsLabel = Label(self.statisticsmaster, text="self.Faults: " + str(self.ws[('N' + str(rowNumber))].value), padx=10, pady=10)
+
+        self.serveErrorsLabel.grid(row=0, column=0, padx=10,)
+        self.serveSuccessLabel.grid(row=0, column=1, padx=10)
+        self.serveRateLabel.grid(row=0, column=2, padx=10)
+        self.receiveErrorsLabel.grid(row=1, column=0, padx=10)
+        self.receiveSuccessLabel.grid(row=1, column=1, padx=10)
+        self.receiveRateLabel.grid(row=1, column=2, padx=10)
+        self.spikeErrorsLabel.grid(row=2, column=0, padx=10)
+        self.spikeSuccessLabel.grid(row=2, column=1, padx=10)
+        self.spikeRateLabel.grid(row=2, column=2, padx=10)
+        self.blockErrorsLabel.grid(row=3, column=0, padx=10)
+        self.blockSuccessLabel.grid(row=3, column=1, padx=10)
+        self.blockRateLabel.grid(row=3, column=2, padx=10)
+        self.FaultsLabel.grid(row=4, column=0, padx=10)
         return
