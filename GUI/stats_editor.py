@@ -1,4 +1,6 @@
 from tkinter import *
+from openpyxl.workbook import Workbook
+from openpyxl import load_workbook
 
 
 class statsEditor():
@@ -7,15 +9,22 @@ class statsEditor():
     def __init__(self, master):
         
         
-        weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        self.wb = Workbook()
+
+        self.wb = load_workbook('volley_stats.xlsx')
+
+        self.ws = self.wb.active
+        
+        self.weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        self.weekNumber = 0
         
         master.title('Volleyball Statistics Input')
         self.titleLabel = Label(master, text="Volleyball Statistics Input", padx=10, pady=10)
         
-        self.weekFrame = LabelFrame(master, text="Week Selection:", padx=10, pady=10)
-        self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(weekList)), padx=20, pady=10)
-        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(0, master, weekList), padx=10, pady=10, anchor=W) #
-        self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(2, master, weekList), padx=10, pady=10, anchor=W) 
+        self.weekFrame = LabelFrame(master, text="Week Selection", padx=10, pady=10)
+        self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(self.weekList)), padx=20, pady=10)
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(0, self.weekList), padx=10, pady=10, anchor=W) #
+        self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(2, self.weekList), padx=10, pady=10, anchor=W) 
     
         #Initializing Player Selection Buttons
         self.playerSelection = LabelFrame(master, text="Player Selection", padx=10, pady=10)
@@ -69,7 +78,7 @@ class statsEditor():
         self.FaultsAdd = Button(self.Faults, text="+", padx=20, pady=15)
         self.FaultsRemove = Button(self.Faults, text="-", padx=20, pady=15)
       
-      
+        #Initialising Statistics table
         self.statisticsmaster = LabelFrame(master, text="Player Statistics", padx=10, pady=10)
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: ", padx=10, pady=10)
         self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: ", padx=10, pady=10)
@@ -87,7 +96,9 @@ class statsEditor():
         
         self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
         
+        ##Attaching all initial state GUI components to grid
         
+        #Initial elements
         self.titleLabel.grid(row=0, column=0, padx=(20,0), pady=(0, 20))
         
         self.weekFrame.grid(row=0, column=2, columnspan=3)
@@ -108,7 +119,7 @@ class statsEditor():
         self.mimiChen.grid(row=1, column=3)
         self.willOuyang.grid(row=1, column=4)
       
-        #buttons and masters for changing data
+        #buttons and frames for changing data
         self.serveErrors.grid(row=2, column=0, padx=10, pady=5)
         self.serveErrorsAdd.grid(row=0, column=0)
         self.serveErrorsRemove.grid(row=0, column=1)
@@ -145,7 +156,7 @@ class statsEditor():
         self.FaultsAdd.grid(row=0, column=0)
         self.FaultsRemove.grid(row=0, column=1)
       
-        #Statistics master and labels
+        #Statistics frame and labels
         self.statisticsmaster.grid(row=4, column=1, columnspan=3, padx=5)
         self.serveErrorsLabel.grid(row=0, column=0, padx=10,)
         self.serveSuccessLabel.grid(row=0, column=1, padx=10)
@@ -161,39 +172,42 @@ class statsEditor():
         self.blockRateLabel.grid(row=3, column=2, padx=10)
         self.FaultsLabel.grid(row=4, column=0, padx=10)
         self.exitButton.grid(row=99, column=4)
-     
-    def nextWeek(self, weekNumber, master, weekList): 
+    
+    #Function for iterating week forwards once
+    def nextWeek(self, weekNumber, weekList): 
       
         self.weekLabel.grid_forget()
         self.weekLabel = Label(self.weekFrame, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], weekList), padx=10, pady=10, anchor=W)
             
         if(weekNumber >= len(weekList)):
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
-            self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(len(weekList)-1, master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, weekList), padx=10, pady=10, anchor=W)
+            self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(len(weekList)-1, weekList), padx=10, pady=10, anchor=W)
         else:
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], weekList), padx=10, pady=10, anchor=W)
         
         self.weekLabel.grid(row=0, column=1)
         self.prevWeekButton.grid(row=0, column=0)
         self.nextWeekButton.grid(row=0, column=2)
-        
-    def prevWeek(self, weekNumber, master, weekList):
+    
+    #Function for iterating week backwards once
+    def prevWeek(self, weekNumber, weekList):
       
         self.weekLabel.grid_forget()
         self.weekLabel = Label(self.weekFrame, text="Week: " + str(weekList[weekNumber-1]) + " of " + str(len(weekList)), padx=20, pady=10, anchor=W)
-        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], master, weekList), padx=10, pady=10, anchor=W)
+        self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(weekList[weekNumber-2], weekList), padx=10, pady=10, anchor=W)
         
         if(weekNumber >= len(weekList)):
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(1, weekList), padx=10, pady=10, anchor=W)
         else:
-            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], master, weekList), padx=10, pady=10, anchor=W)
+            self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(weekList[weekNumber], weekList), padx=10, pady=10, anchor=W)
         
         self.weekLabel.grid(row=0, column=1)
         self.prevWeekButton.grid(row=0, column=0)
         self.nextWeekButton.grid(row=0, column=2)
         return
     
+    #Function for selecting an individual player's data
     def playerSelect(self, selectedPlayer):
                
         if(selectedPlayer == "brandonChan"):
@@ -251,7 +265,7 @@ class statsEditor():
             self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:[self.color_change, buttonChange("willOuyang")], bg="blue", height=4, width=15)
             self.willOuyang.grid(row=1, column=4)
         
-
+    #Function for reseting existing player selection upon new selection
     def buttonReset(self):
         
         self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda: self.playerSelect("brandonChan"), height=4, width=15)
@@ -278,4 +292,7 @@ class statsEditor():
     
     
     def buttonChange(self, playerName):
+        return
+    
+    def statChange(self, playerName, getStatType):
         return
