@@ -398,7 +398,7 @@ class statsEditor():
         if((self.ws[('N' + str(rowNumber))].value + self.ws[('O' + str(rowNumber))].value) != 0):
             self.ws[('P' + str(rowNumber))].value = str(round((self.ws[('O' + str(rowNumber))].value) / (self.ws[('N' + str(rowNumber))].value + self.ws[('O' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('M' + str(rowNumber))].value = "0%"
+            self.ws[('P' + str(rowNumber))].value = "0%"
 
 
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws[('B' + str(rowNumber))].value), padx=10, pady=7)
