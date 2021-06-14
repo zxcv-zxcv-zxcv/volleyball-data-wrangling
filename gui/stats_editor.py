@@ -1,6 +1,7 @@
 from tkinter import *
 from openpyxl.workbook import Workbook
 from openpyxl import load_workbook
+from tkinter import messagebox
 
 
 class statsEditor():
@@ -41,58 +42,58 @@ class statsEditor():
         self.willOuyang = Button(self.playerSelection, text="Will", command=lambda: self.playerSelect("willOuyang"), height=4, width=15)
         
         #buttonColor = brandonChan.cget("background")
-       
+
         #Initializing Statisitic Add and Subtract Buttons
         self.serveErrors = LabelFrame(master, text="Serve Errors: ", padx=10, pady=10)
-        self.serveErrorsAdd = Button(self.serveErrors, text="+", padx=20, pady=15)
-        self.serveErrorsRemove = Button(self.serveErrors, text="-", padx=20, pady=15)
+        self.serveErrorsAdd = Button(self.serveErrors, text="+", command=lambda: self.statIncrease("serveErrors"), padx=20, pady=15)
+        self.serveErrorsRemove = Button(self.serveErrors, text="-", command=lambda: self.statDecrease("serveErrors"), padx=20, pady=15)
   
         self.serveSuccess = LabelFrame(master, text="Serve Successes: ", padx=10, pady=10)
-        self.serveSuccessAdd = Button(self.serveSuccess, text="+", padx=20, pady=15)
-        self.serveSuccessRemove = Button(self.serveSuccess, text="-", padx=20, pady=15)
+        self.serveSuccessAdd = Button(self.serveSuccess, text="+", command=lambda: self.statIncrease("serveSuccess"), padx=20, pady=15)
+        self.serveSuccessRemove = Button(self.serveSuccess, text="-", command=lambda: self.statDecrease("serveSuccess"), padx=20, pady=15)
   
         self.receiveErrors = LabelFrame(master, text="Receive Errors: ", padx=10, pady=10)
-        self.receiveErrorsAdd = Button(self.receiveErrors, text="+", padx=20, pady=15)
-        self.receiveErrorsRemove = Button(self.receiveErrors, text="-", padx=20, pady=15)
+        self.receiveErrorsAdd = Button(self.receiveErrors, text="+", command=lambda: self.statIncrease("receiveErrors"), padx=20, pady=15)
+        self.receiveErrorsRemove = Button(self.receiveErrors, text="-", command=lambda: self.statDecrease("receiveErrors"), padx=20, pady=15)
      
         self.receiveSuccess = LabelFrame(master, text="Receive Successes: ", padx=10, pady=10)
-        self.receiveSuccessAdd = Button(self.receiveSuccess, text="+", padx=20, pady=15)
-        self.receiveSuccessRemove = Button(self.receiveSuccess, text="-", padx=20, pady=15)
+        self.receiveSuccessAdd = Button(self.receiveSuccess, text="+", command=lambda: self.statIncrease("receiveSuccess"), padx=20, pady=15)
+        self.receiveSuccessRemove = Button(self.receiveSuccess, text="-", command=lambda: self.statDecrease("receiveSuccess"), padx=20, pady=15)
       
         self.spikeErrors = LabelFrame(master, text="Spike Errors: ", padx=10, pady=10)
-        self.spikeErrorsAdd = Button(self.spikeErrors, text="+", padx=20, pady=15)
-        self.spikeErrorsRemove = Button(self.spikeErrors, text="-", padx=20, pady=15)
+        self.spikeErrorsAdd = Button(self.spikeErrors, text="+", command=lambda: self.statIncrease("spikeErrors"), padx=20, pady=15)
+        self.spikeErrorsRemove = Button(self.spikeErrors, text="-", command=lambda: self.statDecrease("spikeErrors"), padx=20, pady=15)
      
         self.spikeSuccess = LabelFrame(master, text="Spike Successes: ", padx=10, pady=10)
-        self.spikeSuccessAdd = Button(self.spikeSuccess, text="+", padx=20, pady=15)
-        self.spikeSuccessRemove = Button(self.spikeSuccess, text="-", padx=20, pady=15)
+        self.spikeSuccessAdd = Button(self.spikeSuccess, text="+", command=lambda: self.statIncrease("spikeSuccess"), padx=20, pady=15)
+        self.spikeSuccessRemove = Button(self.spikeSuccess, text="-", command=lambda: self.statDecrease("spikeSuccess"), padx=20, pady=15)
      
         self.blockErrors = LabelFrame(master, text="Block Errors: ", padx=10, pady=10)
-        self.blockErrorsAdd = Button(self.blockErrors, text="+", padx=20, pady=15)
-        self.blockErrorsRemove = Button(self.blockErrors, text="-", padx=20, pady=15)
+        self.blockErrorsAdd = Button(self.blockErrors, text="+", command=lambda: self.statIncrease("blockErrors"), padx=20, pady=15)
+        self.blockErrorsRemove = Button(self.blockErrors, text="-", command=lambda: self.statDecrease("blockErrors"), padx=20, pady=15)
     
         self.blockSuccess = LabelFrame(master, text="Block Successes: ", padx=10, pady=10)
-        self.blockSuccessAdd = Button(self.blockSuccess, text="+", padx=20, pady=15)
-        self.blockSuccessRemove = Button(self.blockSuccess, text="-", padx=20, pady=15)
+        self.blockSuccessAdd = Button(self.blockSuccess, text="+", command=lambda: self.statIncrease("blockSuccess"), padx=20, pady=15)
+        self.blockSuccessRemove = Button(self.blockSuccess, text="-", command=lambda: self.statDecrease("blockSuccess"), padx=20, pady=15)
      
         self.Faults = LabelFrame(master, text="Faults: ", padx=10, pady=10)
-        self.FaultsAdd = Button(self.Faults, text="+", padx=20, pady=15)
-        self.FaultsRemove = Button(self.Faults, text="-", padx=20, pady=15)
+        self.FaultsAdd = Button(self.Faults, text="+", command=lambda: self.statIncrease("Faults"), padx=20, pady=15)
+        self.FaultsRemove = Button(self.Faults, text="-", command=lambda: self.statDecrease("Faults"), padx=20, pady=15)
       
         #Initialising Statistics table
         self.statisticsmaster = LabelFrame(master, text="Player Statistics", padx=10, pady=10)
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: ", padx=10, pady=10)
         self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: ", padx=10, pady=10)
-        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: ", padx=10, pady=10)
         self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: ", padx=10, pady=10)
         self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: ", padx=10, pady=10)
-        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: ", padx=10, pady=10)
         self.spikeErrorsLabel = Label(self.statisticsmaster, text="Spike Errors: ", padx=10, pady=10)
         self.spikeSuccessLabel = Label(self.statisticsmaster, text="Spike Successes: ", padx=10, pady=10)
-        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: ", padx=10, pady=10)
         self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: ", padx=10, pady=10)
         self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: ", padx=10, pady=10)
-        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + "TO FILL" + "%", padx=10, pady=10)
+        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: ", padx=10, pady=10)
         self.FaultsLabel = Label(self.statisticsmaster, text="Faults: ", padx=10, pady=10)
         
         self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
@@ -288,22 +289,30 @@ class statsEditor():
         statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "spikeErrors", "spikeSuccess", "blockErrors", "blockSuccess", "Faults"]
         columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N']
         columnChar = columnList[statTypeList.index(getStatType)]
+        if(self.selectedPlayer == "None"):
+            messagebox.showinfo("Error", "No Player Selected")
+            return
+        
         rowNumber = self.getRowNumber()
         self.ws[(columnChar + str(rowNumber))] = self.ws[(columnChar + str(rowNumber))].value + 1
-
+        self.updateStatsLabels()
         return
 
     def statDecrease(self, getStatType):
         statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "spikeErrors", "spikeSuccess", "blockErrors", "blockSuccess", "Faults"]
         columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N']
         columnChar = columnList[statTypeList.index(getStatType)]
+        if(self.selectedPlayer == "None"):
+            messagebox.showinfo("Error", "No Player Selected")
+            return
+        
         rowNumber = self.getRowNumber()
         if(self.ws[(columnChar + str(rowNumber))].value >= 1):
             self.ws[(columnChar + str(rowNumber))] = self.ws[(columnChar + str(rowNumber))].value - 1
             self.updateStatsLabels()
         else:
             messagebox.showinfo("Error", "You Cannot Decrease This Value Below 0")
-
+        self.updateStatsLabels()
         return
 
     def getRowNumber(self):
@@ -332,21 +341,43 @@ class statsEditor():
         self.blockRateLabel.grid_forget()
         self.FaultsLabel.grid_forget()
 
+        if((self.ws[('B' + str(rowNumber))].value + self.ws[('C' + str(rowNumber))].value) != 0):
+            self.ws[('D' + str(rowNumber))].value = str(round((self.ws[('C' + str(rowNumber))].value) / (self.ws[('B' + str(rowNumber))].value + self.ws[('C' + str(rowNumber))].value)*100)) + "%"
+        else:
+            self.ws[('D' + str(rowNumber))].value = "0%"
+        
+
+        if((self.ws[('E' + str(rowNumber))].value + self.ws[('F' + str(rowNumber))].value) != 0):
+            self.ws[('G' + str(rowNumber))].value = str(round((self.ws[('F' + str(rowNumber))].value) / (self.ws[('E' + str(rowNumber))].value + self.ws[('F' + str(rowNumber))].value)*100)) + "%"
+        else:
+            self.ws[('G' + str(rowNumber))].value = "0%"
+
+
+        if((self.ws[('H' + str(rowNumber))].value + self.ws[('I' + str(rowNumber))].value) != 0):
+            self.ws[('J' + str(rowNumber))].value = str(round((self.ws[('I' + str(rowNumber))].value) / (self.ws[('H' + str(rowNumber))].value + self.ws[('I' + str(rowNumber))].value)*100)) + "%"
+        else:
+            self.ws[('J' + str(rowNumber))].value = "0%"
+
+
+        if((self.ws[('K' + str(rowNumber))].value + self.ws[('L' + str(rowNumber))].value) != 0):
+            self.ws[('M' + str(rowNumber))].value = str(round((self.ws[('L' + str(rowNumber))].value) / (self.ws[('K' + str(rowNumber))].value + self.ws[('L' + str(rowNumber))].value)*100)) + "%"
+        else:
+            self.ws[('M' + str(rowNumber))].value = "0%"
 
 
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws[('B' + str(rowNumber))].value), padx=10, pady=10)
         self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: " + str(self.ws[('C' + str(rowNumber))].value), padx=10, pady=10)
-        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(round(self.ws[('D' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(self.ws[('D' + str(rowNumber))].value), padx=10, pady=10)
         self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: " + str(self.ws[('E' + str(rowNumber))].value), padx=10, pady=10)
         self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: " + str(self.ws[('F' + str(rowNumber))].value), padx=10, pady=10)
-        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(round(self.ws[('G' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(self.ws[('G' + str(rowNumber))].value), padx=10, pady=10)
         self.spikeErrorsLabel = Label(self.statisticsmaster, text="Spike Errors: " + str(self.ws[('H' + str(rowNumber))].value), padx=10, pady=10)
         self.spikeSuccessLabel = Label(self.statisticsmaster, text="Spike Successes: " + str(self.ws[('I' + str(rowNumber))].value), padx=10, pady=10)
-        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + str(round(self.ws[('J' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
+        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + str(self.ws[('J' + str(rowNumber))].value), padx=10, pady=10)
         self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: " + str(self.ws[('K' + str(rowNumber))].value), padx=10, pady=10)
         self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: " + str(self.ws[('L' + str(rowNumber))].value), padx=10, pady=10)
-        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + str(round(self.ws[('M' + str(rowNumber))].value*100)) + "%", padx=10, pady=10)
-        self.FaultsLabel = Label(self.statisticsmaster, text="self.Faults: " + str(self.ws[('N' + str(rowNumber))].value), padx=10, pady=10)
+        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + str(self.ws[('M' + str(rowNumber))].value), padx=10, pady=10)
+        self.FaultsLabel = Label(self.statisticsmaster, text="Faults: " + str(self.ws[('N' + str(rowNumber))].value), padx=10, pady=10)
 
         self.serveErrorsLabel.grid(row=0, column=0, padx=10,)
         self.serveSuccessLabel.grid(row=0, column=1, padx=10)
@@ -361,4 +392,6 @@ class statsEditor():
         self.blockSuccessLabel.grid(row=3, column=1, padx=10)
         self.blockRateLabel.grid(row=3, column=2, padx=10)
         self.FaultsLabel.grid(row=4, column=0, padx=10)
+
+        self.wb.save('data/volley_stats.xlsx')
         return
