@@ -115,7 +115,7 @@ class statsEditor():
         self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: ", padx=10, pady=7)
         self.FaultsLabel = Label(self.statisticsmaster, text="Faults: ", padx=10, pady=7)
         
-        self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
+        #self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
         
         ##Attaching all initial state GUI components to grid
         
@@ -190,9 +190,9 @@ class statsEditor():
         self.serveErrorsLabel.grid(row=0, column=0, padx=10,)
         self.serveSuccessLabel.grid(row=0, column=1, padx=10)
         self.serveRateLabel.grid(row=0, column=2, padx=10)
-        self.receiveErrorsLabel.grid(row=1, column=0, padx=10)
-        self.receiveSuccessLabel.grid(row=1, column=1, padx=10)
-        self.receiveRateLabel.grid(row=1, column=2, padx=10)
+        self.receiveErrorsLabel.grid(row=1, column=0, padx=8)
+        self.receiveSuccessLabel.grid(row=1, column=1, padx=8)
+        self.receiveRateLabel.grid(row=1, column=2, padx=8)
         self.setErrorsLabel.grid(row=2, column=0, padx=10)
         self.setSuccessLabel.grid(row=2, column=1, padx=10)
         self.setRateLabel.grid(row=2, column=2, padx=10)
@@ -204,7 +204,7 @@ class statsEditor():
         self.blockRateLabel.grid(row=4, column=2, padx=10)
         self.FaultsLabel.grid(row=5, column=0, padx=10)
         
-        #self.exitButton.grid(row=99, column=4)
+        self.exitButton.grid(row=99, column=4)
     
     #Function for iterating week forwards once
     def nextWeek(self): 
@@ -404,9 +404,9 @@ class statsEditor():
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws[('B' + str(rowNumber))].value), padx=10, pady=7)
         self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: " + str(self.ws[('C' + str(rowNumber))].value), padx=10, pady=7)
         self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(self.ws[('D' + str(rowNumber))].value), padx=10, pady=7)
-        self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: " + str(self.ws[('E' + str(rowNumber))].value), padx=10, pady=7)
-        self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: " + str(self.ws[('F' + str(rowNumber))].value), padx=10, pady=7)
-        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(self.ws[('G' + str(rowNumber))].value), padx=10, pady=7)
+        self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: " + str(self.ws[('E' + str(rowNumber))].value), padx=8, pady=7)
+        self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: " + str(self.ws[('F' + str(rowNumber))].value), padx=8, pady=7)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(self.ws[('G' + str(rowNumber))].value), padx=8, pady=7)
         self.setErrorsLabel = Label(self.statisticsmaster, text="Set Errors: " + str(self.ws[('H' + str(rowNumber))].value), padx=10, pady=7)
         self.setSuccessLabel = Label(self.statisticsmaster, text="Set Successes: " + str(self.ws[('I' + str(rowNumber))].value), padx=10, pady=7)
         self.setRateLabel = Label(self.statisticsmaster, text="Set Rate: " + str(self.ws[('J' + str(rowNumber))].value), padx=10, pady=7)
@@ -422,9 +422,9 @@ class statsEditor():
         self.serveErrorsLabel.grid(row=0, column=0, padx=10)
         self.serveSuccessLabel.grid(row=0, column=1, padx=10)
         self.serveRateLabel.grid(row=0, column=2, padx=10)
-        self.receiveErrorsLabel.grid(row=1, column=0, padx=10)
-        self.receiveSuccessLabel.grid(row=1, column=1, padx=10)
-        self.receiveRateLabel.grid(row=1, column=2, padx=10)
+        self.receiveErrorsLabel.grid(row=1, column=0, padx=8)
+        self.receiveSuccessLabel.grid(row=1, column=1, padx=8)
+        self.receiveRateLabel.grid(row=1, column=2, padx=8)
         self.setErrorsLabel.grid(row=2, column=0, padx=10)
         self.setSuccessLabel.grid(row=2, column=1, padx=10)
         self.setRateLabel.grid(row=2, column=2, padx=10)
