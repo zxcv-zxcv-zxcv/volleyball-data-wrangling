@@ -75,7 +75,7 @@ class statsEditor():
         self.blockSuccessAdd = Button(self.blockSuccess, text="+", padx=20, pady=15)
         self.blockSuccessRemove = Button(self.blockSuccess, text="-", padx=20, pady=15)
      
-        self.Faults = LabelFrame(master, text="self.Faults: ", padx=10, pady=10)
+        self.Faults = LabelFrame(master, text="Faults: ", padx=10, pady=10)
         self.FaultsAdd = Button(self.Faults, text="+", padx=20, pady=15)
         self.FaultsRemove = Button(self.Faults, text="-", padx=20, pady=15)
       
@@ -93,7 +93,7 @@ class statsEditor():
         self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: ", padx=10, pady=10)
         self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: ", padx=10, pady=10)
         self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + "TO FILL" + "%", padx=10, pady=10)
-        self.FaultsLabel = Label(self.statisticsmaster, text="self.Faults: ", padx=10, pady=10)
+        self.FaultsLabel = Label(self.statisticsmaster, text="Faults: ", padx=10, pady=10)
         
         self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
         
