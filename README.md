@@ -29,7 +29,7 @@ Unable to properly record tipping or hitting on second as an error.
 Unsure if faults should be recorded independently of the action being taken (should a fault on a spike error also increment spike errors?)
 If someone is not going to be made to block how do we record their actions on blocking?
 Occasionally difficult to see if set positioning was correct.
-
+Fails to record quality of an action (e.g. doesn't Distinguish between a successful overhand and underhand serve, a recieve that got up vs got to the setter, a set which was spikeable vs tippable, etc.)
 
 
 
