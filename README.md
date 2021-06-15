@@ -24,6 +24,7 @@ Need to be able to view team stats (all players combined) over the week and tota
 Need to be able to add in data for a specified week, and be able to create new weeks.  
 
 Known Issues:
+
 Doesn't have an adequate way to record covers following a poor receive or set.
 
 Unable to properly record tipping or hitting on second as an error.
