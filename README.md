@@ -23,6 +23,23 @@ Faults: Int
 Need to be able to view team stats (all players combined) over the week and total. Need to be able to view a certain players stats over the week and total.  
 Need to be able to add in data for a specified week, and be able to create new weeks.  
 
+Known Issues:
+
+Doesn't have an adequate way to record covers following a poor receive or set.
+
+Unable to properly record tipping or hitting on second as an error.
+
+Unsure if faults should be recorded independently of the action being taken (should a fault on a spike error also increment spike errors?)
+
+If someone is not going to be made to block how do we record their actions on blocking?
+
+Occasionally difficult to see if set positioning was correct.
+
+Fails to record quality of an action (e.g. doesn't Distinguish between a successful overhand and underhand serve, a recieve that got up vs got to the setter, a set which was spikeable vs tippable, etc.)
+
+
+
+
 
 ## GUI 
 
