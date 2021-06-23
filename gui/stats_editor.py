@@ -2,6 +2,7 @@ from tkinter import *
 from openpyxl.workbook import Workbook
 from openpyxl import load_workbook
 from tkinter import messagebox
+from .add_player_window import addPlayerWindow
 
 
 class statsEditor():
@@ -21,8 +22,14 @@ class statsEditor():
         self.selectedPlayer = "None"
 
         master.title('Volleyball Statistics Input')
-        self.titleLabel = Label(master, text="Volleyball Statistics Input", padx=10, pady=10)
-        
+
+        self.titleLabel = Label(master, text="(Get WorkSheet Title)")
+
+        self.newPlayerFrame = LabelFrame(master, text="Add/Remove Player", padx=10, pady=10)
+        self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayer(), padx=20, pady=15)
+        self.playerRemove = Button(self.newPlayerFrame, text="-", command=lambda: self.removePlayer(self.selectedPlayer), padx=20, pady=15)
+
+
         self.weekFrame = LabelFrame(master, text="Week Selection", padx=10, pady=10)
         self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(self.weekList)), padx=20, pady=10)
         self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(), padx=10, pady=10, anchor=W) #
@@ -44,55 +51,55 @@ class statsEditor():
         #buttonColor = brandonChan.cget("background")
 
         #Initializing Statisitic Add and Subtract Buttons
-        self.serveErrors = LabelFrame(master, text="Serve Errors: ", padx=5, pady=5)
+        self.serveErrors = LabelFrame(master, text="Serve Errors", padx=5, pady=5)
         self.serveErrorsAdd = Button(self.serveErrors, text="+", command=lambda: self.statIncrease("serveErrors"), padx=20, pady=15)
         self.serveErrorsRemove = Button(self.serveErrors, text="-", command=lambda: self.statDecrease("serveErrors"), padx=20, pady=15)
   
-        self.serveSuccess = LabelFrame(master, text="Serve Successes: ", padx=5, pady=5)
+        self.serveSuccess = LabelFrame(master, text="Serve Successes", padx=5, pady=5)
         self.serveSuccessAdd = Button(self.serveSuccess, text="+", command=lambda: self.statIncrease("serveSuccess"), padx=20, pady=15)
         self.serveSuccessRemove = Button(self.serveSuccess, text="-", command=lambda: self.statDecrease("serveSuccess"), padx=20, pady=15)
   
-        self.receiveErrors = LabelFrame(master, text="Receive Errors: ", padx=5, pady=5)
+        self.receiveErrors = LabelFrame(master, text="Receive Errors", padx=5, pady=5)
         self.receiveErrorsAdd = Button(self.receiveErrors, text="+", command=lambda: self.statIncrease("receiveErrors"), padx=20, pady=15)
         self.receiveErrorsRemove = Button(self.receiveErrors, text="-", command=lambda: self.statDecrease("receiveErrors"), padx=20, pady=15)
      
-        self.receiveSuccess = LabelFrame(master, text="Receive Successes: ", padx=5, pady=5)
+        self.receiveSuccess = LabelFrame(master, text="Receive Successes", padx=5, pady=5)
         self.receiveSuccessAdd = Button(self.receiveSuccess, text="+", command=lambda: self.statIncrease("receiveSuccess"), padx=20, pady=15)
         self.receiveSuccessRemove = Button(self.receiveSuccess, text="-", command=lambda: self.statDecrease("receiveSuccess"), padx=20, pady=15)
 
-        self.setErrors = LabelFrame(master, text="Set Errors: ", padx=5, pady=5)
+        self.setErrors = LabelFrame(master, text="Set Errors", padx=5, pady=5)
         self.setErrorsAdd = Button(self.setErrors, text="+", command=lambda: self.statIncrease("setErrors"), padx=20, pady=15)
         self.setErrorsRemove = Button(self.setErrors, text="-", command=lambda: self.statDecrease("setErrors"), padx=20, pady=15)
      
-        self.setSuccess = LabelFrame(master, text="Set Successes: ", padx=5, pady=5)
+        self.setSuccess = LabelFrame(master, text="Set Successes", padx=5, pady=5)
         self.setSuccessAdd = Button(self.setSuccess, text="+", command=lambda: self.statIncrease("setSuccess"), padx=20, pady=15)
         self.setSuccessRemove = Button(self.setSuccess, text="-", command=lambda: self.statDecrease("setSuccess"), padx=20, pady=15)
       
-        self.spikeErrors = LabelFrame(master, text="Spike Errors: ", padx=5, pady=5)
+        self.spikeErrors = LabelFrame(master, text="Spike Errors", padx=5, pady=5)
         self.spikeErrorsAdd = Button(self.spikeErrors, text="+", command=lambda: self.statIncrease("spikeErrors"), padx=20, pady=15)
         self.spikeErrorsRemove = Button(self.spikeErrors, text="-", command=lambda: self.statDecrease("spikeErrors"), padx=20, pady=15)
      
-        self.spikeSuccess = LabelFrame(master, text="Spike Successes: ", padx=5, pady=5)
+        self.spikeSuccess = LabelFrame(master, text="Spike Successes", padx=5, pady=5)
         self.spikeSuccessAdd = Button(self.spikeSuccess, text="+", command=lambda: self.statIncrease("spikeSuccess"), padx=20, pady=15)
         self.spikeSuccessRemove = Button(self.spikeSuccess, text="-", command=lambda: self.statDecrease("spikeSuccess"), padx=20, pady=15)
 
-        self.tipErrors = LabelFrame(master, text="Tip Errors: ", padx=5, pady=5)
+        self.tipErrors = LabelFrame(master, text="Tip Errors", padx=5, pady=5)
         self.tipErrorsAdd = Button(self.tipErrors, text="+", command=lambda: self.statIncrease("tipErrors"), padx=20, pady=15)
         self.tipErrorsRemove = Button(self.tipErrors, text="-", command=lambda: self.statDecrease("tipErrors"), padx=20, pady=15)
      
-        self.tipSuccess = LabelFrame(master, text="Tip Successes: ", padx=5, pady=5)
+        self.tipSuccess = LabelFrame(master, text="Tip Successes", padx=5, pady=5)
         self.tipSuccessAdd = Button(self.tipSuccess, text="+", command=lambda: self.statIncrease("tipSuccess"), padx=20, pady=15)
         self.tipSuccessRemove = Button(self.tipSuccess, text="-", command=lambda: self.statDecrease("tipSuccess"), padx=20, pady=15)
      
-        self.blockErrors = LabelFrame(master, text="Block Errors: ", padx=5, pady=5)
+        self.blockErrors = LabelFrame(master, text="Block Errors", padx=5, pady=5)
         self.blockErrorsAdd = Button(self.blockErrors, text="+", command=lambda: self.statIncrease("blockErrors"), padx=20, pady=15)
         self.blockErrorsRemove = Button(self.blockErrors, text="-", command=lambda: self.statDecrease("blockErrors"), padx=20, pady=15)
     
-        self.blockSuccess = LabelFrame(master, text="Block Successes: ", padx=5, pady=5)
+        self.blockSuccess = LabelFrame(master, text="Block Successes", padx=5, pady=5)
         self.blockSuccessAdd = Button(self.blockSuccess, text="+", command=lambda: self.statIncrease("blockSuccess"), padx=20, pady=15)
         self.blockSuccessRemove = Button(self.blockSuccess, text="-", command=lambda: self.statDecrease("blockSuccess"), padx=20, pady=15)
      
-        self.Faults = LabelFrame(master, text="Faults: ", padx=5, pady=5)
+        self.Faults = LabelFrame(master, text="Faults", padx=5, pady=5)
         self.FaultsAdd = Button(self.Faults, text="+", command=lambda: self.statIncrease("Faults"), padx=20, pady=15)
         self.FaultsRemove = Button(self.Faults, text="-", command=lambda: self.statDecrease("Faults"), padx=20, pady=15)
       
@@ -123,7 +130,11 @@ class statsEditor():
         ##Attaching all initial state GUI components to grid
         
         #Initial elements
-        self.titleLabel.grid(row=0, column=0, padx=(20,0), pady=(0, 20))
+        self.titleLabel.grid(row=0, column=0)
+
+        self.newPlayerFrame.grid(row=0, column=1)
+        self.playerAdd.grid(row=0, column=0)
+        self.playerRemove.grid(row=0, column=1)
         
         self.weekFrame.grid(row=0, column=2, columnspan=3)
         self.prevWeekButton.grid(row=0, column=0)
@@ -467,4 +478,15 @@ class statsEditor():
         self.FaultsLabel.grid(row=6, column=0, padx=10)
 
         self.wb.save('data/volley_stats.xlsx')
+
+        return
+    
+    def addPlayer(self):
+        top = Toplevel()
+        b = addPlayerWindow(top)
+        top.mainloop()
+
+        return
+
+    def removePlayer(self, playerName):
         return
