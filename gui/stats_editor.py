@@ -8,14 +8,21 @@ from .add_player_window import addPlayerWindow
 class statsEditor():
      
     
-    def __init__(self, master):
+    def __init__(self, master, season):
         
         
         self.wb = Workbook()
         self.wb = load_workbook('data/volley_stats.xlsx')
 
-        self.ws = self.wb.active
+        self.ws1 = self.wb[season]
         
+        self.ws2 = self.wb['Team Info']
+        
+        self.seasonList = [1, 2]
+        self.seasonNumber = 1
+
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 2))].value
+
         self.weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         self.weekNumber = 1
         
@@ -29,6 +36,11 @@ class statsEditor():
         self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayer(), padx=20, pady=15)
         self.playerRemove = Button(self.newPlayerFrame, text="-", command=lambda: self.removePlayer(self.selectedPlayer), padx=20, pady=15)
 
+        self.seasonFrame = LabelFrame(master, text="Season Selection", padx=10, pady=10)
+        self.seasonLabel = Label(self.seasonFrame, text="Season: 1 of "+ str(len(self.seasonList)), padx=20, pady=10)
+        self.prevSeasonButton = Button(self.seasonFrame, text= "<<", command=lambda: self.prevWeek(), padx=10, pady=10, anchor=W) #
+        self.nextSeasonButton = Button(self.seasonFrame, text= ">>", command=lambda: self.nextWeek(), padx=10, pady=10, anchor=W) 
+
 
         self.weekFrame = LabelFrame(master, text="Week Selection", padx=10, pady=10)
         self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(self.weekList)), padx=20, pady=10)
@@ -36,7 +48,7 @@ class statsEditor():
         self.nextWeekButton = Button(self.weekFrame, text= ">>", command=lambda: self.nextWeek(), padx=10, pady=10, anchor=W) 
     
         #Initializing Player Selection Buttons
-        self.playerSelection = LabelFrame(master, text="Player Selection", padx=10, pady=10)
+        self.playerSelection = LabelFrame(master, text="Player Selection", padx=5, pady=5)
         self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda: self.playerSelect("brandonChan"), height=4, width=15)
         self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda: self.playerSelect("callumAshton"), height=4, width=15)
         self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda: self.playerSelect("danielPark"), height=4, width=15)
@@ -132,17 +144,17 @@ class statsEditor():
         #Initial elements
         self.titleLabel.grid(row=0, column=0)
 
-        self.newPlayerFrame.grid(row=0, column=1)
+        self.newPlayerFrame.grid(row=1, column=0, padx=10)
         self.playerAdd.grid(row=0, column=0)
         self.playerRemove.grid(row=0, column=1)
         
-        self.weekFrame.grid(row=0, column=2, columnspan=3)
+        self.weekFrame.grid(row=0, column=3, columnspan=2, padx=(0,20))
         self.prevWeekButton.grid(row=0, column=0)
         self.weekLabel.grid(row=0, column=1)
         self.nextWeekButton.grid(row=0, column=2)
      
         #Player Selection buttons
-        self.playerSelection.grid(row=1, column=0, columnspan=5, padx=10, pady=5)
+        self.playerSelection.grid(row=1, column=1, columnspan=4, padx=10, pady=5)
         self.brandonChan.grid(row=0, column=0)
         self.callumAshton.grid(row=0, column=1)
         self.danielPark.grid(row=0, column=2)
@@ -349,7 +361,7 @@ class statsEditor():
             return
         
         rowNumber = self.getRowNumber()
-        self.ws[(columnChar + str(rowNumber))] = self.ws[(columnChar + str(rowNumber))].value + 1
+        self.ws1[(columnChar + str(rowNumber))] = self.ws1[(columnChar + str(rowNumber))].value + 1
         self.updateStatsLabels()
         return
 
@@ -362,8 +374,8 @@ class statsEditor():
             return
         
         rowNumber = self.getRowNumber()
-        if(self.ws[(columnChar + str(rowNumber))].value >= 1):
-            self.ws[(columnChar + str(rowNumber))] = self.ws[(columnChar + str(rowNumber))].value - 1
+        if(self.ws1[(columnChar + str(rowNumber))].value >= 1):
+            self.ws1[(columnChar + str(rowNumber))] = self.ws1[(columnChar + str(rowNumber))].value - 1
             self.updateStatsLabels()
         else:
             messagebox.showinfo("Error", "You Cannot Decrease This Value Below 0")
@@ -402,59 +414,59 @@ class statsEditor():
         self.blockRateLabel.grid_forget()
         self.FaultsLabel.grid_forget()
 
-        if((self.ws[('B' + str(rowNumber))].value + self.ws[('C' + str(rowNumber))].value) != 0):
-            self.ws[('D' + str(rowNumber))].value = str(round((self.ws[('C' + str(rowNumber))].value) / (self.ws[('B' + str(rowNumber))].value + self.ws[('C' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1[('B' + str(rowNumber))].value + self.ws1[('C' + str(rowNumber))].value) != 0):
+            self.ws1[('D' + str(rowNumber))].value = str(round((self.ws1[('C' + str(rowNumber))].value) / (self.ws1[('B' + str(rowNumber))].value + self.ws1[('C' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('D' + str(rowNumber))].value = "0%"
+            self.ws1[('D' + str(rowNumber))].value = "0%"
         
 
-        if((self.ws[('E' + str(rowNumber))].value + self.ws[('F' + str(rowNumber))].value) != 0):
-            self.ws[('G' + str(rowNumber))].value = str(round((self.ws[('F' + str(rowNumber))].value) / (self.ws[('E' + str(rowNumber))].value + self.ws[('F' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1[('E' + str(rowNumber))].value + self.ws1[('F' + str(rowNumber))].value) != 0):
+            self.ws1[('G' + str(rowNumber))].value = str(round((self.ws1[('F' + str(rowNumber))].value) / (self.ws1[('E' + str(rowNumber))].value + self.ws1[('F' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('G' + str(rowNumber))].value = "0%"
+            self.ws1[('G' + str(rowNumber))].value = "0%"
 
 
-        if((self.ws[('H' + str(rowNumber))].value + self.ws[('I' + str(rowNumber))].value) != 0):
-            self.ws[('J' + str(rowNumber))].value = str(round((self.ws[('I' + str(rowNumber))].value) / (self.ws[('H' + str(rowNumber))].value + self.ws[('I' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1[('H' + str(rowNumber))].value + self.ws1[('I' + str(rowNumber))].value) != 0):
+            self.ws1[('J' + str(rowNumber))].value = str(round((self.ws1[('I' + str(rowNumber))].value) / (self.ws1[('H' + str(rowNumber))].value + self.ws1[('I' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('J' + str(rowNumber))].value = "0%"
+            self.ws1[('J' + str(rowNumber))].value = "0%"
 
 
-        if((self.ws[('K' + str(rowNumber))].value + self.ws[('L' + str(rowNumber))].value) != 0):
-            self.ws[('M' + str(rowNumber))].value = str(round((self.ws[('L' + str(rowNumber))].value) / (self.ws[('K' + str(rowNumber))].value + self.ws[('L' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1[('K' + str(rowNumber))].value + self.ws1[('L' + str(rowNumber))].value) != 0):
+            self.ws1[('M' + str(rowNumber))].value = str(round((self.ws1[('L' + str(rowNumber))].value) / (self.ws1[('K' + str(rowNumber))].value + self.ws1[('L' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('M' + str(rowNumber))].value = "0%"
+            self.ws1[('M' + str(rowNumber))].value = "0%"
 
         
-        if((self.ws[('N' + str(rowNumber))].value + self.ws[('O' + str(rowNumber))].value) != 0):
-            self.ws[('P' + str(rowNumber))].value = str(round((self.ws[('O' + str(rowNumber))].value) / (self.ws[('N' + str(rowNumber))].value + self.ws[('O' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1[('N' + str(rowNumber))].value + self.ws1[('O' + str(rowNumber))].value) != 0):
+            self.ws1[('P' + str(rowNumber))].value = str(round((self.ws1[('O' + str(rowNumber))].value) / (self.ws1[('N' + str(rowNumber))].value + self.ws1[('O' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('P' + str(rowNumber))].value = "0%"
+            self.ws1[('P' + str(rowNumber))].value = "0%"
 
-        if((self.ws[('Q' + str(rowNumber))].value + self.ws[('R' + str(rowNumber))].value) != 0):
-            self.ws[('S' + str(rowNumber))].value = str(round((self.ws[('R' + str(rowNumber))].value) / (self.ws[('Q' + str(rowNumber))].value + self.ws[('R' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1[('Q' + str(rowNumber))].value + self.ws1[('R' + str(rowNumber))].value) != 0):
+            self.ws1[('S' + str(rowNumber))].value = str(round((self.ws1[('R' + str(rowNumber))].value) / (self.ws1[('Q' + str(rowNumber))].value + self.ws1[('R' + str(rowNumber))].value)*100)) + "%"
         else:
-            self.ws[('S' + str(rowNumber))].value = "0%"
+            self.ws1[('S' + str(rowNumber))].value = "0%"
 
-        self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws[('B' + str(rowNumber))].value), padx=10, pady=7)
-        self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: " + str(self.ws[('C' + str(rowNumber))].value), padx=10, pady=7)
-        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(self.ws[('D' + str(rowNumber))].value), padx=10, pady=7)
-        self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: " + str(self.ws[('E' + str(rowNumber))].value), padx=8, pady=7)
-        self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: " + str(self.ws[('F' + str(rowNumber))].value), padx=8, pady=7)
-        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(self.ws[('G' + str(rowNumber))].value), padx=8, pady=7)
-        self.setErrorsLabel = Label(self.statisticsmaster, text="Set Errors: " + str(self.ws[('H' + str(rowNumber))].value), padx=10, pady=7)
-        self.setSuccessLabel = Label(self.statisticsmaster, text="Set Successes: " + str(self.ws[('I' + str(rowNumber))].value), padx=10, pady=7)
-        self.setRateLabel = Label(self.statisticsmaster, text="Set Rate: " + str(self.ws[('J' + str(rowNumber))].value), padx=10, pady=7)
-        self.spikeErrorsLabel = Label(self.statisticsmaster, text="Spike Errors: " + str(self.ws[('K' + str(rowNumber))].value), padx=10, pady=7)
-        self.spikeSuccessLabel = Label(self.statisticsmaster, text="Spike Successes: " + str(self.ws[('L' + str(rowNumber))].value), padx=10, pady=7)
-        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + str(self.ws[('M' + str(rowNumber))].value), padx=10, pady=7)
-        self.tipErrorsLabel = Label(self.statisticsmaster, text="Tip Errors: " + str(self.ws[('N' + str(rowNumber))].value), padx=10, pady=7)
-        self.tipSuccessLabel = Label(self.statisticsmaster, text="Tip Successes: " + str(self.ws[('O' + str(rowNumber))].value), padx=10, pady=7)
-        self.tipRateLabel = Label(self.statisticsmaster, text="Tip Rate: " + str(self.ws[('P' + str(rowNumber))].value), padx=10, pady=7)
-        self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: " + str(self.ws[('Q' + str(rowNumber))].value), padx=10, pady=7)
-        self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: " + str(self.ws[('R' + str(rowNumber))].value), padx=10, pady=7)
-        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + str(self.ws[('S' + str(rowNumber))].value), padx=10, pady=7)
-        self.FaultsLabel = Label(self.statisticsmaster, text="Faults: " + str(self.ws[('T' + str(rowNumber))].value), padx=10, pady=7)
+        self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: " + str(self.ws1[('B' + str(rowNumber))].value), padx=10, pady=7)
+        self.serveSuccessLabel = Label(self.statisticsmaster, text="Serve Successes: " + str(self.ws1[('C' + str(rowNumber))].value), padx=10, pady=7)
+        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(self.ws1[('D' + str(rowNumber))].value), padx=10, pady=7)
+        self.receiveErrorsLabel = Label(self.statisticsmaster, text="Receive Errors: " + str(self.ws1[('E' + str(rowNumber))].value), padx=8, pady=7)
+        self.receiveSuccessLabel = Label(self.statisticsmaster, text="Receive Successes: " + str(self.ws1[('F' + str(rowNumber))].value), padx=8, pady=7)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Receive Rate: " + str(self.ws1[('G' + str(rowNumber))].value), padx=8, pady=7)
+        self.setErrorsLabel = Label(self.statisticsmaster, text="Set Errors: " + str(self.ws1[('H' + str(rowNumber))].value), padx=10, pady=7)
+        self.setSuccessLabel = Label(self.statisticsmaster, text="Set Successes: " + str(self.ws1[('I' + str(rowNumber))].value), padx=10, pady=7)
+        self.setRateLabel = Label(self.statisticsmaster, text="Set Rate: " + str(self.ws1[('J' + str(rowNumber))].value), padx=10, pady=7)
+        self.spikeErrorsLabel = Label(self.statisticsmaster, text="Spike Errors: " + str(self.ws1[('K' + str(rowNumber))].value), padx=10, pady=7)
+        self.spikeSuccessLabel = Label(self.statisticsmaster, text="Spike Successes: " + str(self.ws1[('L' + str(rowNumber))].value), padx=10, pady=7)
+        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + str(self.ws1[('M' + str(rowNumber))].value), padx=10, pady=7)
+        self.tipErrorsLabel = Label(self.statisticsmaster, text="Tip Errors: " + str(self.ws1[('N' + str(rowNumber))].value), padx=10, pady=7)
+        self.tipSuccessLabel = Label(self.statisticsmaster, text="Tip Successes: " + str(self.ws1[('O' + str(rowNumber))].value), padx=10, pady=7)
+        self.tipRateLabel = Label(self.statisticsmaster, text="Tip Rate: " + str(self.ws1[('P' + str(rowNumber))].value), padx=10, pady=7)
+        self.blockErrorsLabel = Label(self.statisticsmaster, text="Block Errors: " + str(self.ws1[('Q' + str(rowNumber))].value), padx=10, pady=7)
+        self.blockSuccessLabel = Label(self.statisticsmaster, text="Block Successes: " + str(self.ws1[('R' + str(rowNumber))].value), padx=10, pady=7)
+        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + str(self.ws1[('S' + str(rowNumber))].value), padx=10, pady=7)
+        self.FaultsLabel = Label(self.statisticsmaster, text="Faults: " + str(self.ws1[('T' + str(rowNumber))].value), padx=10, pady=7)
 
         self.statisticsmaster.grid(row=5, column=1, columnspan=3, padx=5)
         self.serveErrorsLabel.grid(row=0, column=0, padx=10)

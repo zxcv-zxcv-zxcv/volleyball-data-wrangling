@@ -1,6 +1,5 @@
 from tkinter import *
-from .stats_editor import statsEditor
-
+from .season_selector import seasonSelectionWindow
 
 
 def app():
@@ -11,7 +10,7 @@ def app():
 
     def openEditor():
         top = Toplevel()
-        b = statsEditor(top)
+        b = seasonSelectionWindow(top)
         top.mainloop()
         return
 
