@@ -22,8 +22,15 @@ class statsEditor():
         self.seasonNumber = seasonNo
 
         self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
+        self.playerList = []
 
-        self.weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        cellRange = self.ws2[str(((self.seasonNumber-1) * 5) + 6)]
+        for i in range(self.playerNumber):
+            self.playerList.append("".join(str(cellRange[i].value).split()))
+
+        self.weekList = []
+        for i in range(self.ws2[('C' + str(((self.seasonNumber-1) * 5) + 4))].value):
+            self.weekList.append(i+1)
         self.weekNumber = 1
         
         self.selectedPlayer = "None"
@@ -34,7 +41,7 @@ class statsEditor():
         self.titleLabel = Label(master, text=teamName + " " + seasonName)
 
         self.newPlayerFrame = LabelFrame(master, text="Add/Remove Player", padx=10, pady=10)
-        self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayer(), padx=20, pady=15)
+        self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayerWindow(), padx=20, pady=15)
         self.playerRemove = Button(self.newPlayerFrame, text="-", command=lambda: self.removePlayer(self.selectedPlayer), padx=20, pady=15)
 
         self.seasonFrame = LabelFrame(master, text="Season Selection", padx=10, pady=10)
@@ -494,11 +501,51 @@ class statsEditor():
 
         return
     
-    def addPlayer(self):
+    def addPlayerWindow(self):
         top = Toplevel()
-        b = addPlayerWindow(top)
-        top.mainloop()
+        top.title("Add New Player")
+        nameLabel = Label(top, text="Insert Player's Full Name")
+        nameField = Entry(top, width=20)
+        nicknameLabel = Label(top, text="Player Nickname (For Selection Button):")
+        nicknameField = Entry(top, width=20)
+        sureButton = Button(top, text= "OK", command=lambda:self.addPlayer("".join(nameField.get().split()), "".join(nicknameField.get().split())), padx=20, pady=10)
+        cancelButton = Button(top, text= "Cancel", command=lambda:top.destroy(), padx=20, pady=10)
+        
+        nameLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
+        nameField.grid(row=1, column=0, columnspan=2)
+        nicknameLabel.grid(row=2, column=0, columnspan=2, padx=20, pady=(20, 10))
+        nicknameField.grid(row=3, column=0, columnspan=2)
+        sureButton.grid(row=4, column=0, padx=10, pady=10)
+        cancelButton.grid(row=4, column=1, padx=10, pady=10)
+        return
 
+    def addPlayer(self, playerName, playerNickname):
+        if(playerName is None or playerNickname is None):
+            messagebox.showinfo("Error", "Both Fields must be filled")
+            return
+        if(not playerName.isalpha() and not playerNickname.isalpha()):
+            messagebox.showinfo("Error", "Name can only contain standard characters")
+            return
+
+        self.playerList.append(playerName)
+        self.playerList.sort()
+
+        colCount = 0
+        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 5) + 6, ((self.seasonNumber-1) * 5) + 6):
+            for cell in col:
+                cell.value = self.playerList[colCount]
+            colCount = colCount + 1
+            if(colCount >= len(self.playerList)):
+                break
+
+        for i in range(len(self.weekList)):
+            self.ws1.insert_rows(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))
+            self.ws1['A' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))].value = playerName
+            for cell in self.ws1['B'+ str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList)))):'T' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))]:
+                for k in cell:
+                    k.value = 0
+        
+        self.wb.save('data/volley_stats.xlsx')
         return
 
     def removePlayer(self, playerName):
