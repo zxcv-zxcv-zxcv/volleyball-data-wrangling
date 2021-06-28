@@ -21,7 +21,7 @@ class statsEditor():
         
         self.seasonNumber = seasonNo
         self.seasonList = []
-        for i in range(self.ws2['A2']):
+        for i in range(self.ws2['A2'].value):
             self.seasonList.append(i+1)
 
 
@@ -512,7 +512,7 @@ class statsEditor():
         nameField = Entry(top, width=20)
         nicknameLabel = Label(top, text="Player Nickname (For Selection Button):")
         nicknameField = Entry(top, width=20)
-        sureButton = Button(top, text= "OK", command=lambda:self.addPlayer("".join(nameField.get().split()), "".join(nicknameField.get().split())), padx=20, pady=10)
+        sureButton = Button(top, text= "OK", command=lambda:self.addPlayer("".join(nameField.get().split()), "".join(nicknameField.get().split()), top), padx=20, pady=10)
         cancelButton = Button(top, text= "Cancel", command=lambda:top.destroy(), padx=20, pady=10)
         
         nameLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
@@ -523,7 +523,7 @@ class statsEditor():
         cancelButton.grid(row=4, column=1, padx=10, pady=10)
         return
 
-    def addPlayer(self, playerName, playerNickname):
+    def addPlayer(self, playerName, playerNickname, top):
         if(playerName is None or playerNickname is None):
             messagebox.showinfo("Error", "Both Fields must be filled")
             return
@@ -550,6 +550,8 @@ class statsEditor():
                     k.value = 0
         
         self.wb.save('data/volley_stats.xlsx')
+        messagebox.showinfo("Success", "Player Successfully Added")
+        top.destroy()
         return
 
     def removePlayer(self, playerName):
