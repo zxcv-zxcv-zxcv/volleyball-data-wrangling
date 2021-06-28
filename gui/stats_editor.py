@@ -284,19 +284,14 @@ class statsEditor():
         self.selectedPlayer = self.playerList[playerName]
         self.buttonReset()
         self.updateStatsLabels()   
-        for i in range(len(self.playerList)):
-            if(self.selectedPlayer == self.playerList[i]):
-                self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), bg="blue", height=4, width=15)
-                self.buttonList[i].grid(row=int(i//5), column=(i%5))
-            else:
-                self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), height=4, width=15)
-                self.buttonList[i].grid(row=int(i//5), column=(i%5))
+        self.buttonList[playerName] = Button(self.playerSelection, text=self.playerNicknameList[playerName], command=lambda x=playerName: self.playerSelect(x), bg="blue", height=4, width=15)
+        self.buttonList[playerName].grid(row=int(playerName//5), column=(playerName%5))
         return
         
     #Function for reseting existing player selection upon new selection
     def buttonReset(self):
         for i in range(len(self.playerList)):
-            self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda:self.playerSelect(self.playerList[i]), height=4, width=15)
+            self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), height=4, width=15)
             self.buttonList[i].grid(row=int(i//5), column=(i%5))
         
     
