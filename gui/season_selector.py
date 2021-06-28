@@ -110,7 +110,6 @@ class seasonSelectionWindow():
         warningLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
         sureButton.grid(row=1, column=0, padx=10, pady=10)
         cancelButton.grid(row=1, column=1, padx=10, pady=10)
-
         return
 
     def deleteSeason(self, top, master):
@@ -127,12 +126,15 @@ class seasonSelectionWindow():
                 ws1 = self.wb['Season ' + str(i+1)]
                 ws1.title = 'Season ' + str(i)
             self.wb.save('data/volley_stats.xlsx')
+
         self.seasonList.clear()
+
         for i in range(self.seasonCount):
             self.seasonList.append("Season " + str(i+1))
         self.dropDownMenu = OptionMenu(master, self.dropDownSelection, *self.seasonList)
         self.dropDownMenu.grid_forget()
         self.dropDownMenu.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+        
         messagebox.showinfo("Success", str(self.dropDownSelection.get()) + " was deleted.")
         self.dropDownSelection.set(str(self.seasonList[0]))
         top.destroy()

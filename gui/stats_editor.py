@@ -31,6 +31,7 @@ class statsEditor():
         cellRange = self.ws2[str(((self.seasonNumber-1) * 5) + 6)]
         for i in range(self.playerNumber):
             self.playerList.append("".join(str(cellRange[i].value).split()))
+        print(self.playerList)
 
         self.weekList = []
         for i in range(self.ws2[('C' + str(((self.seasonNumber-1) * 5) + 4))].value):
@@ -46,7 +47,7 @@ class statsEditor():
 
         self.newPlayerFrame = LabelFrame(master, text="Add/Remove Player", padx=10, pady=10)
         self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayerWindow(), padx=20, pady=15)
-        self.playerRemove = Button(self.newPlayerFrame, text="-", command=lambda: self.removePlayer(self.selectedPlayer), padx=20, pady=15)
+        self.playerRemove = Button(self.newPlayerFrame, text="-", command=lambda: self.removePlayerWindow(), padx=20, pady=15)
 
         self.seasonFrame = LabelFrame(master, text="Season Selection", padx=10, pady=10)
         self.seasonLabel = Label(self.seasonFrame, text="Season: 1 of "+ str(len(self.seasonList)), padx=20, pady=10)
@@ -512,7 +513,7 @@ class statsEditor():
         nameField = Entry(top, width=20)
         nicknameLabel = Label(top, text="Player Nickname (For Selection Button):")
         nicknameField = Entry(top, width=20)
-        sureButton = Button(top, text= "OK", command=lambda:self.addPlayer("".join(nameField.get().split()), "".join(nicknameField.get().split()), top), padx=20, pady=10)
+        sureButton = Button(top, text= "OK", command=lambda:self.addPlayer(nameField.get(), nicknameField.get(), top), padx=20, pady=10)
         cancelButton = Button(top, text= "Cancel", command=lambda:top.destroy(), padx=20, pady=10)
         
         nameLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
@@ -530,6 +531,9 @@ class statsEditor():
         if(not ("".join(playerName.split())).isalpha() and not ("".join(playerNickname.split())).isalpha()):
             messagebox.showinfo("Error", "Name can only contain standard characters")
             return
+
+        self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value + 1
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
 
         self.playerList.append(playerName)
         self.playerList.sort()
@@ -554,6 +558,44 @@ class statsEditor():
         top.destroy()
         return
 
-    def removePlayer(self, playerName):
+    def removePlayerWindow(self):
+        top = Toplevel()
+        top.title("Remove Player")
+        nameLabel = Label(top, text="Insert Player's Full Name")
+        nameField = Entry(top, width=20)
+        sureButton = Button(top, text= "OK", command=lambda:self.removePlayer("".join(nameField.get().split()), top), padx=20, pady=10)
+        cancelButton = Button(top, text= "Cancel", command=lambda:top.destroy(), padx=20, pady=10)
+        
+        nameLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
+        nameField.grid(row=1, column=0, columnspan=2)
+        sureButton.grid(row=2, column=0, padx=10, pady=10)
+        cancelButton.grid(row=2, column=1, padx=10, pady=10)
+        return
 
+    def removePlayer(self, playerName, top):
+        if(not (playerName in self.playerList)):
+            messagebox.showinfo("Error", "Player not found")
+            return
+
+        self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value - 1
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
+        
+        for i in range(len(self.weekList)):
+            self.ws1.delete_rows(3 + self.playerList.index(playerName) + (i * (2 + len(self.playerList))))  
+
+        self.playerList.remove(playerName)
+
+        self.ws2.delete_rows(((self.seasonNumber-1) * 5) + 6)
+        self.ws2.insert_rows(((self.seasonNumber-1) * 5) + 6)
+        colCount = 0
+        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 5) + 6, ((self.seasonNumber-1) * 5) + 6):
+            if(colCount >= len(self.playerList)):
+                break
+            for cell in col:
+                cell.value = self.playerList[colCount]
+            colCount = colCount + 1
+  
+        self.wb.save('data/volley_stats.xlsx')
+        messagebox.showinfo("Success", "Player Successfully Removed")
+        top.destroy()
         return
