@@ -127,8 +127,7 @@ class seasonSelectionWindow():
     def selectSeason(self):
         seasonSelection = self.dropDownSelection.get()
         top = Toplevel()
-        print(seasonSelection)
-        b = statsEditor(top, seasonSelection)
+        b = statsEditor(top, seasonSelection, (self.seasonList.index(self.dropDownSelection.get()) + 1))
         top.mainloop()
         return
 

@@ -8,20 +8,20 @@ from .add_player_window import addPlayerWindow
 class statsEditor():
      
     
-    def __init__(self, master, season):
+    def __init__(self, master, seasonName, seasonNo):
         
         
         self.wb = Workbook()
         self.wb = load_workbook('data/volley_stats.xlsx')
 
-        self.ws1 = self.wb[season]
+        self.ws1 = self.wb[seasonName]
         
         self.ws2 = self.wb['Team Info']
         
         self.seasonList = [1, 2]
-        self.seasonNumber = 1
+        self.seasonNumber = seasonNo
 
-        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 2))].value
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
 
         self.weekList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         self.weekNumber = 1
