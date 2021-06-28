@@ -24,7 +24,7 @@ def app():
 
     titleLabel = Label(root, text="Main Menu", padx=5, pady=10, anchor=W)
 
-    statsEditorFrame = LabelFrame(root, text="Statistics Editor", padx=10, pady=10)
+    statsEditorFrame = LabelFrame(root, text="Statistics Editing", padx=10, pady=10)
     statsEditorButton = Button(statsEditorFrame, command=openEditor, height=4, width=15)
 
     playerStatisticsViewer = LabelFrame(root, text="View Player Statistics", padx=10, pady=10)

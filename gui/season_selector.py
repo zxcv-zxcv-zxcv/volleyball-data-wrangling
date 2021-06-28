@@ -18,7 +18,7 @@ class seasonSelectionWindow():
         self.ws = self.wb['Team Info']
 
 
-        self.seasonCount = self.ws[('K2')].value
+        self.seasonCount = self.ws[('A2')].value
         self.seasonList = []
 
         for i in range(self.seasonCount):
@@ -33,7 +33,7 @@ class seasonSelectionWindow():
         self.exitButton = Button(master, text= "Cancel", command=master.destroy, padx=20, pady=10)
         
         self.newSeasonFrame = LabelFrame(master, text="Add/Remove Season", padx=10, pady=10)
-        self.seasonAdd = Button(self.newSeasonFrame, text="+", command=lambda: self.addSeason(), height=4, width=10)
+        self.seasonAdd = Button(self.newSeasonFrame, text="+", command=lambda: self.addSeasonWindow(master), height=4, width=10)
         self.seasonRemove = Button(self.newSeasonFrame, text="-", command=lambda: self.removeSeasonWindow(master), height=4, width=10)
 
         self.titleLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
@@ -49,13 +49,33 @@ class seasonSelectionWindow():
 
         return
 
-    def addSeasonWindow(self):
+    def addSeasonWindow(self, master):
+        top = Toplevel()
+        top.title("Add New Season")
+        promptLabel = Label(top, text='How many weeks is this new Season?')
+        inputField = Entry(top, width=20)
+        sureButton = Button(top, text= "OK", command=lambda:self.addSeason(master, inputField, top), padx=20, pady=10)
+        cancelButton = Button(top, text= "Cancel", command=lambda:top.destroy(), padx=20, pady=10)
+        
+        promptLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
+        inputField.grid(row=1, column=0, columnspan=2)
+        sureButton.grid(row=2, column=0, padx=10, pady=10)
+        cancelButton.grid(row=2, column=1, padx=10, pady=10)
         return
 
-    def addSeason(self, master):
+    def addSeason(self, master, inputField, top):
+        weekNo = inputField.get()
+        if(not(weekNo.isdigit())):
+            messagebox.showinfo("Error", "Enter a valid number of Weeks")
+            return
+        self.ws[('A' + str(((len(self.seasonList))*5) + 3))].value = 'Season No.'
+        self.ws[('A' + str(((len(self.seasonList))*5) + 4))].value = len(self.seasonList) + 1
+        self.ws[('B' + str(((len(self.seasonList))*5) + 3))].value = 'Player Count'
+        self.ws[('B' + str(((len(self.seasonList))*5) + 4))].value = 0
+        self.ws[('A' + str(((len(self.seasonList))*5) + 5))].value = 'Player Names'
         self.wb.create_sheet("Season " + str(len(self.seasonList) + 1))
-        self.ws[('K2')].value = self.seasonCount = self.ws[('K2')].value - 1
-        self.seasonCount = self.ws[('K2')].value
+        self.ws[('A2')].value = self.ws[('A2')].value + 1
+        self.seasonCount = self.ws[('A2')].value
         self.seasonList.clear()
         for i in range(self.seasonCount):
             self.seasonList.append("Season " + str(i+1))
@@ -63,6 +83,9 @@ class seasonSelectionWindow():
         self.dropDownMenu.grid_forget()
         self.dropDownMenu.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
         self.dropDownSelection.set(str(self.seasonList[0]))
+        self.wb.save('data/volley_stats.xlsx')
+        messagebox.showinfo("Success", "Season " + str(len(self.seasonList)) + " was added.")
+        top.destroy()
         return
 
     def removeSeasonWindow(self, master):
@@ -80,10 +103,9 @@ class seasonSelectionWindow():
 
     def deleteSeason(self, top, master):
         self.wb.remove_sheet(self.wb.get_sheet_by_name(self.dropDownSelection.get()))
-        messagebox.showinfo("Success", str(self.dropDownSelection.get()) + " was deleted.")
-        top.destroy()
-        self.ws[('K2')].value = self.seasonCount = self.ws[('K2')].value - 1
-        self.seasonCount = self.ws[('K2')].value
+        self.ws[('A2')].value = self.ws[('A2')].value - 1
+        self.seasonCount = self.ws[('A2')].value
+        self.ws.delete_rows((self.seasonList.index(self.dropDownSelection.get())*5) + 3, 5)
         self.wb.save('data/volley_stats.xlsx')
         if((self.seasonList.index(self.dropDownSelection.get()) + 1) < len(self.seasonList)):
             for i in range((self.seasonList.index(self.dropDownSelection.get()) + 1), len(self.seasonList)):
@@ -96,7 +118,9 @@ class seasonSelectionWindow():
         self.dropDownMenu = OptionMenu(master, self.dropDownSelection, *self.seasonList)
         self.dropDownMenu.grid_forget()
         self.dropDownMenu.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+        messagebox.showinfo("Success", str(self.dropDownSelection.get()) + " was deleted.")
         self.dropDownSelection.set(str(self.seasonList[0]))
+        top.destroy()
         return
 
 
