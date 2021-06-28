@@ -290,7 +290,7 @@ class statsEditor():
         
     #Function for reseting existing player selection upon new selection
     def buttonReset(self):
-        for i in range(len(self.playerList)):
+        for i in range(len(self.buttonList)):
             self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), height=4, width=15)
             self.buttonList[i].grid(row=int(i//5), column=(i%5))
         
@@ -438,7 +438,7 @@ class statsEditor():
     def addPlayerWindow(self):
         top = Toplevel()
         top.title("Add New Player")
-        nameLabel = Label(top, text="Insert Player's Full Name")
+        nameLabel = Label(top, text="Insert Player's Full Name:")
         nameField = Entry(top, width=20)
         nicknameLabel = Label(top, text="Player Nickname (For Selection Button):")
         nicknameField = Entry(top, width=20)
@@ -466,8 +466,14 @@ class statsEditor():
 
         self.playerList.append(playerName)
         self.playerList.sort()
-
+        for i in range(self.playerList.index(playerName), len(self.playerList)-1):
+            self.buttonList[i].grid_forget()
         self.playerNicknameList.insert(self.playerList.index(playerName), playerNickname)
+
+        self.buttonList.insert(self.playerList.index(playerName), Button(self.playerSelection, text=self.playerNicknameList[self.playerList.index(playerName)], command=lambda x=self.playerList.index(playerName): self.playerSelect(x), height=4, width=15))
+        self.buttonReset()
+
+        
 
         colCount = 0
         for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 6, ((self.seasonNumber-1) * 7) + 6):
@@ -493,7 +499,6 @@ class statsEditor():
                     k.value = 0
         
         self.wb.save('data/volley_stats.xlsx')
-        messagebox.showinfo("Success", "Player Successfully Added")
         top.destroy()
         return
 
@@ -502,7 +507,7 @@ class statsEditor():
         top.title("Remove Player")
         nameLabel = Label(top, text="Insert Player's Full Name")
         nameField = Entry(top, width=20)
-        sureButton = Button(top, text= "OK", command=lambda:self.removePlayer("".join(nameField.get().split()), top), padx=20, pady=10)
+        sureButton = Button(top, text= "OK", command=lambda:self.removePlayer(nameField.get(), top), padx=20, pady=10)
         cancelButton = Button(top, text= "Cancel", command=lambda:top.destroy(), padx=20, pady=10)
         
         nameLabel.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
@@ -523,7 +528,11 @@ class statsEditor():
             self.ws1.delete_rows(3 + self.playerList.index(playerName) + (i * (2 + len(self.playerList))))  
 
         self.playerNicknameList.pop(self.playerList.index(playerName))
+        for i in range(len(self.buttonList)):
+            self.buttonList[i].grid_forget()
+        self.buttonList.pop(self.playerList.index(playerName))
         self.playerList.remove(playerName)
+        self.buttonReset()
 
         self.ws2.delete_rows(((self.seasonNumber-1) * 7) + 6)
         self.ws2.insert_rows(((self.seasonNumber-1) * 7) + 6)
