@@ -24,17 +24,22 @@ class statsEditor():
         for i in range(self.ws2['A2'].value):
             self.seasonList.append(i+1)
 
+        
 
-        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value
+        
         self.playerList = []
-
-        cellRange = self.ws2[str(((self.seasonNumber-1) * 5) + 6)]
+        cellRange = self.ws2[str(((self.seasonNumber-1) * 7) + 6)]
         for i in range(self.playerNumber):
             self.playerList.append("".join(str(cellRange[i].value).split()))
-        print(self.playerList)
+
+        self.playerNicknameList = []
+        cellRange = self.ws2[str(((self.seasonNumber-1) * 7) + 8)]
+        for i in range(self.playerNumber):
+            self.playerNicknameList.append("".join(str(cellRange[i].value).split()))
 
         self.weekList = []
-        for i in range(self.ws2[('C' + str(((self.seasonNumber-1) * 5) + 4))].value):
+        for i in range(self.ws2[('C' + str(((self.seasonNumber-1) * 7) + 4))].value):
             self.weekList.append(i+1)
         self.weekNumber = 1
         
@@ -532,16 +537,26 @@ class statsEditor():
             messagebox.showinfo("Error", "Name can only contain standard characters")
             return
 
-        self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value + 1
-        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
+        self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value = self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value + 1
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value
 
         self.playerList.append(playerName)
         self.playerList.sort()
 
+        self.playerNicknameList.insert(self.playerList.index(playerName), playerNickname)
+
         colCount = 0
-        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 5) + 6, ((self.seasonNumber-1) * 5) + 6):
+        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 6, ((self.seasonNumber-1) * 7) + 6):
             for cell in col:
                 cell.value = self.playerList[colCount]
+            colCount = colCount + 1
+            if(colCount >= len(self.playerList)):
+                break
+        
+        colCount = 0
+        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 8, ((self.seasonNumber-1) * 7) + 8):
+            for cell in col:
+                cell.value = self.playerNicknameList[colCount]
             colCount = colCount + 1
             if(colCount >= len(self.playerList)):
                 break
@@ -577,22 +592,33 @@ class statsEditor():
             messagebox.showinfo("Error", "Player not found")
             return
 
-        self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value - 1
-        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
+        self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value = self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value - 1
+        self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value
         
         for i in range(len(self.weekList)):
             self.ws1.delete_rows(3 + self.playerList.index(playerName) + (i * (2 + len(self.playerList))))  
 
+        self.playerNicknameList.pop(self.playerList.index(playerName))
         self.playerList.remove(playerName)
 
-        self.ws2.delete_rows(((self.seasonNumber-1) * 5) + 6)
-        self.ws2.insert_rows(((self.seasonNumber-1) * 5) + 6)
+        self.ws2.delete_rows(((self.seasonNumber-1) * 7) + 6)
+        self.ws2.insert_rows(((self.seasonNumber-1) * 7) + 6)
         colCount = 0
-        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 5) + 6, ((self.seasonNumber-1) * 5) + 6):
+        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 6, ((self.seasonNumber-1) * 7) + 6):
             if(colCount >= len(self.playerList)):
                 break
             for cell in col:
                 cell.value = self.playerList[colCount]
+            colCount = colCount + 1
+
+        self.ws2.delete_rows(((self.seasonNumber-1) * 7) + 8)
+        self.ws2.insert_rows(((self.seasonNumber-1) * 7) + 8)
+        colCount = 0
+        for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 8, ((self.seasonNumber-1) * 7) + 8):
+            if(colCount >= len(self.playerList)):
+                break
+            for cell in col:
+                cell.value = self.playerNicknameList[colCount]
             colCount = colCount + 1
   
         self.wb.save('data/volley_stats.xlsx')

@@ -69,13 +69,14 @@ class seasonSelectionWindow():
         if(not(weekNo.isdigit())):
             messagebox.showinfo("Error", "Enter a valid number of Weeks")
             return
-        self.ws[('A' + str(((len(self.seasonList))*5) + 3))].value = 'Season No.'
-        self.ws[('A' + str(((len(self.seasonList))*5) + 4))].value = len(self.seasonList) + 1
-        self.ws[('B' + str(((len(self.seasonList))*5) + 3))].value = 'Player Count'
-        self.ws[('B' + str(((len(self.seasonList))*5) + 4))].value = 0
-        self.ws[('C' + str(((len(self.seasonList))*5) + 3))].value = 'Number of Weeks'
-        self.ws[('C' + str(((len(self.seasonList))*5) + 4))].value = int(weekNo)
-        self.ws[('A' + str(((len(self.seasonList))*5) + 5))].value = 'Player Names'
+        self.ws[('A' + str(((len(self.seasonList))*7) + 3))].value = 'Season No.'
+        self.ws[('A' + str(((len(self.seasonList))*7) + 4))].value = len(self.seasonList) + 1
+        self.ws[('B' + str(((len(self.seasonList))*7) + 3))].value = 'Player Count'
+        self.ws[('B' + str(((len(self.seasonList))*7) + 4))].value = 0
+        self.ws[('C' + str(((len(self.seasonList))*7) + 3))].value = 'Number of Weeks'
+        self.ws[('C' + str(((len(self.seasonList))*7) + 4))].value = int(weekNo)
+        self.ws[('A' + str(((len(self.seasonList))*7) + 5))].value = 'Player Names'
+        self.ws[('A' + str(((len(self.seasonList))*7) + 7))].value = 'Player Nicknames'
         ws2 = self.wb.create_sheet("Season " + str(len(self.seasonList) + 1))
         cellRange = self.ws['K2':'AD2']
         for cell in cellRange:
@@ -116,9 +117,9 @@ class seasonSelectionWindow():
         self.wb.remove_sheet(self.wb.get_sheet_by_name(self.dropDownSelection.get()))
         self.ws[('A2')].value = self.ws[('A2')].value - 1
         self.seasonCount = self.ws[('A2')].value
-        self.ws.delete_rows((self.seasonList.index(self.dropDownSelection.get())*5) + 3, 5)
+        self.ws.delete_rows((self.seasonList.index(self.dropDownSelection.get())*7) + 3, 7)
         for i in range(self.seasonList.index(self.dropDownSelection.get()) + 1 , len(self.seasonList)):
-            self.ws[('A' + str(((i - 1) * 5) + 4))].value = self.ws[('A' + str(((i - 1) * 5) + 4))].value - 1
+            self.ws[('A' + str(((i - 1) * 7) + 4))].value = self.ws[('A' + str(((i - 1) * 7) + 4))].value - 1
 
         self.wb.save('data/volley_stats.xlsx')
         if((self.seasonList.index(self.dropDownSelection.get()) + 1) < len(self.seasonList)):
@@ -134,7 +135,7 @@ class seasonSelectionWindow():
         self.dropDownMenu = OptionMenu(master, self.dropDownSelection, *self.seasonList)
         self.dropDownMenu.grid_forget()
         self.dropDownMenu.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
-        
+
         messagebox.showinfo("Success", str(self.dropDownSelection.get()) + " was deleted.")
         self.dropDownSelection.set(str(self.seasonList[0]))
         top.destroy()
