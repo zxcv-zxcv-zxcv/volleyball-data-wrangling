@@ -42,6 +42,10 @@ class statsEditor():
         for i in range(self.ws2[('C' + str(((self.seasonNumber-1) * 7) + 4))].value):
             self.weekList.append(i+1)
         self.weekNumber = 1
+
+        self.buttonList = []
+        for i in range(len(self.playerList)):
+            self.buttonList.append(str(self.playerList[i]))
         
         self.selectedPlayer = "None"
 
@@ -67,18 +71,9 @@ class statsEditor():
     
         #Initializing Player Selection Buttons
         self.playerSelection = LabelFrame(master, text="Player Selection", padx=5, pady=5)
-        self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda: self.playerSelect("brandonChan"), height=4, width=15)
-        self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda: self.playerSelect("callumAshton"), height=4, width=15)
-        self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda: self.playerSelect("danielPark"), height=4, width=15)
-        self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda: self.playerSelect("deirdreTruong"), height=4, width=15)
-        self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda: self.playerSelect("edwardKang"), height=4, width=15)
-        self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda: self.playerSelect("kevinMa"), height=4, width=15)
-        self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda: self.playerSelect("kevinTang"), height=4, width=15)
-        self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda: self.playerSelect("lachlanDenham"), height=4, width=15)
-        self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda: self.playerSelect("mimiChen"), height=4, width=15)
-        self.willOuyang = Button(self.playerSelection, text="Will", command=lambda: self.playerSelect("willOuyang"), height=4, width=15)
-        
-        #buttonColor = brandonChan.cget("background")
+        for i in range(len(self.playerList)):
+            self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), height=4, width=15)
+            self.buttonList[i].grid(row=int(i//5), column=(i%5))
 
         #Initializing Statisitic Add and Subtract Buttons
         self.serveErrors = LabelFrame(master, text="Serve Errors", padx=5, pady=5)
@@ -173,16 +168,6 @@ class statsEditor():
      
         #Player Selection buttons
         self.playerSelection.grid(row=1, column=1, columnspan=4, padx=10, pady=5)
-        self.brandonChan.grid(row=0, column=0)
-        self.callumAshton.grid(row=0, column=1)
-        self.danielPark.grid(row=0, column=2)
-        self.deirdreTruong.grid(row=0, column=3)
-        self.edwardKang.grid(row=0, column=4)
-        self.kevinMa.grid(row=1, column=0)
-        self.kevinTang.grid(row=1, column=1)
-        self.lachlanDenham.grid(row=1, column=2)
-        self.mimiChen.grid(row=1, column=3)
-        self.willOuyang.grid(row=1, column=4)
       
         #buttons and frames for changing data
         self.serveErrors.grid(row=2, column=0, padx=10, pady=5)
@@ -296,79 +281,24 @@ class statsEditor():
     
     #Function for selecting an individual player's data
     def playerSelect(self, playerName):
-        self.selectedPlayer = playerName
+        self.selectedPlayer = self.playerList[playerName]
         self.buttonReset()
         self.updateStatsLabels()   
-
-        if(self.selectedPlayer == "brandonChan"):
-            self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda:self.playerSelect("brandonChan"), bg="blue", height=4, width=15)
-            self.brandonChan.grid(row=0, column=0)
-        
-        if(self.selectedPlayer == "callumAshton"):
-            self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda:self.playerSelect("callumAshton"), bg="blue", height=4, width=15)
-            self.callumAshton.grid(row=0, column=1)
-            
-        
-        if(self.selectedPlayer == "danielPark"):
-            self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda:self.playerSelect("danielPark"), bg="blue", height=4, width=15)   
-            self.danielPark.grid(row=0, column=2)
-        
-        
-        if(self.selectedPlayer == "deirdreTruong"):
-            self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda:self.playerSelect("deirdreTruong"), bg="blue", height=4, width=15)
-            self.deirdreTruong.grid(row=0, column=3)
-        
-        if(self.selectedPlayer == "edwardKang"):
-            self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda:self.playerSelect("edwardKang"), bg="blue", height=4, width=15)
-            self.edwardKang.grid(row=0, column=4)
-        
-        if(self.selectedPlayer == "kevinMa"):
-            self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda:self.playerSelect("kevinMa"), bg="blue", height=4, width=15)
-            self.kevinMa.grid(row=1, column=0)
-        
-        
-        if(self.selectedPlayer == "kevinTang"):
-            self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda:self.playerSelect("kevinTang"), bg="blue", height=4, width=15)
-            self.kevinTang.grid(row=1, column=1)
-        
-        if(self.selectedPlayer == "lachlanDenham"):
-            self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda:self.playerSelect("lachlanDenham"), bg="blue", height=4, width=15)
-            self.lachlanDenham.grid(row=1, column=2)
-    
-        
-        if(self.selectedPlayer == "mimiChen"):
-            self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda:self.playerSelect("mimiChen"), bg="blue", height=4, width=15)
-            self.mimiChen.grid(row=1, column=3)
-            
-        
-        if(self.selectedPlayer == "willOuyang"):
-            self.willOuyang = Button(self.playerSelection, text="Will", command=lambda:self.playerSelect("willOuyang"), bg="blue", height=4, width=15)
-            self.willOuyang.grid(row=1, column=4)
+        for i in range(len(self.playerList)):
+            if(self.selectedPlayer == self.playerList[i]):
+                self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), bg="blue", height=4, width=15)
+                self.buttonList[i].grid(row=int(i//5), column=(i%5))
+            else:
+                self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), height=4, width=15)
+                self.buttonList[i].grid(row=int(i//5), column=(i%5))
+        return
         
     #Function for reseting existing player selection upon new selection
     def buttonReset(self):
+        for i in range(len(self.playerList)):
+            self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda:self.playerSelect(self.playerList[i]), height=4, width=15)
+            self.buttonList[i].grid(row=int(i//5), column=(i%5))
         
-        self.brandonChan = Button(self.playerSelection, text="Chan", command=lambda: self.playerSelect("brandonChan"), height=4, width=15)
-        self.callumAshton = Button(self.playerSelection, text="Callum", command=lambda: self.playerSelect("callumAshton"), height=4, width=15)
-        self.danielPark = Button(self.playerSelection, text="Daniel", command=lambda: self.playerSelect("danielPark"), height=4, width=15)
-        self.deirdreTruong = Button(self.playerSelection, text="Deirdre", command=lambda: self.playerSelect("deirdreTruong"), height=4, width=15)
-        self.edwardKang = Button(self.playerSelection, text="Edward", command=lambda: self.playerSelect("edwardKang"), height=4, width=15)
-        self.kevinMa = Button(self.playerSelection, text="Kema", command=lambda: self.playerSelect("kevinMa"), height=4, width=15)
-        self.kevinTang = Button(self.playerSelection, text="Ktang", command=lambda: self.playerSelect("kevinTang"), height=4, width=15)
-        self.lachlanDenham = Button(self.playerSelection, text="Lachlan", command=lambda: self.playerSelect("lachlanDenham"), height=4, width=15)
-        self.mimiChen = Button(self.playerSelection, text="Mimi", command=lambda: self.playerSelect("mimiChen"), height=4, width=15)
-        self.willOuyang = Button(self.playerSelection, text="Will", command=lambda: self.playerSelect("willOuyang"), height=4, width=15)
-        
-        self.brandonChan.grid(row=0, column=0)
-        self.callumAshton.grid(row=0, column=1)
-        self.danielPark.grid(row=0, column=2)
-        self.deirdreTruong.grid(row=0, column=3)
-        self.edwardKang.grid(row=0, column=4)
-        self.kevinMa.grid(row=1, column=0)
-        self.kevinTang.grid(row=1, column=1)
-        self.lachlanDenham.grid(row=1, column=2)
-        self.mimiChen.grid(row=1, column=3)
-        self.willOuyang.grid(row=1, column=4)
     
     def statIncrease(self, getStatType):
         statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "setErrors", "setSuccess", "spikeErrors", "spikeSuccess", "tipErrors", "tipSuccess", "blockErrors", "blockSuccess", "Faults"]
@@ -401,9 +331,8 @@ class statsEditor():
         return
 
     def getRowNumber(self):
-        playerList = ["brandonChan", "callumAshton", "danielPark", "deirdreTruong", "edwardKang", "kevinMa", "kevinTang", "lachlanDenham", "mimiChen", "willOuyang"]
-        playerRow = playerList.index(self.selectedPlayer) + 1
-        weekRowSelect = ((self.weekNumber-1) * 13)
+        playerRow = self.playerList.index(self.selectedPlayer) + 1
+        weekRowSelect = ((self.weekNumber-1) * (len(self.playerList) + 3))
         rowNumber = playerRow + weekRowSelect + 2
         return rowNumber
 
