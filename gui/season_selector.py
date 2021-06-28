@@ -65,6 +65,7 @@ class seasonSelectionWindow():
 
     def addSeason(self, master, inputField, top):
         weekNo = inputField.get()
+        cellRangeList = []
         if(not(weekNo.isdigit())):
             messagebox.showinfo("Error", "Enter a valid number of Weeks")
             return
@@ -73,7 +74,17 @@ class seasonSelectionWindow():
         self.ws[('B' + str(((len(self.seasonList))*5) + 3))].value = 'Player Count'
         self.ws[('B' + str(((len(self.seasonList))*5) + 4))].value = 0
         self.ws[('A' + str(((len(self.seasonList))*5) + 5))].value = 'Player Names'
-        self.wb.create_sheet("Season " + str(len(self.seasonList) + 1))
+        ws2 = self.wb.create_sheet("Season " + str(len(self.seasonList) + 1))
+        cellRange = self.ws['K2':'AD2']
+        for cell in cellRange:
+            for x in cell:
+                cellRangeList.append(x.value)
+        for j in range(int(weekNo)):
+            ws2['A' + str((int(j)*3)+1)].value = 'Week ' + str(j+1)
+            for i in ws2['A' + str((j*3)+2):'T' + str((j*3)+2)]:
+                for k in i:
+                    print(k)
+                    k.value = cellRangeList[i.index(k)]
         self.ws[('A2')].value = self.ws[('A2')].value + 1
         self.seasonCount = self.ws[('A2')].value
         self.seasonList.clear()

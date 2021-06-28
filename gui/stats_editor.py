@@ -30,7 +30,8 @@ class statsEditor():
 
         master.title('Volleyball Statistics Input')
 
-        self.titleLabel = Label(master, text="(Get WorkSheet Title)")
+        teamName = self.ws2[('C2')].value
+        self.titleLabel = Label(master, text=teamName + " " + seasonName)
 
         self.newPlayerFrame = LabelFrame(master, text="Add/Remove Player", padx=10, pady=10)
         self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayer(), padx=20, pady=15)
