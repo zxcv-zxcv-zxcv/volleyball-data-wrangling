@@ -118,11 +118,14 @@ class seasonSelectionWindow():
         self.ws[('A2')].value = self.ws[('A2')].value - 1
         self.seasonCount = self.ws[('A2')].value
         self.ws.delete_rows((self.seasonList.index(self.dropDownSelection.get())*5) + 3, 5)
+        for i in range(self.seasonList.index(self.dropDownSelection.get()) + 1 , len(self.seasonList)):
+            self.ws[('A' + str(((i - 1) * 5) + 4))].value = self.ws[('A' + str(((i - 1) * 5) + 4))].value - 1
+
         self.wb.save('data/volley_stats.xlsx')
         if((self.seasonList.index(self.dropDownSelection.get()) + 1) < len(self.seasonList)):
             for i in range((self.seasonList.index(self.dropDownSelection.get()) + 1), len(self.seasonList)):
-                ws = self.wb['Season ' + str(i+1)]
-                ws.title = 'Season ' + str(i)
+                ws1 = self.wb['Season ' + str(i+1)]
+                ws1.title = 'Season ' + str(i)
             self.wb.save('data/volley_stats.xlsx')
         self.seasonList.clear()
         for i in range(self.seasonCount):

@@ -18,8 +18,12 @@ class statsEditor():
         
         self.ws2 = self.wb['Team Info']
         
-        self.seasonList = [1, 2]
+        
         self.seasonNumber = seasonNo
+        self.seasonList = []
+        for i in range(self.ws2['A2']):
+            self.seasonList.append(i+1)
+
 
         self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 5) + 4))].value
         self.playerList = []
@@ -523,7 +527,7 @@ class statsEditor():
         if(playerName is None or playerNickname is None):
             messagebox.showinfo("Error", "Both Fields must be filled")
             return
-        if(not playerName.isalpha() and not playerNickname.isalpha()):
+        if(not ("".join(playerName.split())).isalpha() and not ("".join(playerNickname.split())).isalpha()):
             messagebox.showinfo("Error", "Name can only contain standard characters")
             return
 
@@ -549,4 +553,5 @@ class statsEditor():
         return
 
     def removePlayer(self, playerName):
+
         return
