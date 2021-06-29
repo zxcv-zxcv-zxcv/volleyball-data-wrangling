@@ -3,6 +3,8 @@ from openpyxl.workbook import Workbook
 from openpyxl import load_workbook
 from .stats_editor import statsEditor
 from tkinter import messagebox
+from openpyxl.styles import Alignment
+
 
 class seasonSelectionWindow():
 
@@ -78,15 +80,16 @@ class seasonSelectionWindow():
         self.ws[('A' + str(((len(self.seasonList))*7) + 5))].value = 'Player Names'
         self.ws[('A' + str(((len(self.seasonList))*7) + 7))].value = 'Player Nicknames'
         ws2 = self.wb.create_sheet("Season " + str(len(self.seasonList) + 1))
-        cellRange = self.ws['K2':'AD2']
+        cellRange = self.ws['K2':'AQ2']
         for cell in cellRange:
             for x in cell:
                 cellRangeList.append(x.value)
         for j in range(int(weekNo)):
             ws2['A' + str((int(j)*3)+1)].value = 'Week ' + str(j+1)
-            for i in ws2['A' + str((j*3)+2):'T' + str((j*3)+2)]:
+            for i in ws2['A' + str((j*3)+2):'AG' + str((j*3)+2)]:
                 for k in i:
                     k.value = cellRangeList[i.index(k)]
+                    k.alignment = Alignment(wrap_text=True)
         self.ws[('A2')].value = self.ws[('A2')].value + 1
         self.seasonCount = self.ws[('A2')].value
         self.seasonList.clear()

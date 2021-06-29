@@ -4,7 +4,6 @@ from openpyxl import load_workbook
 from tkinter import messagebox
 from .add_player_window import addPlayerWindow
 
-
 class statsEditor():
      
     
@@ -494,7 +493,7 @@ class statsEditor():
         for i in range(len(self.weekList)):
             self.ws1.insert_rows(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))
             self.ws1['A' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))].value = playerName
-            for cell in self.ws1['B'+ str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList)))):'T' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))]:
+            for cell in self.ws1['B'+ str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList)))):'AG' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))]:
                 for k in cell:
                     k.value = 0
         
