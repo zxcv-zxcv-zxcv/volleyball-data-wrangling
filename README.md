@@ -19,17 +19,17 @@ Occasionally difficult to see if set positioning was correct (Using our personal
 Currently The GUI consists of a main menu which leads into three options. Two of these options are for viewports of the statistics which have yet to be developed. The remaining button leads to a season selector window allowing you to select which season of your team's data you wish to edit. After selecting a season the editor window opens allowing you to make edits to playerstatistics, add or remove players, and contains a more rudimentary series of stats values so as to appropriately inform the editor that their inputs are being recorded.
 
 ## STATS
-The statistics is broken down into the primary actions being perfomed during play. Those being:
-Serves
-Receives
-Sets
-Spikes
-Tips
-Blocks
+The statistics is broken down into the primary actions being perfomed during play. Those being:  
+Serves  
+Receives  
+Sets  
+Spikes  
+Tips  
+Blocks  
 
 These 6 actions are then broken down into 4 categories attempting to indicate best to worst for each category using the success of the play.
-For example Serves are broken up into:
-Aces: The serve was performed well enough that the opposing team was unable to receive it.
-In: The serve made it into the enmey court but they managed to receive it.
-Out: The serve made it over the net but failed to make it into the enemy court.
-Short: The serve failed to make it over the net.
+For example Serves are broken up into:  
+Aces: The serve was performed well enough that the opposing team was unable to receive it.  
+In: The serve made it into the enmey court but they managed to receive it.  
+Out: The serve made it over the net but failed to make it into the enemy court.  
+Short: The serve failed to make it over the net.  
