@@ -3,6 +3,7 @@
 
 ## Specifications
 This is a simple GUI interface that interfaces with an excel spreadsheet designed to record player statistics for volleyball when viewing a game recording.
+The primary imports used are Tkinter and Openpyxl
 Currently the app is able to make all the required edits to the excel spreadsheet and has a simple indicator for current statistics in that same editor. It is lacking a more official viewport with more detailed assessments of player statistics and if they are show week to week improvements.
 
 Known Issues:
