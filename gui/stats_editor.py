@@ -235,12 +235,12 @@ class statsEditor():
         self.blockFailButton.grid(row=0, column=3)
 
 
-        self.Faults.grid(row=5, column=0, padx=10, pady=5)
+        self.Faults.grid(row=6, column=0, padx=10, pady=5)
         self.FaultsAdd.grid(row=0, column=0)
         self.FaultsRemove.grid(row=0, column=1)
-        self.FaultsLabel.grid(row=12, column=0, columnspan=2, padx=10, pady=10)
+        self.FaultsLabel.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
         
-        self.toggleButton.grid(row=6, column=0, padx=10, pady=5)
+        self.toggleButton.grid(row=5, column=0, padx=10, pady=5)
 
         #Statistics frame and labels
         self.statisticsmaster.grid(row=5, column=1, columnspan=4, rowspan=2, padx=5)
@@ -332,7 +332,7 @@ class statsEditor():
             self.buttonList[self.playerList.index(self.selectedPlayer)] = Button(self.playerSelection, text=self.playerNicknameList[self.playerList.index(self.selectedPlayer)], command=lambda x=self.playerList.index(self.selectedPlayer): self.playerSelect(x), height=4, width=15)
             self.buttonList[self.playerList.index(self.selectedPlayer)].grid(row=int(self.playerList.index(self.selectedPlayer)//5), column=self.playerList.index(self.selectedPlayer)%5)
         self.selectedPlayer = self.playerList[playerName]
-        #self.updateStatsLabels()   
+        self.updateStatsLabels()   
         self.buttonList[playerName] = Button(self.playerSelection, text=self.playerNicknameList[playerName], command=lambda x=playerName: self.playerSelect(x), bg="blue", height=4, width=15)
         self.buttonList[playerName].grid(row=int(playerName//5), column=(playerName%5))
         return
@@ -428,84 +428,97 @@ class statsEditor():
         self.blockRateLabel.grid_forget()
         self.blockScoreRateLabel.grid_forget()
 
-
-        if((self.ws1[('B' + str(rowNumber))].value + self.ws1[('C' + str(rowNumber))].value) != 0):
-            self.ws1[('D' + str(rowNumber))].value = str(round((self.ws1[('C' + str(rowNumber))].value) / (self.ws1[('B' + str(rowNumber))].value + self.ws1[('C' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['E' + str(rowNumber)].value) != 0):
+            self.ws1['F' + str(rowNumber)].value = str(round((self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value) / (self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['E' + str(rowNumber)].value)*100)) + "%"
+            self.ws1['G' + str(rowNumber)].value = str(round((self.ws1['B' + str(rowNumber)].value) / (self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['E' + str(rowNumber)].value)*100)) + "%"    
         else:
-            self.ws1[('D' + str(rowNumber))].value = "0%"
+            self.ws1['F' + str(rowNumber)].value = "0%"
+            self.ws1['G' + str(rowNumber)].value = "0%"
+        
+       
+        if((self.ws1['H' + str(rowNumber)].value + self.ws1['I' + str(rowNumber)].value + self.ws1['J' + str(rowNumber)].value + self.ws1['K' + str(rowNumber)].value) != 0):
+            self.ws1['L' + str(rowNumber)].value = str(round((self.ws1['H' + str(rowNumber)].value + self.ws1['I' + str(rowNumber)].value) / (self.ws1['H' + str(rowNumber)].value + self.ws1['I' + str(rowNumber)].value + self.ws1['J' + str(rowNumber)].value + self.ws1['K' + str(rowNumber)].value)*100)) + "%"
+            self.ws1['M' + str(rowNumber)].value = str(round((self.ws1['H' + str(rowNumber)].value) / (self.ws1['H' + str(rowNumber)].value + self.ws1['I' + str(rowNumber)].value + self.ws1['J' + str(rowNumber)].value + self.ws1['K' + str(rowNumber)].value)*100)) + "%"    
+        else:
+            self.ws1['L' + str(rowNumber)].value = "0%"
+            self.ws1['M' + str(rowNumber)].value = "0%"
         
 
-        if((self.ws1[('E' + str(rowNumber))].value + self.ws1[('F' + str(rowNumber))].value) != 0):
-            self.ws1[('G' + str(rowNumber))].value = str(round((self.ws1[('F' + str(rowNumber))].value) / (self.ws1[('E' + str(rowNumber))].value + self.ws1[('F' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1['N' + str(rowNumber)].value + self.ws1['O' + str(rowNumber)].value + self.ws1['P' + str(rowNumber)].value + self.ws1['Q' + str(rowNumber)].value) != 0):
+            self.ws1['R' + str(rowNumber)].value = str(round((self.ws1['N' + str(rowNumber)].value + self.ws1['O' + str(rowNumber)].value) / (self.ws1['N' + str(rowNumber)].value + self.ws1['O' + str(rowNumber)].value + self.ws1['P' + str(rowNumber)].value + self.ws1['Q' + str(rowNumber)].value)*100)) + "%"
+            self.ws1['S' + str(rowNumber)].value = str(round((self.ws1['N' + str(rowNumber)].value) / (self.ws1['N' + str(rowNumber)].value + self.ws1['O' + str(rowNumber)].value + self.ws1['P' + str(rowNumber)].value + self.ws1['Q' + str(rowNumber)].value)*100)) + "%"    
         else:
-            self.ws1[('G' + str(rowNumber))].value = "0%"
-
-
-        if((self.ws1[('H' + str(rowNumber))].value + self.ws1[('I' + str(rowNumber))].value) != 0):
-            self.ws1[('J' + str(rowNumber))].value = str(round((self.ws1[('I' + str(rowNumber))].value) / (self.ws1[('H' + str(rowNumber))].value + self.ws1[('I' + str(rowNumber))].value)*100)) + "%"
-        else:
-            self.ws1[('J' + str(rowNumber))].value = "0%"
-
-
-        if((self.ws1[('K' + str(rowNumber))].value + self.ws1[('L' + str(rowNumber))].value) != 0):
-            self.ws1[('M' + str(rowNumber))].value = str(round((self.ws1[('L' + str(rowNumber))].value) / (self.ws1[('K' + str(rowNumber))].value + self.ws1[('L' + str(rowNumber))].value)*100)) + "%"
-        else:
-            self.ws1[('M' + str(rowNumber))].value = "0%"
-
+            self.ws1['R' + str(rowNumber)].value = "0%"
+            self.ws1['S' + str(rowNumber)].value = "0%"
         
-        if((self.ws1[('N' + str(rowNumber))].value + self.ws1[('O' + str(rowNumber))].value) != 0):
-            self.ws1[('P' + str(rowNumber))].value = str(round((self.ws1[('O' + str(rowNumber))].value) / (self.ws1[('N' + str(rowNumber))].value + self.ws1[('O' + str(rowNumber))].value)*100)) + "%"
-        else:
-            self.ws1[('P' + str(rowNumber))].value = "0%"
 
-        if((self.ws1[('Q' + str(rowNumber))].value + self.ws1[('R' + str(rowNumber))].value) != 0):
-            self.ws1[('S' + str(rowNumber))].value = str(round((self.ws1[('R' + str(rowNumber))].value) / (self.ws1[('Q' + str(rowNumber))].value + self.ws1[('R' + str(rowNumber))].value)*100)) + "%"
+        if((self.ws1['T' + str(rowNumber)].value + self.ws1['U' + str(rowNumber)].value + self.ws1['P' + str(rowNumber)].value + self.ws1['W' + str(rowNumber)].value) != 0):
+            self.ws1['X' + str(rowNumber)].value = str(round((self.ws1['T' + str(rowNumber)].value + self.ws1['U' + str(rowNumber)].value) / (self.ws1['T' + str(rowNumber)].value + self.ws1['U' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['W' + str(rowNumber)].value)*100)) + "%"
+            self.ws1['Y' + str(rowNumber)].value = str(round((self.ws1['T' + str(rowNumber)].value) / (self.ws1['T' + str(rowNumber)].value + self.ws1['U' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['W' + str(rowNumber)].value)*100)) + "%"    
         else:
-            self.ws1[('S' + str(rowNumber))].value = "0%"
-
+            self.ws1['X' + str(rowNumber)].value = "0%"
+            self.ws1['Y' + str(rowNumber)].value = "0%"
         
+
+        if((self.ws1['Z' + str(rowNumber)].value + self.ws1['AA' + str(rowNumber)].value + self.ws1['AB' + str(rowNumber)].value + self.ws1['AC' + str(rowNumber)].value) != 0):
+            self.ws1['AD' + str(rowNumber)].value = str(round((self.ws1['Z' + str(rowNumber)].value + self.ws1['AA' + str(rowNumber)].value) / (self.ws1['Z' + str(rowNumber)].value + self.ws1['AA' + str(rowNumber)].value + self.ws1['AB' + str(rowNumber)].value + self.ws1['AC' + str(rowNumber)].value)*100)) + "%"
+            self.ws1['AE' + str(rowNumber)].value = str(round((self.ws1['Z' + str(rowNumber)].value) / (self.ws1['Z' + str(rowNumber)].value + self.ws1['AA' + str(rowNumber)].value + self.ws1['AB' + str(rowNumber)].value + self.ws1['AC' + str(rowNumber)].value)*100)) + "%"    
+        else:
+            self.ws1['AD' + str(rowNumber)].value = "0%"
+            self.ws1['AE' + str(rowNumber)].value = "0%"
+        
+
+        if((self.ws1['AF' + str(rowNumber)].value + self.ws1['AG' + str(rowNumber)].value + self.ws1['AH' + str(rowNumber)].value + self.ws1['AI' + str(rowNumber)].value) != 0):
+            self.ws1['AJ' + str(rowNumber)].value = str(round((self.ws1['AF' + str(rowNumber)].value + self.ws1['AG' + str(rowNumber)].value) / (self.ws1['AF' + str(rowNumber)].value + self.ws1['AG' + str(rowNumber)].value + self.ws1['AH' + str(rowNumber)].value + self.ws1['AI' + str(rowNumber)].value)*100)) + "%"
+            self.ws1['AK' + str(rowNumber)].value = str(round((self.ws1['AF' + str(rowNumber)].value) / (self.ws1['AF' + str(rowNumber)].value + self.ws1['AG' + str(rowNumber)].value + self.ws1['AH' + str(rowNumber)].value + self.ws1['AI' + str(rowNumber)].value)*100)) + "%"    
+        else:
+            self.ws1['AJ' + str(rowNumber)].value = "0%"
+            self.ws1['AK' + str(rowNumber)].value = "0%"
+    
+
         self.serveAceLabel = Label(self.statisticsmaster, text="Aces: " + str(self.ws1[('B' + str(rowNumber))].value), padx=10)
-        self.serveInLabel = Label(self.statisticsmaster, text="In: ", padx=10)
-        self.serveOutLabel = Label(self.statisticsmaster, text="Out: ", padx=10)
-        self.serveShortLabel = Label(self.statisticsmaster, text="Short: ", padx=10)
-        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: ", padx=10)
-        self.serveAceRateLabel  = Label(self.statisticsmaster, text="Ace Rate: ", padx=10)
+        self.serveInLabel = Label(self.statisticsmaster, text="In: " + str(self.ws1[('C' + str(rowNumber))].value), padx=10)
+        self.serveOutLabel = Label(self.statisticsmaster, text="Out: " + str(self.ws1[('D' + str(rowNumber))].value), padx=10)
+        self.serveShortLabel = Label(self.statisticsmaster, text="Short: " + str(self.ws1[('E' + str(rowNumber))].value), padx=10)
+        self.serveRateLabel = Label(self.statisticsmaster, text="Serve Rate: " + str(self.ws1[('F' + str(rowNumber))].value), padx=10)
+        self.serveAceRateLabel  = Label(self.statisticsmaster, text="Ace Rate: " + str(self.ws1[('G' + str(rowNumber))].value), padx=10)
 
-        self.receiveTargetedLabel = Label(self.statisticsmaster, text="Targeted: ", padx=10)
-        self.receiveHighLabel = Label(self.statisticsmaster, text="High: ", padx=10)
-        self.receiveOffLabel = Label(self.statisticsmaster, text="Off: ", padx=10)
-        self.receiveLowLabel = Label(self.statisticsmaster, text="Low: ", padx=10)
-        self.receiveRateLabel = Label(self.statisticsmaster, text="Pass Rate: ", padx=10)
-        self.receiveBestLabel = Label(self.statisticsmaster, text="Perfect Rate: ", padx=10)
+        self.receiveTargetedLabel = Label(self.statisticsmaster, text="Targeted: " + str(self.ws1[('H' + str(rowNumber))].value), padx=10)
+        self.receiveHighLabel = Label(self.statisticsmaster, text="High: " + str(self.ws1[('I' + str(rowNumber))].value), padx=10)
+        self.receiveOffLabel = Label(self.statisticsmaster, text="Off: " + str(self.ws1[('J' + str(rowNumber))].value), padx=10)
+        self.receiveLowLabel = Label(self.statisticsmaster, text="Low: " + str(self.ws1[('K' + str(rowNumber))].value), padx=10)
+        self.receiveRateLabel = Label(self.statisticsmaster, text="Pass Rate: " + str(self.ws1[('L' + str(rowNumber))].value), padx=10)
+        self.receiveBestLabel = Label(self.statisticsmaster, text="Perfect Rate: " + str(self.ws1[('M' + str(rowNumber))].value), padx=10)
 
-        self.setTargetedLabel = Label(self.statisticsmaster, text="Targeted: ", padx=10)
-        self.setHighLabel = Label(self.statisticsmaster, text="High: ", padx=10)
-        self.setOffLabel = Label(self.statisticsmaster, text="Off: ", padx=10)
-        self.setLowLabel = Label(self.statisticsmaster, text="Low: ", padx=10)
-        self.setRateLabel = Label(self.statisticsmaster, text="Set Rate: ", padx=10)
-        self.setBestLabel = Label(self.statisticsmaster, text="Perfect Rate: ", padx=10)
+        self.setTargetedLabel = Label(self.statisticsmaster, text="Targeted: " + str(self.ws1[('N' + str(rowNumber))].value), padx=10)
+        self.setHighLabel = Label(self.statisticsmaster, text="High: " + str(self.ws1[('O' + str(rowNumber))].value), padx=10)
+        self.setOffLabel = Label(self.statisticsmaster, text="Off: " + str(self.ws1[('P' + str(rowNumber))].value), padx=10)
+        self.setLowLabel = Label(self.statisticsmaster, text="Low: " + str(self.ws1[('Q' + str(rowNumber))].value), padx=10)
+        self.setRateLabel = Label(self.statisticsmaster, text="Set Rate: " + str(self.ws1[('R' + str(rowNumber))].value), padx=10)
+        self.setBestLabel = Label(self.statisticsmaster, text="Perfect Rate: " + str(self.ws1[('S' + str(rowNumber))].value), padx=10)
 
-        self.spikeSuccessLabel = Label(self.statisticsmaster, text="Score: ", padx=10)
-        self.spikeInLabel = Label(self.statisticsmaster, text="In: ", padx=10)
-        self.spikeBlockedLabel = Label(self.statisticsmaster, text="Blocked: ", padx=10)
-        self.spikeOutLabel = Label(self.statisticsmaster, text="Out: ", padx=10)
-        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: ", padx=10)
-        self.spikeScoreRateLabel = Label(self.statisticsmaster, text="Score Rate: ", padx=10)
+        self.spikeSuccessLabel = Label(self.statisticsmaster, text="Score: " + str(self.ws1[('T' + str(rowNumber))].value), padx=10)
+        self.spikeInLabel = Label(self.statisticsmaster, text="In: " + str(self.ws1[('U' + str(rowNumber))].value), padx=10)
+        self.spikeBlockedLabel = Label(self.statisticsmaster, text="Blocked: " + str(self.ws1[('V' + str(rowNumber))].value), padx=10)
+        self.spikeOutLabel = Label(self.statisticsmaster, text="Out: " + str(self.ws1[('W' + str(rowNumber))].value), padx=10)
+        self.spikeRateLabel = Label(self.statisticsmaster, text="Spike Rate: " + str(self.ws1[('X' + str(rowNumber))].value), padx=10)
+        self.spikeScoreRateLabel = Label(self.statisticsmaster, text="Score Rate: " + str(self.ws1[('Y' + str(rowNumber))].value), padx=10)
 
-        self.tipSuccessLabel = Label(self.statisticsmaster, text="Score: ", padx=10)
-        self.tipInLabel = Label(self.statisticsmaster, text="In: ", padx=10)
-        self.tipBlockedLabel = Label(self.statisticsmaster, text="Blocked: ", padx=10)
-        self.tipOutLabel = Label(self.statisticsmaster, text="Out: ", padx=10)
-        self.tipRateLabel = Label(self.statisticsmaster, text="Tip Rate: ", padx=10)
-        self.tipScoreLabel = Label(self.statisticsmaster, text="Score Rate: ", padx=10)
+        self.tipSuccessLabel = Label(self.statisticsmaster, text="Score: " + str(self.ws1[('Z' + str(rowNumber))].value), padx=10)
+        self.tipInLabel = Label(self.statisticsmaster, text="In: " + str(self.ws1[('AA' + str(rowNumber))].value), padx=10)
+        self.tipBlockedLabel = Label(self.statisticsmaster, text="Blocked: " + str(self.ws1[('AB' + str(rowNumber))].value), padx=10)
+        self.tipOutLabel = Label(self.statisticsmaster, text="Out: " + str(self.ws1[('AC' + str(rowNumber))].value), padx=10)
+        self.tipRateLabel = Label(self.statisticsmaster, text="Tip Rate: " + str(self.ws1[('AD' + str(rowNumber))].value), padx=10)
+        self.tipScoreLabel = Label(self.statisticsmaster, text="Score Rate: " + str(self.ws1[('AE' + str(rowNumber))].value), padx=10)
 
-        self.blockScoreLabel = Label(self.statisticsmaster, text="Score: ", padx=10)
-        self.blockTouchLabel = Label(self.statisticsmaster, text="Touch: ", padx=10)
-        self.blockOffLabel = Label(self.statisticsmaster, text="Off: ", padx=10)
-        self.blockFailLabel = Label(self.statisticsmaster, text="No block: ", padx=10)
-        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: ", padx=10)
-        self.blockScoreRateLabel = Label(self.statisticsmaster, text="Score Rate: ", padx=10)
+        self.blockScoreLabel = Label(self.statisticsmaster, text="Score: " + str(self.ws1[('AF' + str(rowNumber))].value), padx=10)
+        self.blockTouchLabel = Label(self.statisticsmaster, text="Touch: " + str(self.ws1[('AG' + str(rowNumber))].value), padx=10)
+        self.blockOffLabel = Label(self.statisticsmaster, text="Off: " + str(self.ws1[('AH' + str(rowNumber))].value), padx=10)
+        self.blockFailLabel = Label(self.statisticsmaster, text="No block: " + str(self.ws1[('AI' + str(rowNumber))].value), padx=10)
+        self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: " + str(self.ws1[('AJ' + str(rowNumber))].value), padx=10)
+        self.blockScoreRateLabel = Label(self.statisticsmaster, text="Score Rate: " + str(self.ws1[('AK' + str(rowNumber))].value), padx=10)
 
+        self.FaultsLabel = Label(self.Faults, text="Faults: " + str(self.ws1[('AL' + str(rowNumber))].value), padx=10)
 
 
         self.serveAceLabel.grid(row=1, column=0, pady=(0,7))
@@ -549,8 +562,9 @@ class statsEditor():
         self.blockFailLabel.grid(row=11, column=3, pady=(0,7))
         self.blockRateLabel.grid(row=11, column=4, pady=(0,7))
         self.blockScoreRateLabel.grid(row=11, column=5, pady=(0,7))
-
-        self.FaultsLabel.grid(row=6, column=0, padx=10)
+        
+        self.FaultsLabel.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+        
 
         self.wb.save('data/volley_stats.xlsx')
 
@@ -795,11 +809,11 @@ class statsEditor():
         self.blockFailButton.grid(row=0, column=3)
 
 
-        self.Faults.grid(row=5, column=0, padx=10, pady=5)
+        self.Faults.grid(row=6, column=0, padx=10, pady=5)
         self.FaultsAdd.grid(row=0, column=0)
         self.FaultsRemove.grid(row=0, column=1)
         
-        self.toggleButton.grid(row=6, column=0, padx=10, pady=5)
+        self.toggleButton.grid(row=5, column=0, padx=10, pady=5)
 
         self.toggleBool = not self.toggleBool
         return
