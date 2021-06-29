@@ -268,9 +268,11 @@ class statsEditor():
     
     #Function for selecting an individual player's data
     def playerSelect(self, playerName):
+        if(self.selectedPlayer != "None"):
+            self.buttonList[self.playerList.index(self.selectedPlayer)] = Button(self.playerSelection, text=self.playerNicknameList[self.playerList.index(self.selectedPlayer)], command=lambda x=self.playerList.index(self.selectedPlayer): self.playerSelect(x), height=4, width=15)
+            self.buttonList[self.playerList.index(self.selectedPlayer)].grid(row=int(self.playerList.index(self.selectedPlayer)//5), column=self.playerList.index(self.selectedPlayer)%5)
         self.selectedPlayer = self.playerList[playerName]
-        self.buttonReset()
-        self.updateStatsLabels()   
+        #self.updateStatsLabels()   
         self.buttonList[playerName] = Button(self.playerSelection, text=self.playerNicknameList[playerName], command=lambda x=playerName: self.playerSelect(x), bg="blue", height=4, width=15)
         self.buttonList[playerName].grid(row=int(playerName//5), column=(playerName%5))
         return
@@ -280,6 +282,7 @@ class statsEditor():
         for i in range(len(self.buttonList)):
             self.buttonList[i] = Button(self.playerSelection, text=self.playerNicknameList[i], command=lambda x=i: self.playerSelect(x), height=4, width=15)
             self.buttonList[i].grid(row=int(i//5), column=(i%5))
+        self.selectedPlayer = "None"
         
     
     def statIncrease(self, getStatType):
