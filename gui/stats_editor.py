@@ -3,6 +3,7 @@ from openpyxl.workbook import Workbook
 from openpyxl import load_workbook
 from tkinter import messagebox
 from .add_player_window import addPlayerWindow
+from openpyxl.styles import Alignment
 
 class statsEditor():
      
@@ -47,22 +48,20 @@ class statsEditor():
             self.buttonList.append(str(self.playerList[i]))
         
         self.selectedPlayer = "None"
+        self.toggleBool = False
+
 
         master.title('Volleyball Statistics Input')
 
         teamName = self.ws2[('C2')].value
         self.titleLabel = Label(master, text=teamName + " " + seasonName)
 
+        #Initializing add/remove player Buttons
         self.newPlayerFrame = LabelFrame(master, text="Add/Remove Player", padx=10, pady=10)
         self.playerAdd = Button(self.newPlayerFrame, text="+", command=lambda: self.addPlayerWindow(), padx=20, pady=15)
         self.playerRemove = Button(self.newPlayerFrame, text="-", command=lambda: self.removePlayerWindow(), padx=20, pady=15)
 
-        self.seasonFrame = LabelFrame(master, text="Season Selection", padx=10, pady=10)
-        self.seasonLabel = Label(self.seasonFrame, text="Season: 1 of "+ str(len(self.seasonList)), padx=20, pady=10)
-        self.prevSeasonButton = Button(self.seasonFrame, text= "<<", command=lambda: self.prevWeek(), padx=10, pady=10, anchor=W) #
-        self.nextSeasonButton = Button(self.seasonFrame, text= ">>", command=lambda: self.nextWeek(), padx=10, pady=10, anchor=W) 
-
-
+        #Initializing Week Selection GUI
         self.weekFrame = LabelFrame(master, text="Week Selection", padx=10, pady=10)
         self.weekLabel = Label(self.weekFrame, text="Week: 1 of "+ str(len(self.weekList)), padx=20, pady=10)
         self.prevWeekButton = Button(self.weekFrame, text= "<<", command=lambda: self.prevWeek(), padx=10, pady=10, anchor=W) #
@@ -75,58 +74,54 @@ class statsEditor():
             self.buttonList[i].grid(row=int(i//5), column=(i%5))
 
         #Initializing Statisitic Add and Subtract Buttons
-        self.serveErrors = LabelFrame(master, text="Serve Errors", padx=5, pady=5)
-        self.serveErrorsAdd = Button(self.serveErrors, text="+", command=lambda: self.statIncrease("serveErrors"), padx=20, pady=15)
-        self.serveErrorsRemove = Button(self.serveErrors, text="-", command=lambda: self.statDecrease("serveErrors"), padx=20, pady=15)
-  
-        self.serveSuccess = LabelFrame(master, text="Serve Successes", padx=5, pady=5)
-        self.serveSuccessAdd = Button(self.serveSuccess, text="+", command=lambda: self.statIncrease("serveSuccess"), padx=20, pady=15)
-        self.serveSuccessRemove = Button(self.serveSuccess, text="-", command=lambda: self.statDecrease("serveSuccess"), padx=20, pady=15)
-  
-        self.receiveErrors = LabelFrame(master, text="Receive Errors", padx=5, pady=5)
-        self.receiveErrorsAdd = Button(self.receiveErrors, text="+", command=lambda: self.statIncrease("receiveErrors"), padx=20, pady=15)
-        self.receiveErrorsRemove = Button(self.receiveErrors, text="-", command=lambda: self.statDecrease("receiveErrors"), padx=20, pady=15)
-     
-        self.receiveSuccess = LabelFrame(master, text="Receive Successes", padx=5, pady=5)
-        self.receiveSuccessAdd = Button(self.receiveSuccess, text="+", command=lambda: self.statIncrease("receiveSuccess"), padx=20, pady=15)
-        self.receiveSuccessRemove = Button(self.receiveSuccess, text="-", command=lambda: self.statDecrease("receiveSuccess"), padx=20, pady=15)
+        self.servesFrame = LabelFrame(master, text="Serving", padx=5, pady=5)
+        self.serveAceButton = Button(self.servesFrame, text="Ace", command=lambda: self.statIncrease("serveAce"), height=3, width=10)
+        self.serveInButton = Button(self.servesFrame, text="In", command=lambda: self.statIncrease("serveIn"), height=3, width=10)
+        self.serveOutButton = Button(self.servesFrame, text="Out", command=lambda: self.statIncrease("serveOut"), height=3, width=10)
+        self.serveShortButton = Button(self.servesFrame, text="Short", command=lambda: self.statIncrease("serveShort"), height=3, width=10)
+        
 
-        self.setErrors = LabelFrame(master, text="Set Errors", padx=5, pady=5)
-        self.setErrorsAdd = Button(self.setErrors, text="+", command=lambda: self.statIncrease("setErrors"), padx=20, pady=15)
-        self.setErrorsRemove = Button(self.setErrors, text="-", command=lambda: self.statDecrease("setErrors"), padx=20, pady=15)
-     
-        self.setSuccess = LabelFrame(master, text="Set Successes", padx=5, pady=5)
-        self.setSuccessAdd = Button(self.setSuccess, text="+", command=lambda: self.statIncrease("setSuccess"), padx=20, pady=15)
-        self.setSuccessRemove = Button(self.setSuccess, text="-", command=lambda: self.statDecrease("setSuccess"), padx=20, pady=15)
-      
-        self.spikeErrors = LabelFrame(master, text="Spike Errors", padx=5, pady=5)
-        self.spikeErrorsAdd = Button(self.spikeErrors, text="+", command=lambda: self.statIncrease("spikeErrors"), padx=20, pady=15)
-        self.spikeErrorsRemove = Button(self.spikeErrors, text="-", command=lambda: self.statDecrease("spikeErrors"), padx=20, pady=15)
-     
-        self.spikeSuccess = LabelFrame(master, text="Spike Successes", padx=5, pady=5)
-        self.spikeSuccessAdd = Button(self.spikeSuccess, text="+", command=lambda: self.statIncrease("spikeSuccess"), padx=20, pady=15)
-        self.spikeSuccessRemove = Button(self.spikeSuccess, text="-", command=lambda: self.statDecrease("spikeSuccess"), padx=20, pady=15)
+        self.receivesFrame = LabelFrame(master, text="Receiving", padx=5, pady=5)
+        self.receiveTargetedButton = Button(self.receivesFrame, text="Targeted", command=lambda: self.statIncrease("receiveTargeted"), height=3, width=10)
+        self.receiveHighButton = Button(self.receivesFrame, text="High", command=lambda: self.statIncrease("receiveHigh"), height=3, width=10)
+        self.receiveOffButton = Button(self.receivesFrame, text="Off Target", command=lambda: self.statIncrease("receiveOff"), height=3, width=10)
+        self.receiveLowButton = Button(self.receivesFrame, text="Low", command=lambda: self.statIncrease("receiveLow"), height=3, width=10)
 
-        self.tipErrors = LabelFrame(master, text="Tip Errors", padx=5, pady=5)
-        self.tipErrorsAdd = Button(self.tipErrors, text="+", command=lambda: self.statIncrease("tipErrors"), padx=20, pady=15)
-        self.tipErrorsRemove = Button(self.tipErrors, text="-", command=lambda: self.statDecrease("tipErrors"), padx=20, pady=15)
-     
-        self.tipSuccess = LabelFrame(master, text="Tip Successes", padx=5, pady=5)
-        self.tipSuccessAdd = Button(self.tipSuccess, text="+", command=lambda: self.statIncrease("tipSuccess"), padx=20, pady=15)
-        self.tipSuccessRemove = Button(self.tipSuccess, text="-", command=lambda: self.statDecrease("tipSuccess"), padx=20, pady=15)
-     
-        self.blockErrors = LabelFrame(master, text="Block Errors", padx=5, pady=5)
-        self.blockErrorsAdd = Button(self.blockErrors, text="+", command=lambda: self.statIncrease("blockErrors"), padx=20, pady=15)
-        self.blockErrorsRemove = Button(self.blockErrors, text="-", command=lambda: self.statDecrease("blockErrors"), padx=20, pady=15)
-    
-        self.blockSuccess = LabelFrame(master, text="Block Successes", padx=5, pady=5)
-        self.blockSuccessAdd = Button(self.blockSuccess, text="+", command=lambda: self.statIncrease("blockSuccess"), padx=20, pady=15)
-        self.blockSuccessRemove = Button(self.blockSuccess, text="-", command=lambda: self.statDecrease("blockSuccess"), padx=20, pady=15)
-     
+
+        self.setsFrame = LabelFrame(master, text="Setting", padx=5, pady=5)
+        self.setTargetedButton = Button(self.setsFrame, text="Targeted", command=lambda: self.statIncrease("setTargeted"), height=3, width=10)
+        self.setHighButton = Button(self.setsFrame, text="High", command=lambda: self.statIncrease("setHigh"), height=3, width=10)
+        self.setOffButton = Button(self.setsFrame, text="Off", command=lambda: self.statIncrease("setOff"), height=3, width=10)
+        self.setLowButton = Button(self.setsFrame, text="Low", command=lambda: self.statIncrease("setLow"), height=3, width=10)
+
+
+        self.spikesFrame = LabelFrame(master, text="Spiking", padx=5, pady=5)
+        self.spikeSuccessButton = Button(self.spikesFrame, text="Success", command=lambda: self.statIncrease("spikeSuccess"), height=3, width=10)
+        self.spikeInButton = Button(self.spikesFrame, text="In", command=lambda: self.statIncrease("spikeIn"), height=3, width=10)
+        self.spikeBlockedButton = Button(self.spikesFrame, text="Blocked", command=lambda: self.statIncrease("spikeBlocked"), height=3, width=10)
+        self.spikeOutButton = Button(self.spikesFrame, text="Out", command=lambda: self.statIncrease("spikeOut"), height=3, width=10)
+        
+
+        self.tipsFrame = LabelFrame(master, text="Tipping", padx=5, pady=5)
+        self.tipSuccessButton = Button(self.tipsFrame, text="Success", command=lambda: self.statIncrease("tipSuccess"), height=3, width=10)
+        self.tipInButton = Button(self.tipsFrame, text="In", command=lambda: self.statIncrease("tipIn"), height=3, width=10)
+        self.tipBlockedButton = Button(self.tipsFrame, text="Blocked", command=lambda: self.statIncrease("tipBlocked"), height=3, width=10)
+        self.tipOutButton = Button(self.tipsFrame, text="Out", command=lambda: self.statIncrease("tipOut"), height=3, width=10)
+
+
+        self.blocksFrame = LabelFrame(master, text="Blocking", padx=5, pady=5)
+        self.blockScoreButton = Button(self.blocksFrame, text="Score", command=lambda: self.statIncrease("blockScore"), height=3, width=10)
+        self.blockTouchButton = Button(self.blocksFrame, text="Touch", command=lambda: self.statIncrease("blockTouch"), height=3, width=10)
+        self.blockOffButton = Button(self.blocksFrame, text="Off", command=lambda: self.statIncrease("blockOff"), height=3, width=10)
+        self.blockFailButton = Button(self.blocksFrame, text="No Block", command=lambda: self.statIncrease("blockFail"), height=3, width=10)
+
+
         self.Faults = LabelFrame(master, text="Faults", padx=5, pady=5)
         self.FaultsAdd = Button(self.Faults, text="+", command=lambda: self.statIncrease("Faults"), padx=20, pady=15)
         self.FaultsRemove = Button(self.Faults, text="-", command=lambda: self.statDecrease("Faults"), padx=20, pady=15)
-      
+
+        self.toggleButton = Button(master, text="Toggle \n Decrease", command=lambda:self.toggleStatButtons(master), height=3, width=10)
+        
         #Initialising Statistics table
         self.statisticsmaster = LabelFrame(master, text="Player Statistics", padx=10, pady=7)
         self.serveErrorsLabel = Label(self.statisticsmaster, text="Serve Errors: ", padx=10, pady=7)
@@ -149,8 +144,6 @@ class statsEditor():
         self.blockRateLabel = Label(self.statisticsmaster, text="Block Rate: ", padx=10, pady=7)
         self.FaultsLabel = Label(self.statisticsmaster, text="Faults: ", padx=10, pady=7)
         
-        self.exitButton = Button(master, text= "Exit", command=master.destroy, padx=20, pady=10)
-        
         ##Attaching all initial state GUI components to grid
         
         #Initial elements
@@ -169,60 +162,56 @@ class statsEditor():
         self.playerSelection.grid(row=1, column=1, columnspan=4, padx=10, pady=5)
       
         #buttons and frames for changing data
-        self.serveErrors.grid(row=2, column=0, padx=10, pady=5)
-        self.serveErrorsAdd.grid(row=0, column=0)
-        self.serveErrorsRemove.grid(row=0, column=1)
-      
-        self.serveSuccess.grid(row=2, column=1, padx=10, pady=5)
-        self.serveSuccessAdd.grid(row=0, column=0)
-        self.serveSuccessRemove.grid(row=0, column=1)
-      
-        self.receiveErrors.grid(row=2, column=2, padx=10, pady=5)
-        self.receiveErrorsAdd.grid(row=0, column=0)
-        self.receiveErrorsRemove.grid(row=0, column=1)
-      
-        self.receiveSuccess.grid(row=2, column=3, padx=10, pady=5)
-        self.receiveSuccessAdd.grid(row=0, column=0)
-        self.receiveSuccessRemove.grid(row=0, column=1)
+        self.servesFrame.grid(row=2, column=0, columnspan=2, padx=10, pady=5)
+        self.serveAceButton.grid(row=0, column=0)
+        self.serveInButton.grid(row=0, column=1)
+        self.serveOutButton.grid(row=0, column=2)
+        self.serveShortButton.grid(row=0, column=3)
 
-        self.setErrors.grid(row=3, column=0, padx=10, pady=5)
-        self.setErrorsAdd.grid(row=0, column=0)
-        self.setErrorsRemove.grid(row=0, column=1)
-      
-        self.setSuccess.grid(row=3, column=1, padx=10, pady=5)
-        self.setSuccessAdd.grid(row=0, column=0)
-        self.setSuccessRemove.grid(row=0, column=1)
-   
-        self.spikeErrors.grid(row=3, column=2, padx=10, pady=5)
-        self.spikeErrorsAdd.grid(row=0, column=0)
-        self.spikeErrorsRemove.grid(row=0, column=1)
-       
-        self.spikeSuccess.grid(row=3, column=3, padx=10, pady=5)
-        self.spikeSuccessAdd.grid(row=0, column=0)
-        self.spikeSuccessRemove.grid(row=0, column=1)
-        
-        self.tipErrors.grid(row=4, column=0, padx=10, pady=5)
-        self.tipErrorsAdd.grid(row=0, column=0)
-        self.tipErrorsRemove.grid(row=0, column=1)
-       
-        self.tipSuccess.grid(row=4, column=1, padx=10, pady=5)
-        self.tipSuccessAdd.grid(row=0, column=0)
-        self.tipSuccessRemove.grid(row=0, column=1)
-        
-        self.blockErrors.grid(row=4, column=2, padx=10, pady=5)
-        self.blockErrorsAdd.grid(row=0, column=0)
-        self.blockErrorsRemove.grid(row=0, column=1)
-       
-        self.blockSuccess.grid(row=4, column=3, padx=10, pady=5)
-        self.blockSuccessAdd.grid(row=0, column=0)
-        self.blockSuccessRemove.grid(row=0, column=1)
-      
+
+        self.receivesFrame.grid(row=2, column=2, columnspan=2, padx=10, pady=5)
+        self.receiveTargetedButton.grid(row=0, column=0)
+        self.receiveHighButton.grid(row=0, column=1)
+        self.receiveOffButton.grid(row=0, column=2)
+        self.receiveLowButton.grid(row=0, column=3)
+
+
+        self.setsFrame.grid(row=3, column=0, columnspan=2, padx=10, pady=5)
+        self.setTargetedButton.grid(row=0, column=0)
+        self.setHighButton.grid(row=0, column=1)
+        self.setOffButton.grid(row=0, column=2)
+        self.setLowButton.grid(row=0, column=3)
+
+
+        self.spikesFrame.grid(row=3, column=2, columnspan=2, padx=10, pady=5)
+        self.spikeSuccessButton.grid(row=0, column=0)
+        self.spikeInButton.grid(row=0, column=1)
+        self.spikeBlockedButton.grid(row=0, column=2)
+        self.spikeOutButton.grid(row=0, column=3)
+
+
+        self.tipsFrame.grid(row=4, column=0, columnspan=2, padx=10, pady=5)
+        self.tipSuccessButton.grid(row=0, column=0)
+        self.tipInButton.grid(row=0, column=1)
+        self.tipBlockedButton.grid(row=0, column=2)
+        self.tipOutButton.grid(row=0, column=3)
+
+
+        self.blocksFrame.grid(row=4, column=2, columnspan=2, padx=10, pady=5)
+        self.blockScoreButton.grid(row=0, column=0)
+        self.blockTouchButton.grid(row=0, column=1)
+        self.blockOffButton.grid(row=0, column=2)
+        self.blockFailButton.grid(row=0, column=3)
+
+
         self.Faults.grid(row=5, column=0, padx=10, pady=5)
         self.FaultsAdd.grid(row=0, column=0)
         self.FaultsRemove.grid(row=0, column=1)
-      
+        
+        self.toggleButton.grid(row=6, column=0, padx=10, pady=5)
+
         #Statistics frame and labels
-        self.statisticsmaster.grid(row=5, column=1, columnspan=3, padx=5)
+        self.statisticsmaster.grid(row=5, column=1, columnspan=3, rowspan=2, padx=5)
         self.serveErrorsLabel.grid(row=0, column=0, padx=10,)
         self.serveSuccessLabel.grid(row=0, column=1, padx=10)
         self.serveRateLabel.grid(row=0, column=2, padx=10)
@@ -243,7 +232,6 @@ class statsEditor():
         self.blockRateLabel.grid(row=5, column=2, padx=10)
         self.FaultsLabel.grid(row=6, column=0, padx=10)
         
-        #self.exitButton.grid(row=99, column=4)
     
     #Function for iterating week forwards once
     def nextWeek(self): 
@@ -295,8 +283,8 @@ class statsEditor():
         
     
     def statIncrease(self, getStatType):
-        statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "setErrors", "setSuccess", "spikeErrors", "spikeSuccess", "tipErrors", "tipSuccess", "blockErrors", "blockSuccess", "Faults"]
-        columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N', 'O', 'Q', 'R', 'T']
+        statTypeList = ["serveAce", "serveIn", "serveOut", "serveShort", "receiveTargeted", "receiveHigh", "receiveOff", "receiveLow", "setTargeted", "setHigh", "setOff", "setLow", "spikeSuccess", "spikeIn", "spikeBlocked", "spikeOut", "tipSuccess", "tipIn", "tipBlocked", "tipOut", "blockScore", "blockTouch", "blockOff", "blockFail", "Faults"]
+        columnList = ['B', 'C', 'D', 'E', 'H', 'I', 'J', 'K', 'N', 'O', 'P', 'Q', 'T', 'U', 'V', 'W', 'Z', 'AA', 'AB', 'AC', 'AF', 'AG', 'AH', 'AI', 'AL']
         columnChar = columnList[statTypeList.index(getStatType)]
         if(self.selectedPlayer == "None"):
             messagebox.showinfo("Error", "No Player Selected")
@@ -308,8 +296,8 @@ class statsEditor():
         return
 
     def statDecrease(self, getStatType):
-        statTypeList = ["serveErrors", "serveSuccess", "receiveErrors", "receiveSuccess", "setErrors", "setSuccess", "spikeErrors", "spikeSuccess", "tipErrors", "tipSuccess", "blockErrors", "blockSuccess", "Faults"]
-        columnList = ['B', 'C', 'E', 'F', 'H', 'I', 'K', 'L', 'N', 'O', 'Q', 'R', 'T']
+        statTypeList = ["serveAce", "serveIn", "serveOut", "serveShort", "receiveTargeted", "receiveHigh", "receiveOff", "receiveLow", "setTargeted", "setHigh", "setOff", "setLow", "spikeSuccess", "spikeIn", "spikeBlocked", "spikeOut", "tipSuccess", "tipIn", "tipBlocked", "tipOut", "blockScore", "blockTouch", "blockOff", "blockFail", "Faults"]
+        columnList = ['B', 'C', 'D', 'E', 'H', 'I', 'J', 'K', 'N', 'O', 'P', 'Q', 'T', 'U', 'V', 'W', 'Z', 'AA', 'AB', 'AC', 'AF', 'AG', 'AH', 'AI', 'AL']
         columnChar = columnList[statTypeList.index(getStatType)]
         if(self.selectedPlayer == "None"):
             messagebox.showinfo("Error", "No Player Selected")
@@ -478,6 +466,7 @@ class statsEditor():
         for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 6, ((self.seasonNumber-1) * 7) + 6):
             for cell in col:
                 cell.value = self.playerList[colCount]
+                cell.alignment = Alignment(wrap_text=True)
             colCount = colCount + 1
             if(colCount >= len(self.playerList)):
                 break
@@ -486,6 +475,7 @@ class statsEditor():
         for col in self.ws2.iter_cols(None, None, ((self.seasonNumber-1) * 7) + 8, ((self.seasonNumber-1) * 7) + 8):
             for cell in col:
                 cell.value = self.playerNicknameList[colCount]
+                cell.alignment = Alignment(wrap_text=True)
             colCount = colCount + 1
             if(colCount >= len(self.playerList)):
                 break
@@ -493,7 +483,7 @@ class statsEditor():
         for i in range(len(self.weekList)):
             self.ws1.insert_rows(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))
             self.ws1['A' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))].value = playerName
-            for cell in self.ws1['B'+ str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList)))):'AG' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))]:
+            for cell in self.ws1['B'+ str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList)))):'AL' + str(3 + self.playerList.index(playerName) + (i * (3 + len(self.playerList))))]:
                 for k in cell:
                     k.value = 0
         
@@ -556,4 +546,126 @@ class statsEditor():
         self.wb.save('data/volley_stats.xlsx')
         messagebox.showinfo("Success", "Player Successfully Removed")
         top.destroy()
+        return
+
+    def toggleStatButtons(self, master):
+        if self.toggleBool == False:
+            self.serveAceButton = Button(self.servesFrame, text="Ace", command=lambda: self.statDecrease("serveAce"), height=3, width=10)
+            self.serveInButton = Button(self.servesFrame, text="In", command=lambda: self.statDecrease("serveIn"), height=3, width=10)
+            self.serveOutButton = Button(self.servesFrame, text="Out", command=lambda: self.statDecrease("serveOut"), height=3, width=10)
+            self.serveShortButton = Button(self.servesFrame, text="Short", command=lambda: self.statDecrease("serveShort"), height=3, width=10)
+        
+
+            self.receiveTargetedButton = Button(self.receivesFrame, text="Targeted", command=lambda: self.statDecrease("receiveTargeted"), height=3, width=10)
+            self.receiveHighButton = Button(self.receivesFrame, text="High", command=lambda: self.statDecrease("receiveHigh"), height=3, width=10)
+            self.receiveOffButton = Button(self.receivesFrame, text="Off Target", command=lambda: self.statDecrease("receiveOff"), height=3, width=10)
+            self.receiveLowButton = Button(self.receivesFrame, text="Low", command=lambda: self.statDecrease("receiveLow"), height=3, width=10)
+
+
+            self.setTargetedButton = Button(self.setsFrame, text="Targeted", command=lambda: self.statDecrease("setTargeted"), height=3, width=10)
+            self.setHighButton = Button(self.setsFrame, text="High", command=lambda: self.statDecrease("setHigh"), height=3, width=10)
+            self.setOffButton = Button(self.setsFrame, text="Off", command=lambda: self.statDecrease("setOff"), height=3, width=10)
+            self.setLowButton = Button(self.setsFrame, text="Low", command=lambda: self.statDecrease("setLow"), height=3, width=10)
+
+
+            self.spikeSuccessButton = Button(self.spikesFrame, text="Success", command=lambda: self.statDecrease("spikeSuccess"), height=3, width=10)
+            self.spikeInButton = Button(self.spikesFrame, text="In", command=lambda: self.statDecrease("spikeIn"), height=3, width=10)
+            self.spikeBlockedButton = Button(self.spikesFrame, text="Blocked", command=lambda: self.statDecrease("spikeBlocked"), height=3, width=10)
+            self.spikeOutButton = Button(self.spikesFrame, text="Out", command=lambda: self.statDecrease("spikeOut"), height=3, width=10)
+            
+
+            self.tipSuccessButton = Button(self.tipsFrame, text="Success", command=lambda: self.statDecrease("tipSuccess"), height=3, width=10)
+            self.tipInButton = Button(self.tipsFrame, text="In", command=lambda: self.statDecrease("tipIn"), height=3, width=10)
+            self.tipBlockedButton = Button(self.tipsFrame, text="Blocked", command=lambda: self.statDecrease("tipBlocked"), height=3, width=10)
+            self.tipOutButton = Button(self.tipsFrame, text="Out", command=lambda: self.statDecrease("tipOut"), height=3, width=10)
+
+
+            self.blockScoreButton = Button(self.blocksFrame, text="Score", command=lambda: self.statDecrease("blockScore"), height=3, width=10)
+            self.blockTouchButton = Button(self.blocksFrame, text="Touch", command=lambda: self.statDecrease("blockTouch"), height=3, width=10)
+            self.blockOffButton = Button(self.blocksFrame, text="Off", command=lambda: self.statDecrease("blockOff"), height=3, width=10)
+            self.blockFailButton = Button(self.blocksFrame, text="No Block", command=lambda: self.statDecrease("blockFail"), height=3, width=10)
+
+            self.toggleButton = Button(master,  text="Toggle \n Increase", command=lambda:self.toggleStatButtons(master), bg='Red', height=3, width=10)
+
+        if self.toggleBool == True:
+            self.serveAceButton = Button(self.servesFrame, text="Ace", command=lambda: self.statIncrease("serveAce"), height=3, width=10)
+            self.serveInButton = Button(self.servesFrame, text="In", command=lambda: self.statIncrease("serveIn"), height=3, width=10)
+            self.serveOutButton = Button(self.servesFrame, text="Out", command=lambda: self.statIncrease("serveOut"), height=3, width=10)
+            self.serveShortButton = Button(self.servesFrame, text="Short", command=lambda: self.statIncrease("serveShort"), height=3, width=10)
+        
+
+            self.receiveTargetedButton = Button(self.receivesFrame, text="Targeted", command=lambda: self.statIncrease("receiveTargeted"), height=3, width=10)
+            self.receiveHighButton = Button(self.receivesFrame, text="High", command=lambda: self.statIncrease("receiveHigh"), height=3, width=10)
+            self.receiveOffButton = Button(self.receivesFrame, text="Off Target", command=lambda: self.statIncrease("receiveOff"), height=3, width=10)
+            self.receiveLowButton = Button(self.receivesFrame, text="Low", command=lambda: self.statIncrease("receiveLow"), height=3, width=10)
+
+
+            self.setTargetedButton = Button(self.setsFrame, text="Targeted", command=lambda: self.statIncrease("setTargeted"), height=3, width=10)
+            self.setHighButton = Button(self.setsFrame, text="High", command=lambda: self.statIncrease("setHigh"), height=3, width=10)
+            self.setOffButton = Button(self.setsFrame, text="Off", command=lambda: self.statIncrease("setOff"), height=3, width=10)
+            self.setLowButton = Button(self.setsFrame, text="Low", command=lambda: self.statIncrease("setLow"), height=3, width=10)
+
+
+            self.spikeSuccessButton = Button(self.spikesFrame, text="Success", command=lambda: self.statIncrease("spikeSuccess"), height=3, width=10)
+            self.spikeInButton = Button(self.spikesFrame, text="In", command=lambda: self.statIncrease("spikeIn"), height=3, width=10)
+            self.spikeBlockedButton = Button(self.spikesFrame, text="Blocked", command=lambda: self.statIncrease("spikeBlocked"), height=3, width=10)
+            self.spikeOutButton = Button(self.spikesFrame, text="Out", command=lambda: self.statIncrease("spikeOut"), height=3, width=10)
+            
+
+            self.tipSuccessButton = Button(self.tipsFrame, text="Success", command=lambda: self.statIncrease("tipSuccess"), height=3, width=10)
+            self.tipInButton = Button(self.tipsFrame, text="In", command=lambda: self.statIncrease("tipIn"), height=3, width=10)
+            self.tipBlockedButton = Button(self.tipsFrame, text="Blocked", command=lambda: self.statIncrease("tipBlocked"), height=3, width=10)
+            self.tipOutButton = Button(self.tipsFrame, text="Out", command=lambda: self.statIncrease("tipOut"), height=3, width=10)
+
+
+            self.blockScoreButton = Button(self.blocksFrame, text="Score", command=lambda: self.statIncrease("blockScore"), height=3, width=10)
+            self.blockTouchButton = Button(self.blocksFrame, text="Touch", command=lambda: self.statIncrease("blockTouch"), height=3, width=10)
+            self.blockOffButton = Button(self.blocksFrame, text="Off", command=lambda: self.statIncrease("blockOff"), height=3, width=10)
+            self.blockFailButton = Button(self.blocksFrame, text="No Block", command=lambda: self.statIncrease("blockFail"), height=3, width=10)
+
+            self.toggleButton = Button(master, text="Toggle \n Decrease", command=lambda:self.toggleStatButtons(master), height=3, width=10)
+        
+        self.serveAceButton.grid(row=0, column=0)
+        self.serveInButton.grid(row=0, column=1)
+        self.serveOutButton.grid(row=0, column=2)
+        self.serveShortButton.grid(row=0, column=3)
+
+        
+        self.receiveTargetedButton.grid(row=0, column=0)
+        self.receiveHighButton.grid(row=0, column=1)
+        self.receiveOffButton.grid(row=0, column=2)
+        self.receiveLowButton.grid(row=0, column=3)
+
+        
+        self.setTargetedButton.grid(row=0, column=0)
+        self.setHighButton.grid(row=0, column=1)
+        self.setOffButton.grid(row=0, column=2)
+        self.setLowButton.grid(row=0, column=3)
+
+        
+        self.spikeSuccessButton.grid(row=0, column=0)
+        self.spikeInButton.grid(row=0, column=1)
+        self.spikeBlockedButton.grid(row=0, column=2)
+        self.spikeOutButton.grid(row=0, column=3)
+
+
+        self.tipSuccessButton.grid(row=0, column=0)
+        self.tipInButton.grid(row=0, column=1)
+        self.tipBlockedButton.grid(row=0, column=2)
+        self.tipOutButton.grid(row=0, column=3)
+
+        
+        self.blockScoreButton.grid(row=0, column=0)
+        self.blockTouchButton.grid(row=0, column=1)
+        self.blockOffButton.grid(row=0, column=2)
+        self.blockFailButton.grid(row=0, column=3)
+
+
+        self.Faults.grid(row=5, column=0, padx=10, pady=5)
+        self.FaultsAdd.grid(row=0, column=0)
+        self.FaultsRemove.grid(row=0, column=1)
+        
+        self.toggleButton.grid(row=6, column=0, padx=10, pady=5)
+
+        self.toggleBool = not self.toggleBool
         return
