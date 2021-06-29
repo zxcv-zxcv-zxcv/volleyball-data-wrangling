@@ -31,7 +31,7 @@ class statsEditor():
         self.playerList = []
         cellRange = self.ws2[str(((self.seasonNumber-1) * 7) + 6)]
         for i in range(self.playerNumber):
-            self.playerList.append("".join(str(cellRange[i].value).split()))
+            self.playerList.append(str(cellRange[i].value))
 
         self.playerNicknameList = []
         cellRange = self.ws2[str(((self.seasonNumber-1) * 7) + 8)]
