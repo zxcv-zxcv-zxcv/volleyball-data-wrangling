@@ -2,51 +2,34 @@
 
 
 ## Specifications
-
-Name: String  
-Week No.#: Int - OR TOTAL -  
-Serve Errors: Int  
-Serve Success: Int  
-Serve % = Serve Success / SE + SS Float  
-Receive Errors (No consecutive Touch): Int  
-Receive Passes (Consecutive Touch must’ve been made): Int  
-Receive % = Receive Passes / RE + RP Float  
-Spike Errors (No consecutive Touch): Int  
-Spike Success (Goes over the court and is not out): Int  
-Spike % = Spike Success / HE + HS  
-Block Errors (Play ends after block with point loss, must’ve contacted ball): Int  
-Block Successes (No point loss, play resumes or ends): Int  
-Block % = Block % / BE + BS Float  
-Faults: Int  
-
-
-Need to be able to view team stats (all players combined) over the week and total. Need to be able to view a certain players stats over the week and total.  
-Need to be able to add in data for a specified week, and be able to create new weeks.  
+This is a simple GUI interface that interfaces with an excel spreadsheet designed to record player statistics for volleyball when viewing a game recording.
+The primary imports used are Tkinter and Openpyxl
+Currently the app is able to make all the required edits to the excel spreadsheet and has a simple indicator for current statistics in that same editor. It is lacking a more official viewport with more detailed assessments of player statistics and if they are show week to week improvements.
 
 Known Issues:
 
 Doesn't have an adequate way to record covers following a poor receive or set.
 
-Unable to properly record tipping or hitting on second as an error.
+If someone is not tall enough for blocking to be useful how do we record their perfomance on blocking?
 
-Unsure if faults should be recorded independently of the action being taken (should a fault on a spike error also increment spike errors?)
-
-If someone is not going to be made to block how do we record their actions on blocking?
-
-Occasionally difficult to see if set positioning was correct.
-
-Fails to record quality of an action (e.g. doesn't Distinguish between a successful overhand and underhand serve, a recieve that got up vs got to the setter, a set which was spikeable vs tippable, etc.)
-
-
-
+Occasionally difficult to see if set positioning was correct (Using our personal recording setup).
 
 
 ## GUI 
+Currently The GUI consists of a main menu which leads into three options. Two of these options are for viewports of the statistics which have yet to be developed. The remaining button leads to a season selector window allowing you to select which season of your team's data you wish to edit. After selecting a season the editor window opens allowing you to make edits to playerstatistics, add or remove players, and contains a more rudimentary series of stats values so as to appropriately inform the editor that their inputs are being recorded.
 
+## STATS
+The statistics is broken down into the primary actions being perfomed during play. Those being:
+Serves
+Receives
+Sets
+Spikes
+Tips
+Blocks
 
-VIEW TEAM STATS -> CHOOSE WEEK \ ALL WEEKS  
-VIEW PLAYER STATS -> CHOOSE PLAYER -> CHOOSE WEEK \ ALL WEEKS  
-ADD STATS -> CHOOSE PLAYER -> CHOOSE WEEK      
------------> ADD NEW PLAYER  
-
-MAYBE: Separate Week by Seasons? Remove Player?  
+These 6 actions are then broken down into 4 categories attempting to indicate best to worst for each category using the success of the play.
+For example Serves are broken up into:
+Aces: The serve was performed well enough that the opposing team was unable to receive it.
+In: The serve made it into the enmey court but they managed to receive it.
+Out: The serve made it over the net but failed to make it into the enemy court.
+Short: The serve failed to make it over the net.
