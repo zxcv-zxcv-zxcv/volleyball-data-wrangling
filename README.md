@@ -10,7 +10,7 @@ Known Issues:
 
 Doesn't have an adequate way to record covers following a poor receive or set.
 
-If someone is not going to be made to block how do we record their actions on blocking?
+If someone is not tall enough for blocking to be useful how do we record their perfomance on blocking?
 
 Occasionally difficult to see if set positioning was correct (Using our personal recording setup).
 
