@@ -14,6 +14,10 @@ If someone is not tall enough for blocking to be useful how do we record their p
 
 Occasionally difficult to see if set positioning was correct (Using our personal recording setup).
 
+The Statistics Editor window looks ugly and overwhelming
+
+Other windows look bland
+
 
 ## GUI 
 Currently The GUI consists of a main menu which leads into three options. Two of these options are for viewports of the statistics which have yet to be developed. The remaining button leads to a season selector window allowing you to select which season of your team's data you wish to edit. After selecting a season the editor window opens allowing you to make edits to playerstatistics, add or remove players, and contains a more rudimentary series of stats values so as to appropriately inform the editor that their inputs are being recorded.
