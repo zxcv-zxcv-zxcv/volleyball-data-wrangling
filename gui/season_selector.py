@@ -10,7 +10,6 @@ class seasonSelectionWindow():
 
     def __init__(self, master):
         master.title('Season Selector')
-        #master.geometry("300x300")
         
         self.titleLabel = Label(master, text="Season Selector")
 

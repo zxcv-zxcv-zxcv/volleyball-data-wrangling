@@ -1,9 +1,6 @@
 from tkinter import *
 from openpyxl.workbook import Workbook
 from openpyxl import load_workbook
-from .stats_editor import statsEditor
-from tkinter import messagebox
-from openpyxl.styles import Alignment
 
 
 class playerViewerWindow():
