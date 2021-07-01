@@ -1,5 +1,7 @@
 from tkinter import *
 from .season_selector import seasonSelectionWindow
+from .team_viewer_window import teamViewerWindow
+from .player_viewer_window import playerViewerWindow
 
 
 def app():
@@ -17,9 +19,15 @@ def app():
 
 
     def openPlayerStats():
+        top = Toplevel()
+        b = playerViewerWindow(top)
+        top.mainloop()
         return
 
     def openTeamStats():
+        top = Toplevel()
+        b = teamViewerWindow(top)
+        top.mainloop()
         return
 
     titleLabel = Label(root, text="Main Menu", padx=5, pady=10, anchor=W)
