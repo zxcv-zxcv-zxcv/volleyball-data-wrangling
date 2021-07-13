@@ -20,11 +20,6 @@ class statsEditor():
         
         
         self.seasonNumber = seasonNo
-        self.seasonList = []
-        for i in range(self.ws2['A2'].value):
-            self.seasonList.append(i+1)
-
-        
 
         self.playerNumber = self.ws2[('B' + str(((self.seasonNumber-1) * 7) + 4))].value
         
@@ -248,48 +243,36 @@ class statsEditor():
         self.serveInLabel.grid(row=4, column=1, pady=5)
         self.serveOutLabel.grid(row=4, column=2, pady=5)
         self.serveShortLabel.grid(row=4, column=3, pady=5)
-        #self.serveRateLabel.grid(row=4, column=4, pady=5)
-        #self.serveAceRateLabel.grid(row=4, column=5, pady=5)
-
+        
         self.receiveLabelFrame.grid(row=4, column=4, columnspan=4)
         self.receiveTargetedLabel.grid(row=4, column=0, pady=5)
         self.receiveHighLabel.grid(row=4, column=1, pady=5)
         self.receiveOffLabel.grid(row=4, column=2, pady=5)
         self.receiveLowLabel.grid(row=4, column=3, pady=5)
-        #self.receiveRateLabel.grid(row=4, column=4, pady=5)
-        #self.receiveBestLabel.grid(row=4, column=5, pady=5)
-
+        
         self.setLabelFrame.grid(row=6, column=0, columnspan=4)
         self.setTargetedLabel.grid(row=6, column=0, pady=5)
         self.setHighLabel.grid(row=6, column=1, pady=5)
         self.setOffLabel.grid(row=6, column=2, pady=5)
         self.setLowLabel.grid(row=6, column=3, pady=5)
-        #self.setRateLabel.grid(row=6, column=4, pady=5)
-        #self.setBestLabel.grid(row=6, column=5, pady=5)
-
+        
         self.spikeLabelFrame.grid(row=6, column=4, columnspan=4)
         self.spikeSuccessLabel.grid(row=6, column=0, pady=5)
         self.spikeInLabel.grid(row=6, column=1, pady=5)
         self.spikeBlockedLabel.grid(row=6, column=2, pady=5)
         self.spikeOutLabel.grid(row=6, column=3, pady=5)
-        #self.spikeRateLabel.grid(row=6, column=4, pady=5)
-        #self.spikeScoreRateLabel.grid(row=6, column=5, pady=5)
-
+        
         self.tipLabelFrame.grid(row=8, column=0, columnspan=4)
         self.tipSuccessLabel.grid(row=8, column=0, pady=(5, 15))
         self.tipInLabel.grid(row=8, column=1, pady=(5, 15))
         self.tipBlockedLabel.grid(row=8, column=2, pady=(5, 15))
         self.tipOutLabel.grid(row=8, column=3, pady=(5, 15))
-        #self.tipRateLabel.grid(row=8, column=4, pady=(5, 15))
-        #self.tipScoreLabel.grid(row=8, column=5, pady=(5, 15))
-
+        
         self.blockLabelFrame.grid(row=8, column=4, columnspan=4)
         self.blockScoreLabel.grid(row=8, column=0, pady=(5, 15))
         self.blockTouchLabel.grid(row=8, column=1, pady=(5, 15))
         self.blockOffLabel.grid(row=8, column=2, pady=(5, 15))
         self.blockFailLabel.grid(row=8, column=3, pady=(5, 15))
-        #self.blockRateLabel.grid(row=8, column=4, pady=(5, 15))
-        #elf.blockScoreRateLabel.grid(row=8, column=5, pady=(5, 15))
         
 
     #Function for iterating week forwards once
@@ -302,8 +285,6 @@ class statsEditor():
             self.weekNumber += 1
         self.weekLabel = Label(self.weekFrame, text="Week: " + str(self.weekList[self.weekNumber-1]) + " of " + str(len(self.weekList)), padx=20, pady=10, anchor=W)
         self.weekLabel.grid(row=0, column=1)
-        self.prevWeekButton.grid(row=0, column=0)
-        self.nextWeekButton.grid(row=0, column=2)
         if(self.selectedPlayer != "None"):
             self.updateStatsLabels()
         return
@@ -314,13 +295,11 @@ class statsEditor():
         self.weekLabel.grid_forget()
         
         if(self.weekNumber-1 == 0):
-            self.weekNumber = 11   
+            self.weekNumber = len(self.weekList)
         else:
             self.weekNumber -= 1 
         self.weekLabel = Label(self.weekFrame, text="Week: " + str(self.weekList[self.weekNumber-1]) + " of " + str(len(self.weekList)), padx=20, pady=10, anchor=W)
         self.weekLabel.grid(row=0, column=1)
-        self.prevWeekButton.grid(row=0, column=0)
-        self.nextWeekButton.grid(row=0, column=2)
         if(self.selectedPlayer != "None"):
             self.updateStatsLabels()
         return
@@ -389,44 +368,32 @@ class statsEditor():
         self.serveInLabel.grid_forget()
         self.serveOutLabel.grid_forget()
         self.serveShortLabel.grid_forget()
-        #self.serveRateLabel.grid_forget()
-        #self.serveAceRateLabel.grid_forget()
-
+        
         self.receiveTargetedLabel.grid_forget()
         self.receiveHighLabel.grid_forget()
         self.receiveOffLabel.grid_forget()
         self.receiveLowLabel.grid_forget()
-        #self.receiveRateLabel.grid_forget()
-        #self.receiveBestLabel.grid_forget()
- 
+        
         self.setTargetedLabel.grid_forget()
         self.setHighLabel.grid_forget()
         self.setOffLabel.grid_forget()
         self.setLowLabel.grid_forget()
-        #self.setRateLabel.grid_forget()
-        #self.setBestLabel.grid_forget()
-
+        
         self.spikeSuccessLabel.grid_forget()
         self.spikeInLabel.grid_forget()
         self.spikeBlockedLabel.grid_forget()
         self.spikeOutLabel.grid_forget()
-        #self.spikeRateLabel.grid_forget()
-        #self.spikeScoreRateLabel.grid_forget()
-
+        
         self.tipSuccessLabel.grid_forget()
         self.tipInLabel.grid_forget()
         self.tipBlockedLabel.grid_forget()
         self.tipOutLabel.grid_forget()
-        #self.tipRateLabel.grid_forget()
-        #self.tipScoreLabel.grid_forget()
-
+        
         self.blockScoreLabel.grid_forget()
         self.blockTouchLabel.grid_forget()
         self.blockOffLabel.grid_forget()
         self.blockFailLabel.grid_forget()
-        #self.blockRateLabel.grid_forget()
-        #self.blockScoreRateLabel.grid_forget()
-
+        
         if((self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['E' + str(rowNumber)].value) != 0):
             self.ws1['F' + str(rowNumber)].value = str(round((self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value) / (self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['E' + str(rowNumber)].value)*100)) + "%"
             self.ws1['G' + str(rowNumber)].value = str(round((self.ws1['B' + str(rowNumber)].value) / (self.ws1['B' + str(rowNumber)].value + self.ws1['C' + str(rowNumber)].value + self.ws1['D' + str(rowNumber)].value + self.ws1['E' + str(rowNumber)].value)*100)) + "%"    
@@ -479,44 +446,32 @@ class statsEditor():
         self.serveInLabel = Label(self.serveLabelFrame, text="In: " + str(self.ws1[('C' + str(rowNumber))].value), padx=10)
         self.serveOutLabel = Label(self.serveLabelFrame, text="Out: " + str(self.ws1[('D' + str(rowNumber))].value), padx=10)
         self.serveShortLabel = Label(self.serveLabelFrame, text="Short: " + str(self.ws1[('E' + str(rowNumber))].value), padx=10)
-        #self.serveRateLabel = Label(self.serveLabelFrame, text="Serve Rate: " + str(self.ws1[('F' + str(rowNumber))].value), padx=10)
-        #self.serveAceRateLabel  = Label(self.serveLabelFrame, text="Ace Rate: " + str(self.ws1[('G' + str(rowNumber))].value), padx=10)
-
+        
         self.receiveTargetedLabel = Label(self.receiveLabelFrame, text="Targeted: " + str(self.ws1[('H' + str(rowNumber))].value), padx=10)
         self.receiveHighLabel = Label(self.receiveLabelFrame, text="High: " + str(self.ws1[('I' + str(rowNumber))].value), padx=10)
         self.receiveOffLabel = Label(self.receiveLabelFrame, text="Off: " + str(self.ws1[('J' + str(rowNumber))].value), padx=10)
         self.receiveLowLabel = Label(self.receiveLabelFrame, text="Low: " + str(self.ws1[('K' + str(rowNumber))].value), padx=10)
-        #self.receiveRateLabel = Label(self.receiveLabelFrame, text="Pass Rate: " + str(self.ws1[('L' + str(rowNumber))].value), padx=10)
-        #self.receiveBestLabel = Label(self.receiveLabelFrame, text="Perfect Rate: " + str(self.ws1[('M' + str(rowNumber))].value), padx=10)
-
+        
         self.setTargetedLabel = Label(self.setLabelFrame, text="Targeted: " + str(self.ws1[('N' + str(rowNumber))].value), padx=10)
         self.setHighLabel = Label(self.setLabelFrame, text="High: " + str(self.ws1[('O' + str(rowNumber))].value), padx=10)
         self.setOffLabel = Label(self.setLabelFrame, text="Off: " + str(self.ws1[('P' + str(rowNumber))].value), padx=10)
         self.setLowLabel = Label(self.setLabelFrame, text="Low: " + str(self.ws1[('Q' + str(rowNumber))].value), padx=10)
-        #self.setRateLabel = Label(self.setLabelFrame, text="Set Rate: " + str(self.ws1[('R' + str(rowNumber))].value), padx=10)
-        #self.setBestLabel = Label(self.setLabelFrame, text="Perfect Rate: " + str(self.ws1[('S' + str(rowNumber))].value), padx=10)
-
+        
         self.spikeSuccessLabel = Label(self.spikeLabelFrame, text="Score: " + str(self.ws1[('T' + str(rowNumber))].value), padx=10)
         self.spikeInLabel = Label(self.spikeLabelFrame, text="In: " + str(self.ws1[('U' + str(rowNumber))].value), padx=10)
         self.spikeBlockedLabel = Label(self.spikeLabelFrame, text="Blocked: " + str(self.ws1[('V' + str(rowNumber))].value), padx=10)
         self.spikeOutLabel = Label(self.spikeLabelFrame, text="Out: " + str(self.ws1[('W' + str(rowNumber))].value), padx=10)
-        #self.spikeRateLabel = Label(self.spikeLabelFrame, text="Spike Rate: " + str(self.ws1[('X' + str(rowNumber))].value), padx=10)
-        #self.spikeScoreRateLabel = Label(self.spikeLabelFrame, text="Score Rate: " + str(self.ws1[('Y' + str(rowNumber))].value), padx=10)
-
+        
         self.tipSuccessLabel = Label(self.tipLabelFrame, text="Score: " + str(self.ws1[('Z' + str(rowNumber))].value), padx=10)
         self.tipInLabel = Label(self.tipLabelFrame, text="In: " + str(self.ws1[('AA' + str(rowNumber))].value), padx=10)
         self.tipBlockedLabel = Label(self.tipLabelFrame, text="Blocked: " + str(self.ws1[('AB' + str(rowNumber))].value), padx=10)
         self.tipOutLabel = Label(self.tipLabelFrame, text="Out: " + str(self.ws1[('AC' + str(rowNumber))].value), padx=10)
-        #self.tipRateLabel = Label(self.tipLabelFrame, text="Tip Rate: " + str(self.ws1[('AD' + str(rowNumber))].value), padx=10)
-        #self.tipScoreLabel = Label(self.tipLabelFrame, text="Score Rate: " + str(self.ws1[('AE' + str(rowNumber))].value), padx=10)
-
+        
         self.blockScoreLabel = Label(self.blockLabelFrame, text="Score: " + str(self.ws1[('AF' + str(rowNumber))].value), padx=10)
         self.blockTouchLabel = Label(self.blockLabelFrame, text="Touch: " + str(self.ws1[('AG' + str(rowNumber))].value), padx=10)
         self.blockOffLabel = Label(self.blockLabelFrame, text="Off: " + str(self.ws1[('AH' + str(rowNumber))].value), padx=10)
         self.blockFailLabel = Label(self.blockLabelFrame, text="No block: " + str(self.ws1[('AI' + str(rowNumber))].value), padx=10)
-        #self.blockRateLabel = Label(self.blockLabelFrame, text="Block Rate: " + str(self.ws1[('AJ' + str(rowNumber))].value), padx=10)
-        #self.blockScoreRateLabel = Label(self.blockLabelFrame, text="Score Rate: " + str(self.ws1[('AK' + str(rowNumber))].value), padx=10)
-
+        
         self.FaultsLabel = Label(self.Faults, text="Faults: " + str(self.ws1[('AL' + str(rowNumber))].value), padx=10)
 
 
@@ -524,43 +479,31 @@ class statsEditor():
         self.serveInLabel.grid(row=0, column=1, pady=5)
         self.serveOutLabel.grid(row=0, column=2, pady=5)
         self.serveShortLabel.grid(row=0, column=3, pady=5)
-        #self.serveRateLabel.grid(row=0, column=4, pady=5)
-        #self.serveAceRateLabel.grid(row=0, column=5, pady=5)
-
+        
         self.receiveTargetedLabel.grid(row=0, column=0, pady=5)
         self.receiveHighLabel.grid(row=0, column=1, pady=5)
         self.receiveOffLabel.grid(row=0, column=2, pady=5)
         self.receiveLowLabel.grid(row=0, column=3, pady=5)
-        #self.receiveRateLabel.grid(row=0, column=4, pady=5)
-        #self.receiveBestLabel.grid(row=0, column=5, pady=5)
-
+        
         self.setTargetedLabel.grid(row=0, column=0, pady=5)
         self.setHighLabel.grid(row=0, column=1, pady=5)
         self.setOffLabel.grid(row=0, column=2, pady=5)
         self.setLowLabel.grid(row=0, column=3, pady=5)
-        #self.setRateLabel.grid(row=0, column=4, pady=5)
-        #self.setBestLabel.grid(row=0, column=5, pady=5)
-
+        
         self.spikeSuccessLabel.grid(row=0, column=0, pady=5)
         self.spikeInLabel.grid(row=0, column=1, pady=5)
         self.spikeBlockedLabel.grid(row=0, column=2, pady=5)
         self.spikeOutLabel.grid(row=0, column=3, pady=5)
-        #self.spikeRateLabel.grid(row=0, column=4, pady=5)
-        #self.spikeScoreRateLabel.grid(row=0, column=5, pady=5)
-
+        
         self.tipSuccessLabel.grid(row=0, column=0, pady=(5, 15))
         self.tipInLabel.grid(row=0, column=1, pady=(5, 15))
         self.tipBlockedLabel.grid(row=0, column=2, pady=(5, 15))
         self.tipOutLabel.grid(row=0, column=3, pady=(5, 15))
-        #self.tipRateLabel.grid(row=0, column=4, pady=(5, 15))
-        #self.tipScoreLabel.grid(row=0, column=5, pady=(5, 15))
-
+        
         self.blockScoreLabel.grid(row=0, column=0, pady=(5, 15))
         self.blockTouchLabel.grid(row=0, column=1, pady=(5, 15))
         self.blockOffLabel.grid(row=0, column=2, pady=(5, 15))
         self.blockFailLabel.grid(row=0, column=3, pady=(5, 15))
-        #self.blockRateLabel.grid(row=0, column=4, pady=(5, 15))
-        #self.blockScoreRateLabel.grid(row=0, column=5, pady=(5, 15))
         
         self.FaultsLabel.grid(row=1, column=0, columnspan=2, pady=4)
         
